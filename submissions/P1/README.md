@@ -13,7 +13,7 @@ P2/final direction.
 - Assignment Validation (local only): the official form is retained on the author's
   computer and submitted separately to the professor. Peer name, verification
   checks, dates, and both signatures are pending. Do not upload this form to GitHub.
-- [Extension plan](bonus_plan.json): planned FastAPI, Docker, and MLOps work for
+- [Extension plan](extension_plan.json): planned FastAPI, Docker, and MLOps work for
   P2/final. These extensions have not been implemented in P1.
 
 The professor's blank form is available from:
