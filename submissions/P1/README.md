@@ -1,37 +1,58 @@
 # P1 submission handoff
 
-The combined PDF is the P1 content submission. The course Assignment Validation
-form is kept locally and submitted separately to the professor. It is not
-published in this repository. The professor's blank source form is:
-https://github.com/shylasolis/machine-learning-pathway/blob/main/assignment-validation.pdf
+P1 contains one combined PDF plus the separately submitted Assignment Validation
+and accessible GitHub link. **Running the Streamlit app is not required for P1.**
+The repository includes the current technical prototype for the project's planned
+P2/final direction.
 
 ## Files and status
 
-- EV_Customer_Prioritization_P1.pdf: eight pages with the proposal, realistic topic examples, a single-page topic/industry infographic, initial data profile and interpreted figures, baseline evidence, and next steps. The infographic is page 3.
-- Assignment Validation (local only): the prefilled official form is retained on the author's computer. Peer name, checks, date, and both signatures are pending. Submit the completed form separately to the professor; do not commit or upload it to GitHub.
-- bonus_plan.json: planned evidence for all three optional extensions; these features are not implemented in P1.
+- [Combined P1 PDF](EV_Customer_Prioritization_P1.pdf): eight pages containing the
+  proposal, topic examples, single-page infographic, initial data exploration,
+  baseline/feasibility evidence, limitations, and next steps. The infographic is page 3.
+- Assignment Validation (local only): the official form is retained on the author's
+  computer and submitted separately to the professor. Peer name, verification
+  checks, dates, and both signatures are pending. Do not upload this form to GitHub.
+- [Extension plan](bonus_plan.json): planned FastAPI, Docker, and MLOps work for
+  P2/final. These extensions have not been implemented in P1.
 
-## Independent peer replication
+The professor's blank form is available from:
+https://github.com/shylasolis/machine-learning-pathway/blob/main/assignment-validation.pdf
 
-1. Clone the repository from https://github.com/Nuquynhchaunguyen/ev-customer-prioritization or pull the P1 submitted version. Record the commit being reviewed.
-2. Follow the root README for Python 3.13 or 3.12 and create a new local environment. Do not copy the author's Mac venv.
-3. Obtain the three competition CSVs through the documented Kaggle API workflow with your own account and authorized access.
-4. Run the EDA and modeling runners from the root, then the automated checks. Confirm the expected outputs listed in README. The new modeling run recreates the splits/model/results; retained technical reports show the author's current run.
-5. Start Streamlit, try the supplied demo, select K, and confirm the downloaded shortlist contains exactly K rows with the correct profile information. The app can use the supplied saved model without retraining.
-6. Record replication evidence, resolve errors before submission, and complete the professor's checks and signatures only after the work is actually verified.
+## Independent P1 peer review
 
-The README gives Mac and Windows commands. Windows execution is not claimed as
-already verified; the independent reviewer records their actual platform and result.
-For P1 without runnable code, the final-project instructions allow file/instruction
-verification; this P1 handoff includes runnable work and should be checked accordingly.
+1. Obtain the published version using the Git option in the
+   [root README](../../README.md#start-here-a-guide-for-first-time-users).
+   Record the reviewed commit. The root guide explains installing Git, cloning,
+   and opening the folder for a first-time user.
+2. Review the combined PDF and confirm its infographic, proposal, initial
+   exploration, interpretations, citations, feasibility evidence, and next steps
+   are present and readable.
+3. Review the saved notebook outputs, tables, and HTML reports. The root README
+   explains how to read them without running Python. Confirm the data source and
+   access instructions are clear and that the files and cloud link are accessible.
+4. Follow the P1 requirement to verify the submitted files and instructions.
+   If the reviewer chooses to execute existing code at this stage, document only
+   the commands and results actually checked. Do not claim code execution that
+   was not performed. The complete technical workflow is documented separately
+   for P2/final; a Streamlit run is not an extra P1 deliverable.
+5. Resolve any identified issues, then complete the professor's verification
+   checks and signatures truthfully, according to the work actually verified.
 
-## Before submission
+## Full reproduction for P2/final
 
-- Student reviews and can explain the proposal, figures, model comparison, K, Precision@K, Lift@K, synthetic-data limits, and their own decisions.
-- A peer completes independent replication and the official form truthfully.
-- Submit the combined PDF and accessible GitHub link through the course assignment. Submit the newly completed Assignment Validation separately to the professor, as required; keep the form local and outside GitHub.
-- Keep a record of professor feedback for P2. No P1/P2 feedback has been received or invented here.
+The root README provides Mac and Windows setup, Kaggle API download, EDA before
+modeling, saved-model use, automated checks, and the Streamlit demo. Complete
+that runnable workflow independently for P2/final verification. Windows commands
+are documented, but verified Windows execution is not claimed here.
 
-P1 contains plans for FastAPI, Docker, and MLOps, each worth up to five optional
-points in the professor rubric. Credit can be claimed only after the features
-work and reproducible evidence is available in P2/final delivery.
+## Before P1 submission
+
+- The student reviews and can explain the question, data, figures, baseline,
+  K, Precision@K, Lift@K, limitations, and project decisions.
+- A peer independently reviews the P1 files/instructions and completes the
+  official form truthfully. Signatures and verification remain pending.
+- Submit the combined PDF and accessible GitHub link through the course assignment.
+  Submit the completed Assignment Validation separately to the professor and keep
+  it local, outside GitHub.
+- Record professor feedback for P2. No P1/P2 feedback has been received or invented here.

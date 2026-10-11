@@ -22,9 +22,10 @@ Repository: [https://github.com/Nuquynhchaunguyen/ev-customer-prioritization](ht
 - [Optional extension plan](submissions/P1/bonus_plan.json): FastAPI, Docker, and MLOps are planned for P2/final delivery. None is claimed as completed or awarded.
 
 P1 is the first of three separate graded submissions (20/30/50 points).
-The technical prototype already extends beyond P1, so all current runnable work
-is included. Independent peer verification is still pending. Automated checks
-and a working app do not substitute for the course form and real peer signatures.
+The technical prototype already extends beyond P1 and is included for the
+planned P2/final direction. P1 reviews the submitted files and instructions;
+running Streamlit is not a P1 requirement. Independent peer verification is
+still pending, and automated checks do not substitute for real peer signatures.
 
 ## Start reading
 
@@ -39,10 +40,513 @@ The executed notebooks contain saved outputs. Open the HTML reading copies in a
 browser rather than as source code in a text editor. To reproduce results or run
 the app, follow the instructions for your operating system below.
 
+## P1 review guide
+
+The professor does not require Streamlit for P1, or prescribe it as the required
+interface for P2/final. Streamlit is the interface chosen for this project's
+customer-ranking prototype.
+
+| Stage | Main review focus | Role of the app |
+|---|---|---|
+| P1 | Topic examples and infographic, proposal, initial data exploration, and baseline/feasibility evidence or plan | Optional prototype showing the intended use |
+| P2 | Runnable analysis, evaluated results, saved artifact with a load/test demonstration, draft paper/slides, and response to P1 feedback | Project-specific interface to develop and verify |
+| Final | Polished report, reproducible project, stakeholder slides, and feedback revisions | Demonstrate the usable tool if included in the final project |
+
+To review P1 without running Python:
+
+1. Open the [combined P1 PDF](submissions/P1/EV_Customer_Prioritization_P1.pdf).
+   It explains the question, dataset, initial findings, baseline, and next steps;
+   the single-page infographic is page 3.
+2. Open the two notebooks under **Start reading** above. Their saved outputs can
+   be read on GitHub without running cells. To read the HTML reports, download
+   the project with step 1 below and open the reports in a browser on your computer.
+3. Check the [data dictionary](reports/tables/data_dictionary.csv) and source/access
+   instructions. One row is a synthetic customer profile; the target is
+   `Will_Buy_EV`, and the competition test file has no target labels.
+4. Check that the cloud link and submitted files are accessible. For the official
+   peer form's clone/pull workflow, use the Git option in step 1 below. The P1 peer
+   review verifies the submitted files and instructions. If a reviewer also runs
+   code, record only what they actually executed; do not claim unperformed checks.
+5. Keep the completed Assignment Validation locally and submit it separately to
+   the professor. Follow the [P1 handoff checklist](submissions/P1/README.md).
+
+## Start here: a guide for first-time users
+
+Choose the task you need below. The app is the project's current prototype for
+its planned P2/final direction.
+
+| What you want to do | Follow these steps |
+|---|---|
+| Review P1 | Read the [P1 review guide](#p1-review-guide) above. Python and Streamlit are not needed to read the files. |
+| Try the optional customer-ranking prototype | Steps 1-5. The saved model and 500-profile demo are already included. |
+| Reproduce the runnable project for P2/final | Steps 1-4, then 6-8, then try the app in step 5. |
+| Read the project without running code | Open the P1 PDF or the notebooks linked above. For HTML reports, download the project and open the reports in a browser. |
+
+**For running code, you need:** a Mac or Windows computer, Python **3.13** (recommended) or
+**3.12**, and internet access to install packages. This guide uses VS Code to
+open the project and type commands. You need a Kaggle account only for step 6.
+
+**Two words used in this guide:** GitHub is the website holding the project files.
+Git is a separate program for downloading and keeping track of changes. The ZIP
+option below lets you try the project without installing Git.
+
+### 1. Download the project to your computer
+
+**Option A - Download ZIP: easiest for trying the app**
+
+1. Open [this project's GitHub home page](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization).
+2. Click the green **Code** button above the file list, then **Download ZIP**.
+   You can also use [this direct ZIP download](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization/archive/refs/heads/main.zip).
+3. Open your **Downloads** folder.
+4. **Mac:** double-click the ZIP to extract it. **Windows:** right-click the ZIP,
+   choose **Extract All**, then **Extract**.
+5. Find the extracted folder, usually **ev-customer-prioritization-main**.
+   Move it to a place you will keep, such as **Documents**, before creating the
+   Python environment. On Windows, work in the extracted folder, not inside the ZIP.
+
+**Check:** inside that folder you can see `README.md`, `app.py`,
+`requirements_project.txt`, `models`, and `notebooks`. You do not need to download
+each file separately. The full raw CSVs and your Python environment are not in
+the GitHub download; the supplied model and demo are included.
+
+<details>
+<summary>Option B - Use Git (for the course's clone/pull peer-verification workflow)</summary>
+
+Use this option when completing the official peer verification form, which asks
+the reviewer to clone or pull the repository. **Clone** means download a working
+copy with its change history. **Pull** means update an existing Git working copy.
+
+1. Install Git from [the official Git download page](https://git-scm.com/downloads)
+   for your computer. Close and reopen your terminal after installation.
+2. **Mac:** press **Command + Space**, type **Terminal**, then press Enter.
+   **Windows:** open **PowerShell** from the Start menu.
+3. Run the commands below one line at a time. They download the project into
+   your Documents folder and then open that folder in the terminal.
+
+**Mac**
+
+```bash
+git --version
+cd "$HOME/Documents"
+git clone https://github.com/Nuquynhchaunguyen/ev-customer-prioritization.git
+cd ev-customer-prioritization
+git rev-parse HEAD
+```
+
+**Windows - PowerShell**
+
+```powershell
+git --version
+cd ([Environment]::GetFolderPath('MyDocuments'))
+git clone https://github.com/Nuquynhchaunguyen/ev-customer-prioritization.git
+cd ev-customer-prioritization
+git rev-parse HEAD
+```
+
+**Check:** a new folder named `ev-customer-prioritization` appears. The final
+command prints the version identifier, called a **commit**. Save that identifier
+with the review record. If the folder name already exists, use
+a different empty location for a fresh review instead of cloning over it.
+
+</details>
+
+### 2. Open the whole folder in VS Code
+
+1. Install [Visual Studio Code](https://code.visualstudio.com/download) if needed,
+   then open it.
+2. Choose **File > Open Folder**. On Mac, **File > Open** may be the menu shown.
+3. Select the extracted or cloned project folder that contains `app.py` and
+   `README.md`. Do not select just `notebooks`, `scripts`, or `models`.
+4. Choose **Terminal > New Terminal** from VS Code's top menu. A panel opens
+   near the bottom where you will type the commands.
+5. **Windows:** choose **PowerShell** from the arrow next to the terminal's **+**
+   button if another terminal type is selected. **Mac:** use **zsh** or **bash**.
+6. Copy the one command for your computer, paste it in the terminal, and press Enter.
+
+**Mac**
+
+```bash
+ls
+```
+
+**Windows - PowerShell**
+
+```powershell
+dir
+```
+
+**Check:** the list contains `app.py`, `README.md`, `requirements_project.txt`,
+and `scripts`. If it does not, reopen the correct folder before continuing.
+
+For the rest of this guide, type commands in this terminal. Copy only the text
+inside a command box, run one line at a time, and wait until the prompt returns
+before the next line. A **prompt** is the line where the terminal is ready for
+you to type again. Do not type these commands inside a notebook cell or at a
+Python `>>>` prompt. The app command in step 5 keeps running until you stop it.
+
+### 3. Install or check Python
+
+If Python 3.13 or 3.12 is already installed, check its version below. Otherwise,
+install a **Python 3.13** release from the link for your computer:
+
+- **Mac:** [Python downloads for macOS](https://www.python.org/downloads/macos/).
+  Download the macOS installer for a 3.13 release and complete installation.
+- **Windows:** [Python downloads for Windows](https://www.python.org/downloads/windows/).
+  Download a 3.13 installer for your computer. Select **Add Python to PATH** and
+  the **Python launcher** if those options appear, then complete installation.
+
+After installing Python, close and reopen VS Code, open the project folder,
+and choose **Terminal > New Terminal** again. Run the command for your computer.
+
+**Mac**
+
+```bash
+python3.13 --version
+```
+
+**Windows - PowerShell**
+
+```powershell
+py -3.13 --version
+```
+
+**Check:** you see `Python 3.13.x`. If you are using an existing Python 3.12,
+replace `python3.13` with `python3.12` on Mac, or `py -3.13` with `py -3.12` on
+Windows in the version check and environment-creation line. Other Python minor
+versions have not been verified for this project.
+
+If Windows cannot find `py`, run `python --version`. If it reports 3.13 or 3.12,
+use `python` instead of `py -3.13` for the first line in step 4. If neither command
+works, finish the Python installation and reopen VS Code before continuing.
+
+### 4. Create this project's environment and install its packages
+
+A **venv** is a separate Python environment for this project. Its folder name is
+**.venv-msba265-ev-purchases** so you can distinguish it from other class projects.
+Every computer creates its own environment. You do not copy another person's venv.
+
+If this named environment already works with Python 3.12 or 3.13, use
+[Update an existing environment](#update-an-existing-environment) instead of
+creating it again. New users should run the commands below.
+
+**Mac**
+
+```bash
+python3.13 -m venv --prompt msba265-ev-purchases .venv-msba265-ev-purchases
+./.venv-msba265-ev-purchases/bin/python -m pip install -r requirements_project.txt
+./.venv-msba265-ev-purchases/bin/python -m pip check
+```
+
+**Windows - PowerShell**
+
+```powershell
+py -3.13 -m venv --prompt msba265-ev-purchases .venv-msba265-ev-purchases
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install -r requirements_project.txt
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip check
+```
+
+The first line creates the environment; little or no text may appear. The second
+installs the packages listed in `requirements_project.txt` and can take several
+minutes. The third checks whether installed packages have conflicting requirements.
+
+**Check:** installation finishes without an error, and the final line reports
+**No broken requirements found**. The commands call the named environment
+directly, so you do not need to activate it. A missing `(msba265-ev-purchases)`
+label in the terminal is fine when using these exact commands.
+
+### 5. Run and try the Streamlit app
+
+The saved model and demo profiles are already in the download. After step 4,
+you can run this step immediately, without a Kaggle account or model training.
+
+**Mac**
+
+```bash
+./.venv-msba265-ev-purchases/bin/python -m streamlit run app.py
+```
+
+**Windows - PowerShell**
+
+```powershell
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m streamlit run app.py
+```
+
+**Check:** the terminal prints a **Local URL**, usually `http://localhost:8501`.
+Open that address in Safari, Chrome, Edge, or another browser if it does not open
+automatically. Keep the terminal running while using the app.
+
+In the browser:
+
+1. Select **Try the demo**. You should see **500 customer profiles loaded**.
+2. Leave contact capacity at **50**, or enter another number from 1 to 500.
+   This number is **K**, the number of profiles in your contact shortlist.
+3. Click **Create shortlist**. You should see the top 50 profiles if K is 50.
+4. Review the ranking and the recorded gender, age, and annual income. Use
+   **Customer information to show** to add charging or driving fields.
+5. Under **Prepare a customer conversation**, choose a priority rank to inspect
+   the customer's recorded profile and suggested consultation questions.
+6. Download the contact shortlist and open the CSV. It should contain exactly
+   K customer rows, plus the header. The export includes all 13 profile fields.
+
+To use another file, select **Upload a CSV**. You can upload
+`data/demo/customer_profiles_demo.csv` or the full `test.csv` after step 6.
+Use one profile per row, a unique `id`, and the same 13 predictor columns and
+supported categories as the [data dictionary](reports/tables/data_dictionary.csv).
+`sample_submission.csv` contains prediction-format columns and cannot be used
+as a customer-profile input. The app accepts up to 50 MB and 300,000 profiles.
+
+Scores estimate the synthetic dataset's Yes label. They are not confirmed sales.
+These profiles have no names or phone numbers. Consultation questions help you
+confirm needs; they do not infer preferences from gender or age or affordability
+from income. Target labels and unrelated extra columns are excluded from exports.
+Uploaded CSVs are held in memory for the session and are not written to project files.
+
+To stop the app, click inside its terminal and press **Ctrl+C**. To open it again
+later, repeat this step from the project folder. Do not use VS Code's normal
+**Run Python File** button to start the Streamlit interface.
+
+## Run the complete analysis for P2/final reproduction
+
+Complete steps 1-4 first. For independent reproduction of the runnable project,
+use the Git option in step 1, record the reviewed commit, then complete steps 6-8
+and the app checks in step 5. Trying the demo alone does not reproduce the full analysis.
+
+### 6. Download the full dataset through Kaggle API
+
+The GitHub project does not include `train.csv`, `test.csv`, or
+`sample_submission.csv`. If all three already appear beside `app.py` on your
+computer, skip the download and continue to step 7.
+
+1. Sign in to your own [Kaggle account](https://www.kaggle.com/).
+2. Open the [approved competition](https://www.kaggle.com/competitions/playground-series-s6e9).
+   Complete any access or competition-rule steps Kaggle requires for your account.
+3. Open [Kaggle API settings](https://www.kaggle.com/settings/api).
+   Under **Legacy API Credentials**, choose **Create Legacy API Key**.
+4. Keep the downloaded file named **kaggle.json** in your computer's **Downloads**
+   folder. Do not place it inside this project or upload it to GitHub.
+5. In the VS Code terminal, run the command for your computer below.
+
+**Mac**
+
+```bash
+./.venv-msba265-ev-purchases/bin/python scripts/download_data.py
+```
+
+**Windows - PowerShell**
+
+```powershell
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/download_data.py
+```
+
+**Check:** the terminal says **Downloaded train.csv, test.csv, and
+sample_submission.csv.** These three files should now appear in the main project
+folder beside `app.py`, not inside `notebooks` or `data`.
+
+The downloader uses Kaggle API; the notebooks read the downloaded CSVs from
+your computer. If all three files already exist, it prints **All three raw CSVs
+already exist; nothing was overwritten.** If only some exist, it stops so you
+can check the folder instead of mixing downloads.
+
+<details>
+<summary>If your credential file is stored elsewhere or you use API environment variables</summary>
+
+The downloader also checks your user's `.kaggle/kaggle.json` file. For another
+location, add `--credentials` followed by the quoted full file path to the
+download command. It also supports `KAGGLE_API_TOKEN`, or the pair
+`KAGGLE_USERNAME` and `KAGGLE_KEY`, when already configured in the environment.
+Each reviewer uses their own credentials. Do not put keys in code, notebooks, or GitHub.
+
+</details>
+
+### 7. Run the two notebooks in order
+
+These commands run every cell and save the notebook outputs and HTML reports.
+Run the EDA command first and wait for it to finish before running modeling.
+Modeling reads the cleaned training file created by EDA.
+
+**Mac**
+
+```bash
+./.venv-msba265-ev-purchases/bin/python scripts/run_eda.py
+./.venv-msba265-ev-purchases/bin/python scripts/run_modeling.py
+```
+
+**Windows - PowerShell**
+
+```powershell
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_eda.py
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_modeling.py
+```
+
+**Check after EDA:** wait for **Saved executed notebook and
+reports/01_data_understanding_and_cleaning.html.** Look for:
+
+- `data/processed/train_clean.csv` and `test_clean.csv`;
+- eight charts in `reports/figures`;
+- dataset tables in `reports/tables`;
+- 668,665 labeled training rows and 286,571 unlabeled test rows;
+- zero rows removed and target mapping No=0, Yes=1 for training only.
+
+**Check after modeling:** wait for **Saved executed notebook and
+reports/02_modeling_and_prioritization.html.** Look for:
+
+- updated saved models and `models/model_metadata.json`;
+- validation and holdout tables in `reports/modeling`;
+- 468,065 training, 100,300 validation, and 100,300 holdout profiles;
+- Logistic Regression selected by the validation rule;
+- holdout Precision@K about 78.78% and Lift@K about 4.51 at K=10,030.
+
+Open each HTML report from Finder or File Explorer using your browser. If it
+opens as HTML code in an editor, right-click it and choose **Open With** your
+browser. The reports should display tables and charts.
+
+Runs can take several minutes. A traceback or interrupted execution means the
+run is incomplete. Rerunning replaces generated notebooks, reports, cleaned
+data, and model artifacts; the raw CSVs stay unchanged. The runners use the
+Python environment you called, so a separate Jupyter server is not required.
+Small floating-point differences between computers are possible.
+
+<details>
+<summary>Optional: run notebook cells interactively in VS Code</summary>
+
+1. Install the Microsoft **Python** and **Jupyter** extensions in VS Code's
+   Extensions panel.
+2. Open `notebooks/01_data_understanding_and_cleaning.ipynb`.
+3. Click **Select Kernel** at the top right, choose **Python Environments**, and
+   select **.venv-msba265-ev-purchases**. If needed, use the interpreter paths below.
+4. Click **Run All** and wait for every cell to finish. Check for errors.
+5. Repeat for `notebooks/02_modeling_and_prioritization.ipynb` using the same kernel.
+
+| Computer | Environment's interpreter path |
+|---|---|
+| Mac | `.venv-msba265-ev-purchases/bin/python` |
+| Windows | `.venv-msba265-ev-purchases\Scripts\python.exe` |
+
+The notebook kernel is the Python that runs the cells. Choose your own local
+environment even if the saved display name says **MSBA265 | EV Purchases**.
+For `.py` files, choose **Python: Select Interpreter** from the Command Palette
+(Command+Shift+P on Mac; Ctrl+Shift+P on Windows) and select the same environment.
+
+</details>
+
+### 8. Run the checks and record peer verification
+
+**Mac**
+
+```bash
+./.venv-msba265-ev-purchases/bin/python -m unittest discover -s tests -v
+```
+
+**Windows - PowerShell**
+
+```powershell
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m unittest discover -s tests -v
+```
+
+**Check:** the final lines report **Ran 30 tests** and **OK**. These checks cover
+model separation, input validation, ranking, and profile attachment. Then start
+the app in step 5 and confirm its shortlist contains exactly K rows.
+
+The peer reviewer records the commit, operating system, Python version, commands
+run, and actual outcome. Complete and sign the official Assignment Validation
+only after independent verification. Keep that form local and submit it separately
+to the professor; it is not a GitHub file. Automated checks do not replace this review.
+
+## Update an existing environment
+
+Use this if the named venv already works but packages need to match an updated
+`requirements_project.txt`. Open the project folder and terminal as in step 2.
+Stop a running app with **Ctrl+C**, then run the commands for your computer.
+
+**Mac**
+
+```bash
+./.venv-msba265-ev-purchases/bin/python --version
+./.venv-msba265-ev-purchases/bin/python -m pip install --upgrade -r requirements_project.txt
+./.venv-msba265-ev-purchases/bin/python -m pip check
+```
+
+**Windows - PowerShell**
+
+```powershell
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" --version
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install --upgrade -r requirements_project.txt
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip check
+```
+
+**Check:** Python is 3.12 or 3.13 and the last command says **No broken
+requirements found**. You can now start the supplied app with step 5. Updating
+packages does not retrain the model or upgrade Python. For full replication,
+also complete steps 6-8. Restart any open notebook kernel after changing packages.
+
+<details>
+<summary>How to get updated project files</summary>
+
+- **If you used ZIP:** download the latest ZIP again and extract it into a new
+  folder. Open that new folder in VS Code and create its own environment with
+  step 4. Keep your old folder until the new copy works. A ZIP download does
+  not use `git pull`. Download the raw CSVs again in step 6, or copy your three
+  unchanged raw CSVs into the new project folder.
+- **If you used Git:** stop the app and run `git status` in the project terminal.
+  If it says **nothing to commit, working tree clean**, run `git pull --ff-only`
+  to receive the published updates. Then run the package update commands above.
+  If Git reports local modifications or a conflict, keep your changes and resolve
+  them before pulling; do not discard them to force an update. A fresh clone in
+  another empty folder is also an option.
+
+</details>
+
+<details>
+<summary>If the venv is missing, moved, broken, or uses a different Python version</summary>
+
+1. Close the app and notebook kernels using the old environment.
+2. If `.venv-msba265-ev-purchases` exists, rename only that folder in Finder or
+   File Explorer to a backup name that is not already used. Keep your project
+   files and data. If the environment is missing, skip this step.
+3. Check Python with step 3, then repeat step 4 to create a new environment.
+4. Select the new interpreter and notebook kernel if using VS Code. Keep the
+   backup until the new environment works.
+
+Environments should be recreated after moving the project to a different folder
+or changing its Python minor version. Installing packages cannot repair a missing
+base Python. Do not copy a Mac venv to Windows.
+
+</details>
+
+<details>
+<summary>Optional: activate the environment for shorter commands</summary>
+
+The main guide works without activation. If you prefer the shorter `python`
+command, activate the environment from the project terminal:
+
+**Mac**
+
+```bash
+source .venv-msba265-ev-purchases/bin/activate
+```
+
+**Windows - PowerShell**
+
+```powershell
+.\.venv-msba265-ev-purchases\Scripts\Activate.ps1
+```
+
+If PowerShell blocks activation, keep using the full environment commands in
+this guide. An activated terminal normally shows `(msba265-ev-purchases)`;
+Anaconda may also show `(base)`. To check where `python` points, run
+`python -c "import sys; print(sys.executable)"`. It should point inside this venv.
+Use `deactivate` to leave it. A newly opened terminal may need activation again.
+
+</details>
+
+<details>
+<summary>Project map and technical evidence</summary>
+
 ## Project map
 
+
 ~~~text
-project-folder/
+ev-customer-prioritization-main/ (or your chosen folder name)
 ├── train.csv                                  Raw labeled profiles
 ├── test.csv                                   Raw unlabeled profiles
 ├── sample_submission.csv                      Kaggle submission template
@@ -82,328 +586,6 @@ project-folder/
 **Reading sequence:** business question → data dictionary → quality checks →
 EDA findings → split roles → validation comparison → final holdout evaluation →
 app workflow and limitations.
-
-## Start here: run the complete project on Mac or Windows
-
-You need Python **3.13** (recommended) or **3.12**, and internet access to install
-packages. Kaggle authentication is needed only if you must download the raw CSVs.
-If the CSVs are included, notebooks and local app scoring run offline after
-package installation. The app needs saved model artifacts; step 6 creates them.
-Anaconda and Git are optional; VS Code is optional for the terminal workflow.
-
-**On the author's Mac, the named environment is already updated and the saved
-model is ready.** To use the current app, open a terminal in this project folder
-and go directly to step 7. Retraining is optional when using the supplied model.
-
-A terminal is a window where you type commands. Copy only the commands inside
-each box, run one line at a time, and wait for it to finish. Use **Terminal with
-bash/zsh on macOS** or **PowerShell on Windows** for these examples.
-
-### 1. Obtain the complete project
-
-Clone [the project repository](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization), extract a complete project ZIP, or use an existing checkout. Keep the
-notebook, scripts, requirements file, and raw CSVs together as shown above.
-If the CSVs are absent, step 5 explains how to download them through Kaggle API.
-
-Each computer must create its own environment. Exclude the venv when sharing a ZIP;
-copying a Mac venv to Windows, or moving an existing venv to a different folder,
-does not create a portable environment. Recreate it using step 4.
-
-### 2. Open a terminal in the project folder
-
-- **Mac:** open Terminal. Type cd followed by a space, drag the project folder
-  from Finder into Terminal, and press Enter. Run ls and confirm README.md,
-  requirements_project.txt, and scripts are listed.
-- **Windows:** open the project folder in File Explorer. Click the address bar,
-  type powershell, and press Enter. Run dir and confirm the same files are listed.
-- **VS Code on either system:** choose File > Open Folder and open the folder
-  containing README.md, then Terminal > New Terminal. On Windows, select PowerShell.
-
-All subsequent commands run from this project folder, not from notebooks or
-scripts. A folder name containing spaces is fine.
-
-### 3. Install or check Python
-
-Install a Python 3.13 release from [Python for macOS](https://www.python.org/downloads/macos/)
-or [Python for Windows](https://www.python.org/downloads/windows/), or use an
-existing Python 3.13/3.12 installation. On Windows, enable the Python launcher
-and Add Python to PATH if those options appear. Reopen the terminal after installation.
-
-**Mac**
-
-~~~bash
-python3.13 --version
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-py -3.13 --version
-~~~
-
-Expect Python 3.13.x. For an installed Python 3.12, replace python3.13 with
-python3.12 on Mac, or py -3.13 with py -3.12 on Windows in the environment-creation
-commands. Other Python minor versions have not been verified for this project.
-
-### 4. Create the named venv and install packages
-
-The environment folder is **.venv-msba265-ev-purchases** and its activated prompt
-is **msba265-ev-purchases**. For first setup, use the commands for your computer.
-If this environment already exists and works with Python 3.12/3.13, skip creation
-and follow **Update an existing environment** below.
-
-These commands call the environment's Python directly. Activation is optional,
-so Windows users can run them even when PowerShell blocks activation scripts.
-
-**Mac**
-
-~~~bash
-python3.13 -m venv --prompt msba265-ev-purchases .venv-msba265-ev-purchases
-./.venv-msba265-ev-purchases/bin/python -m pip install --upgrade pip
-./.venv-msba265-ev-purchases/bin/python -m pip install -r requirements_project.txt
-./.venv-msba265-ev-purchases/bin/python -m pip check
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-py -3.13 -m venv --prompt msba265-ev-purchases .venv-msba265-ev-purchases
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install --upgrade pip
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install -r requirements_project.txt
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip check
-~~~
-
-The last command should report **No broken requirements found**. If py is not
-available on Windows, first check python --version. If it reports 3.13.x or
-3.12.x, use python -m venv --prompt msba265-ev-purchases .venv-msba265-ev-purchases
-for the creation line; keep the remaining commands unchanged.
-
-### 5. Obtain the raw CSVs if needed
-
-If train.csv, test.csv, and sample_submission.csv already exist at the project
-root, proceed to step 6. They were originally downloaded through Kaggle API;
-the notebook reads these local files during analysis.
-
-To download on another computer, obtain your own API credentials from
-[Kaggle API settings](https://www.kaggle.com/settings/api) and satisfy the
-competition's access requirements. For a legacy key, save kaggle.json in your
-user's Downloads folder or .kaggle folder, then run:
-
-**Mac**
-
-~~~bash
-./.venv-msba265-ev-purchases/bin/python scripts/download_data.py
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/download_data.py
-~~~
-
-For a legacy credential file elsewhere, append --credentials and its quoted
-full path. KAGGLE_API_TOKEN or the pair KAGGLE_USERNAME and KAGGLE_KEY environment
-variables are also supported. The downloader returns without overwriting when
-all three raw files exist; if only some exist, it stops for you to review the folder.
-
-Credentials belong to each user's account and are never included in the shared
-project or ZIP. The API endpoint is defined in scripts/download_data.py.
-
-### 6. Reproduce EDA and modeling from the terminal
-
-**Mac**
-
-~~~bash
-./.venv-msba265-ev-purchases/bin/python scripts/run_eda.py
-./.venv-msba265-ev-purchases/bin/python scripts/run_modeling.py
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_eda.py
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_modeling.py
-~~~
-
-Run one command at a time. Wait for each **Saved executed notebook** message.
-The modeling run trains the candidates, selects with validation data, refits the
-selected pipeline, evaluates the holdout, and saves model artifacts. It takes
-longer than opening a notebook with saved results. A traceback means that run did
-not complete successfully.
-
-Each runner uses the Python that launched it to create a temporary notebook
-kernel and execute all cells. No notebook server or global kernel registration
-is required. EDA regenerates its processed CSVs, tables, figures, and manifest;
-modeling regenerates model artifacts and evaluation records. Rerunning replaces
-generated results while keeping raw CSVs unchanged.
-
-The EDA-only installation remains available through requirements_eda.txt. Use
-requirements_project.txt for the complete workflow, including modeling and the app.
-
-Check these expected outputs:
-
-- Training file: 668,665 rows and 15 columns; test file: 286,571 rows and 14 columns.
-- Thirteen candidate predictors; ID is excluded from model predictors.
-- Zero rows removed; training target No=0, Yes=1; test remains unlabeled.
-- Eight charts under reports/figures and saved notebook outputs.
-- The HTML reading copies open in a browser with tables and charts available.
-- Modeling saves models/model_bundle.joblib, models/selected_pipeline.joblib,
-  models/model_metadata.json, split membership, and validation/holdout reports.
-- data/demo/customer_profiles_demo.csv contains unlabeled example app inputs.
-
-### 7. Start the Streamlit application
-
-After model artifacts exist, run the following from the project root. This starts
-a local browser application. No Kaggle API credential is needed to score an
-uploaded file.
-
-**Mac**
-
-~~~bash
-./.venv-msba265-ev-purchases/bin/python -m streamlit run app.py
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m streamlit run app.py
-~~~
-
-Use the local URL printed in the terminal if a browser does not open. Keep that
-terminal running while using the app; press Ctrl+C there to stop the local server.
-This command does not publish the app to the internet.
-
-1. Start with data/demo/customer_profiles_demo.csv or your own compatible,
-   unlabeled CSV. The demo has 500 Kaggle test profiles and no outcome labels.
-2. Upload the CSV. Required names are `id` plus the 13 fields listed in the
-   notebook data dictionary. Keep exact field names and supported categories;
-   identifiers must be present and unique.
-3. Resolve any reported input errors before scoring. The app checks its schema,
-   category membership, numeric domains, and missing or malformed values.
-4. Choose **K**, the number of profiles you can contact, up to the batch size.
-5. Review the highest scores. The table shows Gender, Age, and Annual income by
-   default; use **Customer information to show** to add charging, commute, or other
-   recorded profile fields. Scores estimate the synthetic Yes label, not an
-   established real-customer purchase probability.
-6. Under **Prepare a customer conversation**, choose a priority rank to inspect
-   that customer. The view shows demographics, driving/charging context, and
-   suggested questions about needs and budget. Questions use recorded transport
-   facts, without inferring preferences from gender or age, or affordability from
-   income. They are conversation aids, not explanations of the model score.
-7. Download the contact shortlist or all ranked profiles. Both exports contain
-   rank, ID, Yes probability (0–1), and all 13 normalized profile fields, regardless
-   of which columns are visible. Profile facts are matched by ID after ranking;
-   target labels and unrelated extra upload columns are excluded.
-
-These synthetic profiles have no names or phone numbers. A real contact workflow
-would need a separate authorized customer contact source keyed by customer ID.
-The app does not invent contact details or initiate customer calls.
-
-The app loads the trusted project model bundle. Do not replace it with a joblib
-or pickle file obtained from an unknown source. Uploaded CSVs are inputs, not
-model files.
-
-### 8. Read or run interactively in VS Code
-
-1. Install the Microsoft **Python** and **Jupyter** extensions if needed.
-2. Open the whole project folder. Run Python: Select Interpreter from the Command
-   Palette (Command+Shift+P on Mac; Ctrl+Shift+P on Windows).
-3. Select .venv-msba265-ev-purchases. If asked for its executable, use
-   .venv-msba265-ev-purchases/bin/python on Mac or
-   .venv-msba265-ev-purchases\Scripts\python.exe on Windows.
-4. Open either notebook in notebooks/. Choose Select Kernel > Python
-   Environments, select that same environment, and choose Run All. Run Notebook
-   01 before Notebook 02 when reproducing the complete project.
-
-The saved kernel display name is MSBA265 | EV Purchases. Select your own local
-environment explicitly; selecting the editor interpreter does not always select
-the notebook kernel. Workspace settings point to the environment folder, which
-allows the same configuration on both systems. If an older interpreter was
-already selected, use Select Interpreter to change it.
-
-## Update an existing environment
-
-Use this after obtaining a revised requirements_project.txt, or when the venv exists
-but project packages have not been installed or refreshed. These commands keep
-the pinned direct package versions; they **do not upgrade Python**. Run them
-from the project root using your own environment.
-
-**Mac**
-
-~~~bash
-./.venv-msba265-ev-purchases/bin/python --version
-./.venv-msba265-ev-purchases/bin/python -m pip install --upgrade pip
-./.venv-msba265-ev-purchases/bin/python -m pip install --upgrade -r requirements_project.txt
-./.venv-msba265-ev-purchases/bin/python -m pip check
-./.venv-msba265-ev-purchases/bin/python scripts/run_eda.py
-./.venv-msba265-ev-purchases/bin/python scripts/run_modeling.py
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" --version
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install --upgrade pip
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install --upgrade -r requirements_project.txt
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip check
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_eda.py
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_modeling.py
-~~~
-
-If CSVs are absent, complete step 5 before the final run command. After updating,
-restart an already running notebook kernel before Run All so it uses the refreshed
-packages. requirements_project.txt includes requirements_eda.txt and pins direct
-modeling/app dependencies; it is not a complete lockfile for every transitive
-dependency. Installing packages does not retrain a model: the notebook runner
-commands do that. If you only need to refresh packages and launch the saved app,
-stop after pip check and use step 7.
-
-### Recreate a missing, moved, or broken venv
-
-Updating packages cannot repair a missing base Python or change the venv's
-Python minor version. Recreate the environment when changing from another
-Python version, after moving the project, or when its interpreter will not start.
-
-1. Close notebook kernels and terminals using the old venv.
-2. In Finder or File Explorer, rename only .venv-msba265-ev-purchases to a backup
-   name that is not already used. Keep the notebook, raw data, scripts, and reports.
-   If the environment folder is absent, skip this step.
-3. Open a new terminal at the project root. Check Python 3.13 or 3.12 as in step 3.
-4. Repeat step 4 to create the correctly named venv and reinstall packages.
-5. Run step 6, then select the new interpreter and notebook kernel in VS Code.
-
-Keep the backup until the new environment runs successfully. Recreate each
-machine's venv from the requirements file instead of copying someone else's
-venv. See the [Python venv documentation](https://docs.python.org/3.13/library/venv.html).
-
-## Optional terminal activation
-
-Activation makes the shorter python command use this environment. It is not
-required for the direct-environment commands above.
-
-**Mac — bash/zsh**
-
-~~~bash
-source .venv-msba265-ev-purchases/bin/activate
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-.\.venv-msba265-ev-purchases\Scripts\Activate.ps1
-~~~
-
-If PowerShell blocks Activate.ps1, use the direct python.exe commands above;
-no execution-policy change is needed. An activated terminal normally shows
-(msba265-ev-purchases). An additional (base) label can appear with Anaconda.
-To check which interpreter the shorter command uses, run:
-
-~~~bash
-python -c "import sys; print(sys.executable)"
-~~~
-
-The path should be inside .venv-msba265-ev-purchases. Type deactivate to leave the
-venv. Opening a new terminal may require activation again.
 
 ## Data, cleaning, and interpretation
 
@@ -516,19 +698,7 @@ saved model's ranks, IDs, and probabilities. The richer profile output was
 verified against all 286,571 Kaggle test profiles: rankings and probabilities
 were preserved, and all top-50 customer facts matched their source IDs.
 
-To run the automated checks on your computer:
-
-**Mac**
-
-~~~bash
-./.venv-msba265-ev-purchases/bin/python -m unittest discover -s tests -v
-~~~
-
-**Windows — PowerShell**
-
-~~~powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m unittest discover -s tests -v
-~~~
+Run the automated checks using step 8 above.
 
 Windows PowerShell instructions use the same code with platform-specific paths,
 but have not been executed on a Windows host; independent peer verification is
@@ -538,27 +708,36 @@ AI assistance was used to draft code and analysis. The student should review,
 explain, and refine the target interpretation, split roles, selection rule,
 ranking metrics, and deployment limits before submission.
 
+
+</details>
+
 ## Troubleshooting
 
-| Problem | Action |
+| What you see | What to do |
 |---|---|
-| Python command not found | Install Python 3.13 or 3.12 and reopen the terminal; use step 4's fallback if the Windows launcher is absent. |
-| requirements_project.txt or scripts not found | Run ls on Mac or dir on Windows and move to the project root described in step 2. |
-| Environment's Python path does not exist | Create the venv using step 4; use bin/python on Mac and Scripts/python.exe on Windows. |
-| Missing package or incompatible installed version | Follow Update an existing environment, then restart the notebook kernel. |
-| PowerShell activation blocked | Call the environment's python.exe directly; activation is optional. |
-| Notebook cannot import packages | Select the same environment used to install requirements as the notebook kernel. |
-| Environment not listed in VS Code | Refresh environment discovery with Python Environments: Refresh All Environment Managers, or select the interpreter path explicitly. |
-| Missing CSV or Kaggle access error | Use step 5, your own API credentials, and the competition's access instructions. |
-| Command entered at the Python prompt (>>>) gives SyntaxError | Type exit() first, then run the command in Terminal or PowerShell. |
-| Installation fails | Check internet access and Python version, retry installation, and retain the full error if it persists. |
-| HTML opens as code | Open either reports/*.html reading copy with a browser. |
-| App reports missing model artifacts | Install requirements_project.txt and run scripts/run_modeling.py before starting the app. |
-| Model cannot load after changing package versions | Restore the pinned requirements; if deliberately changing versions, retrain and evaluate before using the app. |
-| Uploaded CSV fails validation | Use the included demo and dictionary to check field names, missing values, categories, numeric domains, and duplicate IDs. |
-| Streamlit command not found | Use the environment Python with -m streamlit, as in step 7. |
-| Notebook run times out | Use --timeout 600 for run_eda.py or --timeout 1800 for run_modeling.py; the limit is per cell. |
+| I cannot find the green Code button | Open the repository home page from step 1, rather than an individual README or PDF file. |
+| Files are still inside a ZIP on Windows | Right-click the ZIP and choose Extract All. Open the extracted project folder in VS Code. |
+| `git` is not found | ZIP users do not need Git. For a peer clone, install Git and reopen the terminal, then repeat the Git option in step 1. |
+| `python3.13` or `py` is not found | Complete step 3 and reopen VS Code. On Windows, use the documented `python` fallback only if its version is 3.12/3.13. |
+| `requirements_project.txt` or `scripts` is not found | Repeat step 2. The open folder must contain `app.py`, `README.md`, and `requirements_project.txt`. |
+| The named environment's Python path does not exist | Create the environment with step 4. Mac uses `bin/python`; Windows uses `Scripts\python.exe`. |
+| `No module named ...` or a package version error | Install `requirements_project.txt` using the named environment, or follow Update an existing environment. Restart any notebook kernel afterward. |
+| Installation cannot build/download a package | Check Python 3.12/3.13 and internet access. Keep the full error. If pip is outdated, run the same environment's Python with `-m pip install --upgrade pip`, then retry step 4. |
+| A command gives SyntaxError at `>>>` | Type `exit()` to leave Python, then run the command in VS Code's terminal, not a notebook cell. |
+| Streamlit does not open a browser | Copy its Local URL from the terminal into a browser. Keep the app terminal running. |
+| The browser cannot connect after the terminal closes | Start the app again with step 5. Closing the terminal stops the local app. |
+| The app reports a missing model or demo | Obtain the complete project ZIP/clone, including `models` and `data/demo`. Full reproduction in steps 6-7 recreates the artifacts. |
+| An uploaded CSV fails validation | First try the supplied demo. Use `test.csv` or a compatible profile CSV, not `sample_submission.csv`; check the data dictionary and the error shown. |
+| Kaggle reports missing credentials or HTTP 401/403 | Complete step 6 with your own API key and competition access. Keep `kaggle.json` in Downloads, outside the project. |
+| The downloader says only some raw CSVs exist | Check the three expected filenames beside `app.py`. Keep a backup of existing files before recovering a complete, matching set from Kaggle. |
+| Modeling cannot find `train_clean.csv` | Run the EDA command in step 7 and confirm it finishes before running modeling. |
+| An HTML report opens as code | In Finder/File Explorer, right-click the HTML file and choose Open With your browser. |
+| The notebook cannot import a package | Select the named environment as the notebook kernel; selecting the editor interpreter alone may not select the notebook kernel. |
+| The environment is not listed in VS Code | Use Python Environments: Refresh All Environment Managers from the Command Palette, or enter the interpreter path listed in step 7. |
+| PowerShell blocks Activate.ps1 | Use the full environment commands in this guide; activation is optional. |
+| A notebook run times out | Add `--timeout 600` to the EDA command or `--timeout 1800` to modeling. The limit applies to each cell. |
 
-Setup references: [Python virtual environments](https://docs.python.org/3.13/library/venv.html),
-[Python on Windows](https://docs.python.org/3.13/using/windows.html),
-and [VS Code Python settings](https://code.visualstudio.com/docs/python/settings-reference).
+Setup references: [GitHub ZIP downloads](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives),
+[Python virtual environments](https://docs.python.org/3.13/library/venv.html),
+[VS Code Python environments](https://code.visualstudio.com/docs/python/environments),
+and [running Streamlit](https://docs.streamlit.io/develop/concepts/architecture/run-your-app).
