@@ -119,7 +119,16 @@ option below lets you try the project without installing Git.
 
 ### 1. Download the project code from GitHub
 
-**Option A - Download ZIP: easiest for trying the app**
+There are **two ways** to download the project code. **Choose one**:
+
+- **Option A - Download ZIP:** download and extract the files using your browser. Git is not needed.
+- **Option B - Git clone:** install Git and use the commands below to download a working copy with version history.
+
+Both options provide the project files. After completing either option,
+**continue to step 2**. The full dataset is downloaded separately through
+Kaggle API in step 6.
+
+#### Option A - Download ZIP
 
 This downloads the GitHub project files. The full dataset comes from Kaggle API
 in step 6 after you have installed the project packages.
@@ -139,8 +148,7 @@ in step 6 after you have installed the project packages.
 each file separately. The full raw CSVs and your Python environment are not in
 the GitHub download; the supplied model and demo are included.
 
-<details>
-<summary>Option B - Use Git to keep track of the project version</summary>
+#### Option B - Git clone
 
 Git helps you record the exact project version you use. **Clone** means download
 a working copy with its change history. **Pull** means update an existing Git working copy.
@@ -176,8 +184,6 @@ git rev-parse HEAD
 command prints the version identifier, called a **commit**. Save that identifier
 with the review record. If the folder name already exists, use
 a different empty location for a fresh review instead of cloning over it.
-
-</details>
 
 ### 2. Open the whole folder in VS Code
 
