@@ -9243,7 +9243,7 @@ dealership customers. We do not calibrate or retune using this holdout.</p>
 <h3 id="8.-Save-the-exact-evaluated-pipeline-and-reproducibility-records">8. Save the exact evaluated pipeline and reproducibility records<a class="anchor-link" href="#8.-Save-the-exact-evaluated-pipeline-and-reproducibility-records">¶</a></h3><p>Saving a fitted pipeline preserves the same encoding, scaling, feature
 ordering, and classifier used in the holdout evaluation. The application
 loads this pipeline; it does not train a new model during an upload.</p>
-<p>Artifacts include the model bundle, a plain pipeline file, metadata, split
+<p>Artifacts include the model bundle, metadata, split
 membership, validation and holdout tables, charts, and a small unlabeled
 demonstration CSV from Kaggle <code>test.csv</code>. Only load trusted project model
 files: Python pickle/joblib files are not safe to load from arbitrary uploads.</p>
@@ -9266,7 +9266,6 @@ files: Python pickle/joblib files are not safe to load from arbitrary uploads.</
 <span class="p">)</span>
 <span class="n">artifact_paths</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">"models/model_bundle.joblib"</span><span class="p">,</span>
-    <span class="s2">"models/selected_pipeline.joblib"</span><span class="p">,</span>
     <span class="s2">"models/model_metadata.json"</span><span class="p">,</span>
     <span class="s2">"data/splits/split_membership.csv"</span><span class="p">,</span>
     <span class="s2">"reports/modeling/validation_metrics.csv"</span><span class="p">,</span>
@@ -9329,41 +9328,36 @@ files: Python pickle/joblib files are not safe to load from arbitrary uploads.</
 </tr>
 <tr>
 <th>1</th>
-<td>models/selected_pipeline.joblib</td>
-<td>True</td>
-</tr>
-<tr>
-<th>2</th>
 <td>models/model_metadata.json</td>
 <td>True</td>
 </tr>
 <tr>
-<th>3</th>
+<th>2</th>
 <td>data/splits/split_membership.csv</td>
 <td>True</td>
 </tr>
 <tr>
-<th>4</th>
+<th>3</th>
 <td>reports/modeling/validation_metrics.csv</td>
 <td>True</td>
 </tr>
 <tr>
-<th>5</th>
+<th>4</th>
 <td>reports/modeling/validation_ranking.csv</td>
 <td>True</td>
 </tr>
 <tr>
-<th>6</th>
+<th>5</th>
 <td>reports/modeling/holdout_metrics.csv</td>
 <td>True</td>
 </tr>
 <tr>
-<th>7</th>
+<th>6</th>
 <td>reports/modeling/holdout_ranking.csv</td>
 <td>True</td>
 </tr>
 <tr>
-<th>8</th>
+<th>7</th>
 <td>data/demo/customer_profiles_demo.csv</td>
 <td>True</td>
 </tr>

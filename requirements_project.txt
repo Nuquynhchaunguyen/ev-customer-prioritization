@@ -1,5 +1,0 @@
-# Complete project dependencies. Create a local venv on each computer.
--r requirements_eda.txt
-scikit-learn==1.9.1
-streamlit==1.65.0
-joblib==1.6.0

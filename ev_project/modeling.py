@@ -267,7 +267,6 @@ def save_training_artifacts(root: Path, splits, candidates, validation_metrics,
     }
     payload = {'schema_version': SCHEMA_VERSION, 'pipeline': final_pipeline, 'metadata': metadata}
     joblib.dump(payload, models / 'model_bundle.joblib', compress=3)
-    joblib.dump(final_pipeline, models / 'selected_pipeline.joblib', compress=3)
     (models / 'model_metadata.json').write_text(json.dumps(metadata, indent=2, default=_json_value), encoding='utf-8')
     loaded = joblib.load(models / 'model_bundle.joblib')
     probe = splits['holdout'].iloc[:100]
