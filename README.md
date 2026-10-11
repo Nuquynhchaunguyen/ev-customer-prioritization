@@ -82,6 +82,16 @@ its planned P2/final direction.
 | Reproduce the runnable project for P2/final | Steps 1-4, then 6-8, then try the app in step 5. |
 | Read the project without running code | Open the P1 PDF or the notebooks linked above. For HTML reports, download the project and open the reports in a browser. |
 
+**Project code and dataset are two separate downloads:**
+
+| What you are downloading | Where it comes from | How to obtain it |
+|---|---|---|
+| Code, notebooks, reports, saved model, and small demo | GitHub | Download ZIP or Git clone in step 1 |
+| Full `train.csv`, `test.csv`, and `sample_submission.csv` | The approved Kaggle competition | Run `scripts/download_data.py` with your own Kaggle API credentials in step 6 |
+
+The GitHub ZIP does not supply the full competition dataset. Full analysis uses
+the Kaggle API download in step 6, then the notebooks in step 7.
+
 **For running code, you need:** a Mac or Windows computer, Python **3.13** (recommended) or
 **3.12**, and internet access to install packages. This guide uses VS Code to
 open the project and type commands. You need a Kaggle account only for step 6.
@@ -90,9 +100,12 @@ open the project and type commands. You need a Kaggle account only for step 6.
 Git is a separate program for downloading and keeping track of changes. The ZIP
 option below lets you try the project without installing Git.
 
-### 1. Download the project to your computer
+### 1. Download the project code from GitHub
 
 **Option A - Download ZIP: easiest for trying the app**
+
+This downloads the GitHub project files. The full dataset comes from Kaggle API
+in step 6 after you have installed the project packages.
 
 1. Open [this project's GitHub home page](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization).
 2. Click the green **Code** button above the file list, then **Download ZIP**.
