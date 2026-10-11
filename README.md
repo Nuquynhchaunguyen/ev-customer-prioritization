@@ -103,7 +103,7 @@ Choose whether to read the existing results, try the demo, or run the analysis y
 
 | What you are downloading | Where it comes from | How to obtain it |
 |---|---|---|
-| Code, notebooks, reports, saved model, and small demo | GitHub | Download ZIP or Git clone in step 1 |
+| Code, notebooks, reports, saved model, and small demo | GitHub | Git clone or Download ZIP in step 1 |
 | Full `train.csv`, `test.csv`, and `sample_submission.csv` | The approved Kaggle competition | Run `scripts/download_data.py` with your own Kaggle API credentials in step 6 |
 
 The GitHub ZIP does not supply the full competition dataset. Full analysis uses
@@ -121,34 +121,14 @@ option below lets you try the project without installing Git.
 
 There are **two ways** to download the project code. **Choose one**:
 
-- **Option A - Download ZIP:** download and extract the files using your browser. Git is not needed.
-- **Option B - Git clone:** install Git and use the commands below to download a working copy with version history.
+- **Option A — Git clone:** install Git and use the commands below to download a working copy with version history.
+- **Option B — Download ZIP:** download and extract the files using your browser. Git is not needed.
 
 Both options provide the project files. After completing either option,
 **continue to step 2**. The full dataset is downloaded separately through
 Kaggle API in step 6.
 
-#### Option A - Download ZIP
-
-This downloads the GitHub project files. The full dataset comes from Kaggle API
-in step 6 after you have installed the project packages.
-
-1. Open [this project's GitHub home page](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization).
-2. Click the green **Code** button above the file list, then **Download ZIP**.
-   You can also use [this direct ZIP download](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization/archive/refs/heads/main.zip).
-3. Open your **Downloads** folder.
-4. **Mac:** double-click the ZIP to extract it. **Windows:** right-click the ZIP,
-   choose **Extract All**, then **Extract**.
-5. Find the extracted folder, usually **ev-customer-prioritization-main**.
-   Move it to a place you will keep, such as **Documents**, before creating the
-   Python environment. On Windows, work in the extracted folder, not inside the ZIP.
-
-**Check:** inside that folder you can see `README.md`, `app.py`,
-`requirements_project.txt`, `models`, and `notebooks`. You do not need to download
-each file separately. The full raw CSVs and your Python environment are not in
-the GitHub download; the supplied model and demo are included.
-
-#### Option B - Git clone
+#### Option A — Git clone
 
 Git helps you record the exact project version you use. **Clone** means download
 a working copy with its change history. **Pull** means update an existing Git working copy.
@@ -184,6 +164,26 @@ git rev-parse HEAD
 command prints the version identifier, called a **commit**. Save that identifier
 with the review record. If the folder name already exists, use
 a different empty location for a fresh review instead of cloning over it.
+
+#### Option B — Download ZIP
+
+This downloads the GitHub project files. The full dataset comes from Kaggle API
+in step 6 after you have installed the project packages.
+
+1. Open [this project's GitHub home page](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization).
+2. Click the green **Code** button above the file list, then **Download ZIP**.
+   You can also use [this direct ZIP download](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization/archive/refs/heads/main.zip).
+3. Open your **Downloads** folder.
+4. **Mac:** double-click the ZIP to extract it. **Windows:** right-click the ZIP,
+   choose **Extract All**, then **Extract**.
+5. Find the extracted folder, usually **ev-customer-prioritization-main**.
+   Move it to a place you will keep, such as **Documents**, before creating the
+   Python environment. On Windows, work in the extracted folder, not inside the ZIP.
+
+**Check:** inside that folder you can see `README.md`, `app.py`,
+`requirements_project.txt`, `models`, and `notebooks`. You do not need to download
+each file separately. The full raw CSVs and your Python environment are not in
+the GitHub download; the supplied model and demo are included.
 
 ### 2. Open the whole folder in VS Code
 
