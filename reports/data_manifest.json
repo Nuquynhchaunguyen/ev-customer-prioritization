@@ -1,0 +1,55 @@
+{
+  "analysis_date": "2026-10-09",
+  "competition": "playground-series-s6e9",
+  "source_url": "https://www.kaggle.com/competitions/playground-series-s6e9",
+  "raw_files_sha256": {
+    "train.csv": "eae9eaa4e6378df405e755f853771d7e26d212bd93258349fc797b771021946a",
+    "test.csv": "539263f6caabc40afd5e2f0bc0ab16b10a2d1177c565fc71b866f0181d836b34",
+    "sample_submission.csv": "a9747a8b947e4e35505e3da4535a5a494978b012a7adb50973f13e598849dda5"
+  },
+  "processed_files": {
+    "data/processed/train_clean.csv": {
+      "rows": 668665,
+      "columns": 15,
+      "sha256": "43d7a8a74a8c857abec14fb7852a7c0cce19b502ec4ac0df194d3cf73a44d150"
+    },
+    "data/processed/test_clean.csv": {
+      "rows": 286571,
+      "columns": 14,
+      "sha256": "24bfe3e6082e3b81c704aa3476021550431656e4ed048947c95c4422c9636a90"
+    }
+  },
+  "target_mapping": {
+    "No": 0,
+    "Yes": 1
+  },
+  "predictor_columns": [
+    "Age",
+    "Annual_Income_USD",
+    "Daily_Commute_km",
+    "Number_of_Cars_Owned",
+    "Charging_Stations_Near_Home",
+    "Charging_Stations_Near_Work",
+    "Environmental_Concern_Level",
+    "Gender",
+    "City_Type",
+    "Current_Car_Type",
+    "Home_Charging_Possible",
+    "Subsidy_Available",
+    "Range_Anxiety_Level"
+  ],
+  "rows_removed": 0,
+  "numeric_or_categorical_predictor_values_changed": 0,
+  "predictive_model_trained": false,
+  "python": "3.13.9",
+  "library_versions": {
+    "pandas": "2.2.3",
+    "numpy": "2.3.5",
+    "matplotlib": "3.11.2",
+    "seaborn": "0.13.2",
+    "nbformat": "5.11.1",
+    "nbclient": "0.11.0",
+    "nbconvert": "7.17.1",
+    "ipykernel": "7.4.0"
+  }
+}

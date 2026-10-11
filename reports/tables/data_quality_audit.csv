@@ -1,0 +1,23 @@
+Dataset,Check,Flagged cells/rows
+train.csv,Missing cells,0
+train.csv,Empty/whitespace-only text cells,0
+train.csv,Text cells with boundary whitespace,0
+train.csv,Duplicate IDs,0
+train.csv,Duplicate full rows,0
+train.csv,Repeated predictor profiles (exclude ID and target),0
+train.csv,Non-finite numeric cells,0
+train.csv,Negative values in nonnegative fields,0
+train.csv,Non-integer values in integer/count/code fields,0
+train.csv,Unexpected categorical values,0
+train.csv,Concern codes outside observed 1–5 vocabulary,0
+test.csv,Missing cells,0
+test.csv,Empty/whitespace-only text cells,0
+test.csv,Text cells with boundary whitespace,0
+test.csv,Duplicate IDs,0
+test.csv,Duplicate full rows,0
+test.csv,Repeated predictor profiles (exclude ID and target),0
+test.csv,Non-finite numeric cells,0
+test.csv,Negative values in nonnegative fields,0
+test.csv,Non-integer values in integer/count/code fields,0
+test.csv,Unexpected categorical values,0
+test.csv,Concern codes outside observed 1–5 vocabulary,0

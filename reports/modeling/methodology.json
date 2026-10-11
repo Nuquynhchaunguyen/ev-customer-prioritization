@@ -1,0 +1,36 @@
+{
+  "selection_rule": "Validation lift at 10% capacity, then ROC-AUC, then simpler model",
+  "seed": 42,
+  "contact_fractions": [
+    0.01,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "split_summary": [
+    {
+      "split": "train",
+      "records": 468065,
+      "fraction": 0.6999992522414064,
+      "yes_count": 81745,
+      "yes_rate": 0.1746445472316879
+    },
+    {
+      "split": "validation",
+      "records": 100300,
+      "fraction": 0.1500003738792968,
+      "yes_count": 17517,
+      "yes_rate": 0.17464606181455633
+    },
+    {
+      "split": "holdout",
+      "records": 100300,
+      "fraction": 0.1500003738792968,
+      "yes_count": 17517,
+      "yes_rate": 0.17464606181455633
+    }
+  ],
+  "final_fit": "Train + validation only (85%). Holdout excluded from fitting.",
+  "tie_rule": "Descending probability. Tied scores use SHA256(seed=42, id), independent of upload row order.",
+  "holdout_used_for_selection": false
+}

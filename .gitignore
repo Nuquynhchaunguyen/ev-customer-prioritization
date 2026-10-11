@@ -1,0 +1,18 @@
+.venv/
+.venv-msba265-ev-purchases/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+.env
+kaggle*.json
+access_token
+/train.csv
+/test.csv
+/sample_submission.csv
+/data/processed/*.csv
+/data/splits/*.csv
+/reports/modeling/*predictions.csv
+
+# Student validation forms are local-only; submit separately to the professor.
+**/Assignment_Validation*.pdf

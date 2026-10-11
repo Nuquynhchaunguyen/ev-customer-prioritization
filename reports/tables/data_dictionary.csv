@@ -1,0 +1,16 @@
+Column,Role,Logical type / unit,Meaning,Observed train values,Observed test values,Qualification / decision
+id,Identifier,Integer,Unique synthetic-profile row identifier.,"0 to 668,664","668,665 to 955,235",Keep for traceability; exclude from model predictors.
+Age,Predictor,Numeric age,"Recorded age, interpreted as years.",25 to 69,25 to 69,The data do not establish a broader customer-age eligibility rule.
+Annual_Income_USD,Predictor,Numeric; USD/year,Recorded annual income in US dollars.,"30,000 to 188,549","30,000 to 186,936","Country, income definition, and individual-versus-household basis are unspecified."
+Daily_Commute_km,Predictor,Numeric; km/day,Recorded daily commuting distance.,5.0 to 98.7,5.0 to 103.9,One-way versus round-trip distance is unspecified.
+Number_of_Cars_Owned,Predictor,Count,Recorded count of cars owned.,1 to 4,1 to 4,Person-versus-household ownership unit is unspecified.
+Charging_Stations_Near_Home,Predictor,Count,Recorded stations near home.,0 to 14,0 to 14,The meaning of 'near' and station-versus-connector counting are unspecified.
+Charging_Stations_Near_Work,Predictor,Count,Recorded stations near work.,0 to 19,0 to 19,The meaning of 'near' and station-versus-connector counting are unspecified.
+Environmental_Concern_Level,Predictor,Coded level,"Recorded environmental-concern code, observed 1–5.",1 to 5,1 to 5,Survey anchors and exact scale direction are not independently verified.
+Gender,Predictor candidate,Nominal category,"Recorded Female, Male, or Other category.","Female, Male, Other","Female, Male, Other",Consider business necessity and subgroup performance before model inclusion.
+City_Type,Predictor,Nominal category,"Recorded Urban, Suburban, or Rural area category.","Rural, Suburban, Urban","Rural, Suburban, Urban",Geographic definitions and country are unspecified.
+Current_Car_Type,Predictor,Nominal category,"Recorded Sedan, SUV, Hatchback, or Truck category.","Hatchback, SUV, Sedan, Truck","Hatchback, SUV, Sedan, Truck","Fuel type, age, make, and whether this is a primary vehicle are unspecified."
+Home_Charging_Possible,Predictor,Binary category,Recorded Yes/No home-charging possibility.,"No, Yes","No, Yes","Installed equipment, capacity, charging speed, and cost are unspecified."
+Subsidy_Available,Predictor,Binary category,Recorded Yes/No subsidy availability.,"No, Yes","No, Yes","Program, jurisdiction, eligibility, and amount are unspecified."
+Range_Anxiety_Level,Predictor,Ordered category,"Recorded Low, Medium, or High range-anxiety category.","High, Low, Medium","High, Low, Medium",Survey definition and category thresholds are unspecified.
+Will_Buy_EV,Target,Binary outcome label,"Supplied No/Yes outcome; cleaned mapping is No=0, Yes=1.","No, Yes",Not present,No verified transaction information or prediction time horizon is supplied.

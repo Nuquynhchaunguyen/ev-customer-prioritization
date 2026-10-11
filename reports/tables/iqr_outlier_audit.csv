@@ -1,0 +1,8 @@
+Feature,Q1,Q3,Lower IQR fence,Upper IQR fence,Flagged train records,Flagged share (%),Decision
+Age,36.0,58.0,3.0,91.0,0,0.0,Retain; statistical flag alone does not establish an error
+Annual_Income_USD,67376.0,102753.0,14310.5,155818.5,3678,0.5500512214636627,Retain; statistical flag alone does not establish an error
+Daily_Commute_km,17.2,47.4,-28.099999999999998,92.69999999999999,41,0.006131620467648225,Retain; statistical flag alone does not establish an error
+Number_of_Cars_Owned,1.0,2.0,-0.5,3.5,13489,2.0173031338562657,Retain; statistical flag alone does not establish an error
+Charging_Stations_Near_Home,2.0,7.0,-5.5,14.5,0,0.0,Retain; statistical flag alone does not establish an error
+Charging_Stations_Near_Work,3.0,10.0,-7.5,20.5,0,0.0,Retain; statistical flag alone does not establish an error
+Environmental_Concern_Level,2.0,4.0,-1.0,7.0,0,0.0,Retain; statistical flag alone does not establish an error

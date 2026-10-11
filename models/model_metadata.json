@@ -1,0 +1,253 @@
+{
+  "schema_version": "1.0",
+  "selected_model": "Logistic Regression",
+  "trained_at_utc": "2026-10-11T00:25:46.604045+00:00",
+  "seed": 42,
+  "primary_contact_fraction": 0.1,
+  "contact_fractions": [
+    0.01,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "selection_rule": "Validation lift at 10% capacity, then ROC-AUC, then simpler model",
+  "final_fit": "Train + validation only (85%). Holdout excluded from fitting.",
+  "evaluation_scope": "Internal evaluation of synthetic Will_Buy_EV labels. Full-data descriptive EDA preceded splitting.",
+  "feature_columns": [
+    "Age",
+    "Annual_Income_USD",
+    "Daily_Commute_km",
+    "Number_of_Cars_Owned",
+    "Charging_Stations_Near_Home",
+    "Charging_Stations_Near_Work",
+    "Environmental_Concern_Level",
+    "Gender",
+    "City_Type",
+    "Current_Car_Type",
+    "Home_Charging_Possible",
+    "Subsidy_Available",
+    "Range_Anxiety_Level"
+  ],
+  "numeric_features": [
+    "Age",
+    "Annual_Income_USD",
+    "Daily_Commute_km",
+    "Number_of_Cars_Owned",
+    "Charging_Stations_Near_Home",
+    "Charging_Stations_Near_Work"
+  ],
+  "categorical_features": [
+    "Environmental_Concern_Level",
+    "Gender",
+    "City_Type",
+    "Current_Car_Type",
+    "Home_Charging_Possible",
+    "Subsidy_Available",
+    "Range_Anxiety_Level"
+  ],
+  "id_used_by_model": false,
+  "target_mapping": {
+    "No": 0,
+    "Yes": 1
+  },
+  "training_ranges": {
+    "Age": {
+      "min": 25.0,
+      "max": 69.0
+    },
+    "Annual_Income_USD": {
+      "min": 30000.0,
+      "max": 188549.0
+    },
+    "Daily_Commute_km": {
+      "min": 5.0,
+      "max": 98.7
+    },
+    "Number_of_Cars_Owned": {
+      "min": 1.0,
+      "max": 4.0
+    },
+    "Charging_Stations_Near_Home": {
+      "min": 0.0,
+      "max": 14.0
+    },
+    "Charging_Stations_Near_Work": {
+      "min": 0.0,
+      "max": 19.0
+    }
+  },
+  "split_counts": {
+    "train": 468065,
+    "validation": 100300,
+    "holdout": 100300
+  },
+  "validation_metrics": [
+    {
+      "model": "Dummy baseline",
+      "split": "validation",
+      "n": 100300,
+      "yes_rate": 0.17464606181455633,
+      "roc_auc": 0.5,
+      "average_precision": 0.17464606181455633,
+      "brier_score": 0.14414481490951642,
+      "accuracy_at_05": 0.8253539381854437,
+      "precision_at_05": 0.0,
+      "recall_at_05": 0.0,
+      "primary_k": 10030,
+      "precision_at_k": 0.17686939182452643,
+      "recall_at_k": 0.1012730490380773,
+      "lift_at_k": 1.012730490380773
+    },
+    {
+      "model": "Logistic Regression",
+      "split": "validation",
+      "n": 100300,
+      "yes_rate": 0.17464606181455633,
+      "roc_auc": 0.938228370485799,
+      "average_precision": 0.7410273717464039,
+      "brier_score": 0.07347085773984617,
+      "accuracy_at_05": 0.8956331006979062,
+      "precision_at_05": 0.7168255921254999,
+      "recall_at_05": 0.66518239424559,
+      "primary_k": 10030,
+      "precision_at_k": 0.7910269192422732,
+      "recall_at_k": 0.45293143803162644,
+      "lift_at_k": 4.529314380316264
+    },
+    {
+      "model": "Decision Tree",
+      "split": "validation",
+      "n": 100300,
+      "yes_rate": 0.17464606181455633,
+      "roc_auc": 0.9366586407434494,
+      "average_precision": 0.7227483852706267,
+      "brier_score": 0.07347201843772146,
+      "accuracy_at_05": 0.8967198404785643,
+      "precision_at_05": 0.7377125398512221,
+      "recall_at_05": 0.6340697608037906,
+      "primary_k": 10030,
+      "precision_at_k": 0.7876370887337986,
+      "recall_at_k": 0.45099046640406465,
+      "lift_at_k": 4.509904664040646
+    }
+  ],
+  "holdout_metrics": {
+    "model": "Logistic Regression",
+    "split": "holdout",
+    "n": 100300,
+    "yes_rate": 0.17464606181455633,
+    "roc_auc": 0.9388719831232148,
+    "average_precision": 0.7406824325810817,
+    "brier_score": 0.07339958762372373,
+    "accuracy_at_05": 0.8937387836490528,
+    "precision_at_05": 0.7134765017117958,
+    "recall_at_05": 0.6543357880915682,
+    "primary_k": 10030,
+    "precision_at_k": 0.7878364905284148,
+    "recall_at_k": 0.4511046412056859,
+    "lift_at_k": 4.511046412056859
+  },
+  "holdout_ranking": [
+    {
+      "model": "Logistic Regression",
+      "split": "holdout",
+      "contact_fraction": 0.01,
+      "k": 1003,
+      "precision_at_k": 0.901296111665005,
+      "recall_at_k": 0.051607010332819545,
+      "lift_at_k": 5.1607010332819545,
+      "expected_random_precision": 0.17464606181455633,
+      "expected_random_lift": 1.0
+    },
+    {
+      "model": "Logistic Regression",
+      "split": "holdout",
+      "contact_fraction": 0.05,
+      "k": 5015,
+      "precision_at_k": 0.8466600199401795,
+      "recall_at_k": 0.24239310384198207,
+      "lift_at_k": 4.847862076839641,
+      "expected_random_precision": 0.17464606181455633,
+      "expected_random_lift": 1.0
+    },
+    {
+      "model": "Logistic Regression",
+      "split": "holdout",
+      "contact_fraction": 0.1,
+      "k": 10030,
+      "precision_at_k": 0.7878364905284148,
+      "recall_at_k": 0.4511046412056859,
+      "lift_at_k": 4.511046412056859,
+      "expected_random_precision": 0.17464606181455633,
+      "expected_random_lift": 1.0
+    },
+    {
+      "model": "Logistic Regression",
+      "split": "holdout",
+      "contact_fraction": 0.2,
+      "k": 20060,
+      "precision_at_k": 0.661864406779661,
+      "recall_at_k": 0.7579494205628817,
+      "lift_at_k": 3.7897471028144087,
+      "expected_random_precision": 0.17464606181455633,
+      "expected_random_lift": 1.0
+    }
+  ],
+  "model_parameters": {
+    "Dummy baseline": {
+      "constant": null,
+      "random_state": null,
+      "strategy": "prior"
+    },
+    "Logistic Regression": {
+      "C": 1.0,
+      "class_weight": null,
+      "dual": false,
+      "fit_intercept": true,
+      "intercept_scaling": 1,
+      "l1_ratio": 0.0,
+      "max_iter": 1000,
+      "n_jobs": null,
+      "penalty": "deprecated",
+      "random_state": 42,
+      "solver": "lbfgs",
+      "tol": 0.0001,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "Decision Tree": {
+      "ccp_alpha": 0.0,
+      "class_weight": null,
+      "criterion": "gini",
+      "max_depth": 6,
+      "max_features": null,
+      "max_leaf_nodes": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 200,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "monotonic_cst": null,
+      "random_state": 42,
+      "splitter": "best"
+    }
+  },
+  "versions": {
+    "scikit-learn": "1.9.1",
+    "pandas": "2.2.3",
+    "numpy": "2.3.5",
+    "joblib": "1.6.0",
+    "streamlit": "1.65.0"
+  },
+  "python_version": "3.13.9",
+  "source_sha256": {
+    "train_clean.csv": "43d7a8a74a8c857abec14fb7852a7c0cce19b502ec4ac0df194d3cf73a44d150",
+    "train.csv": "eae9eaa4e6378df405e755f853771d7e26d212bd93258349fc797b771021946a"
+  },
+  "tie_rule": "Descending probability. Tied scores use SHA256(seed=42, id), independent of upload row order.",
+  "limitations": [
+    "Synthetic profiles and supplied labels do not validate real customer purchases or revenue.",
+    "Purchase timeframe, environmental concern survey anchors, and charging radius remain unknown.",
+    "One internal split cannot establish generalization to a new customer population.",
+    "No causal conclusions follow from predictor associations or model parameters."
+  ]
+}

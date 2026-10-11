@@ -1,0 +1,8 @@
+Dataset,Action,Affected cells,Rows removed,Reason
+train,Check/strip categorical boundary whitespace,0,0,Keep category labels consistent; none required value correction in this snapshot
+train,Lossless integer storage: Annual_Income_USD,668665,0,Storage representation changes; observed numeric values remain identical
+train,Lossless integer storage: Environmental_Concern_Level,668665,0,Storage representation changes; observed numeric values remain identical
+test,Check/strip categorical boundary whitespace,0,0,Keep category labels consistent; none required value correction in this snapshot
+test,Lossless integer storage: Annual_Income_USD,286571,0,Storage representation changes; observed numeric values remain identical
+test,Lossless integer storage: Environmental_Concern_Level,286571,0,Storage representation changes; observed numeric values remain identical
+train,Target coding: No=0; Yes=1,668665,0,Explicit reversible target representation for later classification

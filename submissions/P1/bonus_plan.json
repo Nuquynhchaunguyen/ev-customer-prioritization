@@ -1,0 +1,42 @@
+{
+  "status": "planned_not_implemented",
+  "target_bonus_points": 15,
+  "award_authority": "instructor; credit depends on working reproducible rubric evidence",
+  "implementation_stage": "P2 and Final Project Delivery",
+  "extensions": [
+    {
+      "name": "FastAPI",
+      "maximum_points": 5,
+      "planned_behavior": "batch scoring through the same saved fitted preprocessing and model",
+      "acceptance_evidence": [
+        "documented request/response schema",
+        "valid request returns ranked useful result",
+        "invalid input produces clear errors",
+        "independent run and scoring parity test"
+      ]
+    },
+    {
+      "name": "Docker",
+      "maximum_points": 5,
+      "planned_behavior": "versioned service image with pinned dependencies and saved fitted artifact",
+      "acceptance_evidence": [
+        "clean image builds",
+        "service starts from image",
+        "sample scores match saved model",
+        "build/run/test commands in README"
+      ]
+    },
+    {
+      "name": "MLOps",
+      "maximum_points": 5,
+      "planned_behavior": "input-quality and drift monitoring against a versioned training reference",
+      "acceptance_evidence": [
+        "saved reference and model version",
+        "shifted-input reproducible demonstration",
+        "aggregate alerts with investigation guidance",
+        "privacy-conscious run evidence",
+        "quality monitoring requires future verified outcomes"
+      ]
+    }
+  ]
+}

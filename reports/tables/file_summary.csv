@@ -1,0 +1,4 @@
+File,Records,Columns,Observed outcome available,First id,Last id,Memory (MB)
+train.csv,668665,15,True,0,668664,276.4721574783325
+test.csv,286571,14,False,668665,955235,104.50265502929688
+sample_submission.csv,286571,2,False,668665,955235,4.372852325439453
