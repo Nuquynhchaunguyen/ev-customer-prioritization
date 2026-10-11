@@ -49,7 +49,6 @@ ev-customer-prioritization/
 ├── presentations/                              Proposal slides
 ├── submissions/P1/
 │   ├── EV_Customer_Prioritization_P1.pdf        Project proposal and initial evidence
-│   ├── README.md                               Course review notes
 │   └── extension_plan.json                     Planned API, container, and monitoring work
 └── tests/                                      Input, model, ranking, and app checks
 ```
@@ -483,8 +482,7 @@ model separation, input validation, ranking, and profile attachment. Then start
 the app in step 5 and confirm its shortlist contains exactly K rows.
 
 For a replication record, note the commit, operating system, Python version,
-commands run, and actual outcome. The [course review notes](submissions/P1/README.md)
-cover the separate class handoff process.
+commands run, and actual outcome.
 
 ## Update an existing environment
 
