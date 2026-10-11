@@ -7872,7 +7872,7 @@ results. A genuinely external labeled dataset would be a stronger future test.</
 <span class="p">)</span>
 
 <span class="n">SEED</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="n">FIGURES</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"modeling"</span> <span class="o">/</span> <span class="s2">"figures"</span>
+<span class="n">FIGURES</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"docs"</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"modeling"</span> <span class="o">/</span> <span class="s2">"figures"</span>
 <span class="n">FIGURES</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"figure.dpi"</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s2">"font.size"</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">"axes.spines.top"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"axes.spines.right"</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
 <span class="n">COLORS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Dummy baseline"</span><span class="p">:</span> <span class="s2">"#87949A"</span><span class="p">,</span> <span class="s2">"Logistic Regression"</span><span class="p">:</span> <span class="s2">"#187A89"</span><span class="p">,</span> <span class="s2">"Decision Tree"</span><span class="p">:</span> <span class="s2">"#BC643A"</span><span class="p">}</span>
@@ -9268,10 +9268,10 @@ files: Python pickle/joblib files are not safe to load from arbitrary uploads.</
     <span class="s2">"models/model_bundle.joblib"</span><span class="p">,</span>
     <span class="s2">"models/model_metadata.json"</span><span class="p">,</span>
     <span class="s2">"data/splits/split_membership.csv"</span><span class="p">,</span>
-    <span class="s2">"reports/modeling/validation_metrics.csv"</span><span class="p">,</span>
-    <span class="s2">"reports/modeling/validation_ranking.csv"</span><span class="p">,</span>
-    <span class="s2">"reports/modeling/holdout_metrics.csv"</span><span class="p">,</span>
-    <span class="s2">"reports/modeling/holdout_ranking.csv"</span><span class="p">,</span>
+    <span class="s2">"docs/reports/modeling/validation_metrics.csv"</span><span class="p">,</span>
+    <span class="s2">"docs/reports/modeling/validation_ranking.csv"</span><span class="p">,</span>
+    <span class="s2">"docs/reports/modeling/holdout_metrics.csv"</span><span class="p">,</span>
+    <span class="s2">"docs/reports/modeling/holdout_ranking.csv"</span><span class="p">,</span>
     <span class="s2">"data/demo/customer_profiles_demo.csv"</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="n">show_table</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"Artifact"</span><span class="p">:</span> <span class="n">artifact_paths</span><span class="p">,</span> <span class="s2">"Exists"</span><span class="p">:</span> <span class="p">[(</span><span class="n">ROOT</span> <span class="o">/</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">artifact_paths</span><span class="p">]}))</span>
@@ -9338,22 +9338,22 @@ files: Python pickle/joblib files are not safe to load from arbitrary uploads.</
 </tr>
 <tr>
 <th>3</th>
-<td>reports/modeling/validation_metrics.csv</td>
+<td>docs/reports/modeling/validation_metrics.csv</td>
 <td>True</td>
 </tr>
 <tr>
 <th>4</th>
-<td>reports/modeling/validation_ranking.csv</td>
+<td>docs/reports/modeling/validation_ranking.csv</td>
 <td>True</td>
 </tr>
 <tr>
 <th>5</th>
-<td>reports/modeling/holdout_metrics.csv</td>
+<td>docs/reports/modeling/holdout_metrics.csv</td>
 <td>True</td>
 </tr>
 <tr>
 <th>6</th>
-<td>reports/modeling/holdout_ranking.csv</td>
+<td>docs/reports/modeling/holdout_ranking.csv</td>
 <td>True</td>
 </tr>
 <tr>

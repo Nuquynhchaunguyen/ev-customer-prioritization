@@ -7896,8 +7896,8 @@ training folds in the later modeling notebook.</p>
 
 <span class="n">ROOT</span> <span class="o">=</span> <span class="n">find_project_root</span><span class="p">()</span>
 <span class="n">PROCESSED</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"processed"</span>
-<span class="n">TABLES</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"tables"</span>
-<span class="n">FIGURES</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"figures"</span>
+<span class="n">TABLES</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"docs"</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"tables"</span>
+<span class="n">FIGURES</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"docs"</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"figures"</span>
 <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="p">[</span><span class="n">PROCESSED</span><span class="p">,</span> <span class="n">TABLES</span><span class="p">,</span> <span class="n">FIGURES</span><span class="p">]:</span>
     <span class="n">folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -10916,7 +10916,7 @@ hash. The manifest records the input snapshot and analysis-library versions.</p>
     <span class="s2">"python"</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
     <span class="s2">"library_versions"</span><span class="p">:</span> <span class="n">versions</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="p">(</span><span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"data_manifest.json"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">manifest</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="p">(</span><span class="n">ROOT</span> <span class="o">/</span> <span class="s2">"docs"</span> <span class="o">/</span> <span class="s2">"reports"</span> <span class="o">/</span> <span class="s2">"data_manifest.json"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">manifest</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 
 <span class="n">verification</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
     <span class="p">{</span><span class="s2">"Check"</span><span class="p">:</span> <span class="s2">"Raw files unchanged"</span><span class="p">,</span> <span class="s2">"Result"</span><span class="p">:</span> <span class="s2">"Confirmed by SHA-256"</span><span class="p">},</span>

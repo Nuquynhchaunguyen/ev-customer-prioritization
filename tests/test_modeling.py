@@ -167,6 +167,13 @@ class ModelingIsolationTests(unittest.TestCase):
                 validation_predictions, "Logistic Regression", final,
                 holdout_metrics, holdout_ranking, holdout_predictions,
             )
+            report_dir = root / "docs/reports/modeling"
+            for filename in (
+                "validation_metrics.csv", "validation_ranking.csv", "validation_predictions.csv",
+                "holdout_metrics.csv", "holdout_ranking.csv", "holdout_predictions.csv",
+                "split_summary.csv", "holdout_confusion_matrix.csv", "methodology.json",
+            ):
+                self.assertTrue((report_dir / filename).is_file(), filename)
             loaded = load_bundle(root / "models/model_bundle.joblib")
             scored, _, _ = score_profiles(splits["holdout"].drop(columns=TARGET_COLUMN), loaded, 10)
             actual_by_id = scored.set_index("id")["yes_probability"]

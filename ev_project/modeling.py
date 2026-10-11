@@ -49,7 +49,7 @@ def load_training_data(root: Path) -> pd.DataFrame:
     """Read conservative EDA output and apply the shared input normalization."""
     path = Path(root) / 'data/processed/train_clean.csv'
     if not path.is_file():
-        raise FileNotFoundError('Run scripts/run_eda.py first to create data/processed/train_clean.csv.')
+        raise FileNotFoundError('Run ev_project/run_eda.py first to create data/processed/train_clean.csv.')
     data = pd.read_csv(path, dtype={ID_COLUMN: 'string'})
     if TARGET_COLUMN not in data:
         raise ValueError('The labeled training file must contain Will_Buy_EV.')
@@ -221,7 +221,7 @@ def save_training_artifacts(root: Path, splits, candidates, validation_metrics,
                             final_pipeline, holdout_metrics, holdout_ranking, holdout_predictions):
     root = Path(root)
     models = root / 'models'
-    reports = root / 'reports/modeling'
+    reports = root / 'docs/reports/modeling'
     splits_dir = root / 'data/splits'
     demo_dir = root / 'data/demo'
     for directory in [models, reports / 'figures', splits_dir, demo_dir]:

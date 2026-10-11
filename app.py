@@ -104,7 +104,7 @@ def main() -> None:
         st.info("The model is not ready yet. Train it once before ranking profiles.")
         with st.expander("Project setup"):
             st.write("From this project folder, using the project Python environment:")
-            st.code("python scripts/train_models.py", language="bash")
+            st.code("python ev_project/train_models.py", language="bash")
             st.write("Then refresh this page. Setup instructions are also in README.md.")
         return
 

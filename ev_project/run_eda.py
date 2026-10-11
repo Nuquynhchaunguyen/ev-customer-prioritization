@@ -47,10 +47,10 @@ def main():
         template_name="lab", require_js_url="", mathjax_url=""
     ).from_notebook_node(notebook)
     body = re.sub(r'<script\b[^>]*\bsrc=""[^>]*>.*?</script>', '', body, flags=re.S)
-    html_path = root / "reports" / "01_data_understanding_and_cleaning.html"
+    html_path = root / "docs" / "reports" / "01_data_understanding_and_cleaning.html"
     html_path.parent.mkdir(parents=True, exist_ok=True)
     html_path.write_text(body, encoding="utf-8")
-    print("Saved executed notebook and reports/01_data_understanding_and_cleaning.html.")
+    print("Saved executed notebook and docs/reports/01_data_understanding_and_cleaning.html.")
 
 if __name__ == "__main__":
     main()

@@ -12,7 +12,11 @@ access_token
 /sample_submission.csv
 /data/processed/*.csv
 /data/splits/*.csv
-/reports/modeling/*predictions.csv
+/docs/reports/modeling/*predictions.csv
 
 # Student validation forms are local-only; submit separately to the professor.
 **/Assignment_Validation*.pdf
+
+# Editor and Streamlit preferences are local; setup uses explicit venv commands.
+.vscode/
+.streamlit/

@@ -52,10 +52,10 @@ def main():
     nbformat.write(notebook, notebook_path)
     body, _ = HTMLExporter(template_name="lab", require_js_url="", mathjax_url="").from_notebook_node(notebook)
     body = re.sub(r'<script\b[^>]*\bsrc=""[^>]*>.*?</script>', "", body, flags=re.S)
-    html_path = root / "reports" / "02_modeling_and_prioritization.html"
+    html_path = root / "docs" / "reports" / "02_modeling_and_prioritization.html"
     html_path.parent.mkdir(parents=True, exist_ok=True)
     html_path.write_text(body, encoding="utf-8")
-    print("Saved executed notebook and reports/02_modeling_and_prioritization.html.", flush=True)
+    print("Saved executed notebook and docs/reports/02_modeling_and_prioritization.html.", flush=True)
 
 
 if __name__ == "__main__":

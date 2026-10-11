@@ -14,41 +14,42 @@ not a guaranteed real purchase, sales uplift, or revenue forecast.
 
 ## Project map
 
-Use this map to find the files you need. The folders separate the project into
-setup, data analysis, reusable code, saved results, and verification.
+This map matches the files and folders shown on the GitHub home page.
+Start with `README.md`; each folder below has one clear purpose.
 
 ```text
 ev-customer-prioritization/
-├── README.md           Start here: project overview and Mac/Windows run steps
-├── requirements.txt    One list of pinned packages for analysis, modeling, and the app
-├── .gitignore          Keeps raw data, API keys, and local environments out of GitHub
-├── app.py              Streamlit interface: upload profiles, choose K, export a shortlist
-├── scripts/            Terminal commands to download data and run the notebooks
-├── notebooks/          01: understand and clean data; 02: compare models and evaluate ranking
-├── ev_project/         Shared Python code for validation, preprocessing, training, and scoring
-├── data/demo/          Included customer profiles and a CSV template for trying the app
-├── models/             Fitted pipeline bundle and readable training/evaluation metadata
-├── reports/            Saved HTML reports, charts, and result tables
-├── tests/              Automated checks for inputs, model saving, ranking, and the app
-├── presentations/      Slides explaining the project
-└── submissions/P1/     Proposal PDF and plan for the next development steps
+├── README.md           Project overview and step-by-step Mac/Windows run guide
+├── requirements.txt    Pinned packages for analysis, modeling, and the app
+├── .gitignore          Excludes raw data, API keys, and local settings/environments
+├── app.py              Streamlit: upload customer profiles, choose K, export a shortlist
+├── data/               Included demo/template; generated cleaned data and split membership
+├── ev_project/         Download command, notebook runners, preprocessing, training, and scoring
+├── models/             Fitted pipeline bundle and training/evaluation metadata
+├── notebooks/          01: data understanding and cleaning; 02: modeling and prioritization
+├── docs/               Reports and evidence, proposal slides, and P1 submission materials
+└── tests/              Automated input, model, ranking, and application checks
 ```
 
 **How these pieces work together:**
 
 | Step | Entry point | Result |
 |---|---|---|
-| Download the full dataset | `scripts/download_data.py` | Kaggle API saves `train.csv`, `test.csv`, and `sample_submission.csv` in the project folder. |
-| Understand and clean data | `scripts/run_eda.py` runs notebook 01 | Creates cleaned data in `data/processed/` and the EDA report in `reports/`. |
-| Compare models and evaluate ranking | `scripts/run_modeling.py` runs notebook 02 | Saves the selected preprocessing-and-model pipeline in `models/model_bundle.joblib`, evaluation results in `reports/modeling/`, and split membership in `data/splits/`. |
+| Download the full dataset | `ev_project/download_data.py` | Kaggle API saves `train.csv`, `test.csv`, and `sample_submission.csv` in the project folder. |
+| Understand and clean data | `ev_project/run_eda.py` runs notebook 01 | Creates cleaned data in `data/processed/` and the EDA report in `docs/reports/`. |
+| Compare models and evaluate ranking | `ev_project/run_modeling.py` runs notebook 02 | Saves the selected preprocessing-and-model pipeline in `models/model_bundle.joblib`, evaluation results in `docs/reports/modeling/`, and split membership in `data/splits/`. |
 | Use the shortlist tool | `app.py` | Loads that saved pipeline, scores customer profiles, and exports the top K with customer details. |
 
 `ev_project/` is the reusable source-code package, serving the `src/` role in the
 [course architecture example](https://github.com/shylasolis/machine-learning-pathway/blob/main/syllabus.pdf).
-The three raw CSVs, `.venv-msba265-ev-purchases/`, and generated data are created
-locally. Editor and app settings are in `.vscode/` and `.streamlit/`.
-FastAPI, Docker, and monitoring are planned extensions; their implementation and
-verification are described in the [extension plan](submissions/P1/extension_plan.json).
+Within `docs/`, use `reports/` for analysis evidence, `presentations/` for slides,
+and `P1/` for the proposal and extension plan.
+The raw CSVs, `.venv-msba265-ev-purchases/`, and generated data are created locally.
+VS Code and Streamlit settings are optional local preferences; the shared project
+runs using the commands below without those folders. The app validates uploads
+against its 50 MB limit.
+FastAPI, Docker, and monitoring remain planned extensions in the
+[extension plan](docs/P1/extension_plan.json).
 
 ## Project progress
 
@@ -71,15 +72,17 @@ The [modeling notebook](notebooks/02_modeling_and_prioritization.ipynb) explains
 the comparison, selection rule, and limits.
 
 Next work includes incorporating feedback, examining subgroup performance and
-predictor choices, and developing the [planned service and monitoring extensions](submissions/P1/extension_plan.json).
+predictor choices, and developing the [planned service and monitoring extensions](docs/P1/extension_plan.json).
 
 ## Reading guide
 
-- [Project proposal](submissions/P1/EV_Customer_Prioritization_P1.pdf): the dealership question, intended use, dataset, topic infographic, initial evidence, and next steps.
+- [Project proposal](docs/P1/EV_Customer_Prioritization_P1.pdf): the dealership question, intended use, dataset, topic infographic, initial evidence, and next steps.
 - [Data understanding notebook](notebooks/01_data_understanding_and_cleaning.ipynb): what the fields mean, how quality was checked, and what the initial exploration shows.
 - [Modeling notebook](notebooks/02_modeling_and_prioritization.ipynb): how data were split, how the three candidates compare, and how the selected model creates a top-K list.
-- [EDA HTML report](reports/01_data_understanding_and_cleaning.html) and [modeling HTML report](reports/02_modeling_and_prioritization.html): reading copies with saved charts and tables.
-- [Data dictionary](reports/tables/data_dictionary.csv) and [model metadata](models/model_metadata.json): field definitions, interpretation limits, and evaluation records.
+- [EDA HTML report](docs/reports/01_data_understanding_and_cleaning.html) and [modeling HTML report](docs/reports/02_modeling_and_prioritization.html): reading copies with saved charts and tables.
+- [Data dictionary](docs/reports/tables/data_dictionary.csv) and [model metadata](models/model_metadata.json): field definitions, interpretation limits, and evaluation records.
+
+Earlier slide notes refer to `reports/`; those source tables are now in `docs/reports/`.
 
 The notebooks' saved outputs can be read on GitHub without running Python. To
 read an HTML report, download the project and open the report in a browser on
@@ -100,7 +103,7 @@ Choose whether to read the existing results, try the demo, or run the analysis y
 | What you are downloading | Where it comes from | How to obtain it |
 |---|---|---|
 | Code, notebooks, reports, saved model, and small demo | GitHub | Git clone or Download ZIP in step 1 |
-| Full `train.csv`, `test.csv`, and `sample_submission.csv` | The approved Kaggle competition | Run `scripts/download_data.py` with your own Kaggle API credentials in step 6 |
+| Full `train.csv`, `test.csv`, and `sample_submission.csv` | The approved Kaggle competition | Run `ev_project/download_data.py` with your own Kaggle API credentials in step 6 |
 
 The GitHub ZIP does not supply the full competition dataset. Full analysis uses
 the Kaggle API download in step 6, then the notebooks in step 7.
@@ -187,7 +190,7 @@ the GitHub download; the supplied model and demo are included.
    then open it.
 2. Choose **File > Open Folder**. On Mac, **File > Open** may be the menu shown.
 3. Select the extracted or cloned project folder that contains `app.py` and
-   `README.md`. Do not select just `notebooks`, `scripts`, or `models`.
+   `README.md`. Do not select just `notebooks`, `ev_project`, or `models`.
 4. Choose **Terminal > New Terminal** from VS Code's top menu. A panel opens
    near the bottom where you will type the commands.
 5. **Windows:** choose **PowerShell** from the arrow next to the terminal's **+**
@@ -207,7 +210,7 @@ dir
 ```
 
 **Check:** the list contains `app.py`, `README.md`, `requirements.txt`,
-and `scripts`. If it does not, reopen the correct folder before continuing.
+and `ev_project`. If it does not, reopen the correct folder before continuing.
 
 For the rest of this guide, type commands in this terminal. Copy only the text
 inside a command box, run one line at a time, and wait until the prompt returns
@@ -322,7 +325,7 @@ In the browser:
 To use another file, select **Upload a CSV**. You can upload
 `data/demo/customer_profiles_demo.csv` or the full `test.csv` after step 6.
 Use one profile per row, a unique `id`, and the same 13 predictor columns and
-supported categories as the [data dictionary](reports/tables/data_dictionary.csv).
+supported categories as the [data dictionary](docs/reports/tables/data_dictionary.csv).
 `sample_submission.csv` contains prediction-format columns and cannot be used
 as a customer-profile input. The app accepts up to 50 MB and 300,000 profiles.
 
@@ -360,13 +363,13 @@ computer, skip the download and continue to step 7.
 **Mac**
 
 ```bash
-./.venv-msba265-ev-purchases/bin/python scripts/download_data.py
+./.venv-msba265-ev-purchases/bin/python ev_project/download_data.py
 ```
 
 **Windows - PowerShell**
 
 ```powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/download_data.py
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" ev_project/download_data.py
 ```
 
 **Check:** the terminal says **Downloaded train.csv, test.csv, and
@@ -398,31 +401,31 @@ Modeling reads the cleaned training file created by EDA.
 **Mac**
 
 ```bash
-./.venv-msba265-ev-purchases/bin/python scripts/run_eda.py
-./.venv-msba265-ev-purchases/bin/python scripts/run_modeling.py
+./.venv-msba265-ev-purchases/bin/python ev_project/run_eda.py
+./.venv-msba265-ev-purchases/bin/python ev_project/run_modeling.py
 ```
 
 **Windows - PowerShell**
 
 ```powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_eda.py
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" scripts/run_modeling.py
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" ev_project/run_eda.py
+& ".\.venv-msba265-ev-purchases\Scripts\python.exe" ev_project/run_modeling.py
 ```
 
 **Check after EDA:** wait for **Saved executed notebook and
-reports/01_data_understanding_and_cleaning.html.** Look for:
+docs/reports/01_data_understanding_and_cleaning.html.** Look for:
 
 - `data/processed/train_clean.csv` and `test_clean.csv`;
-- eight charts in `reports/figures`;
-- dataset tables in `reports/tables`;
+- eight charts in `docs/reports/figures`;
+- dataset tables in `docs/reports/tables`;
 - 668,665 labeled training rows and 286,571 unlabeled test rows;
 - zero rows removed and target mapping No=0, Yes=1 for training only.
 
 **Check after modeling:** wait for **Saved executed notebook and
-reports/02_modeling_and_prioritization.html.** Look for:
+docs/reports/02_modeling_and_prioritization.html.** Look for:
 
 - updated saved models and `models/model_metadata.json`;
-- validation and holdout tables in `reports/modeling`;
+- validation and holdout tables in `docs/reports/modeling`;
 - 468,065 training, 100,300 validation, and 100,300 holdout profiles;
 - Logistic Regression selected by the validation rule;
 - holdout Precision@K about 78.78% and Lift@K about 4.51 at K=10,030.
@@ -703,7 +706,7 @@ ranking metrics, and deployment limits before submission.
 | Files are still inside a ZIP on Windows | Right-click the ZIP and choose Extract All. Open the extracted project folder in VS Code. |
 | `git` is not found | ZIP users do not need Git. For a peer clone, install Git and reopen the terminal, then repeat the Git option in step 1. |
 | `python3.13` or `py` is not found | Complete step 3 and reopen VS Code. On Windows, use the documented `python` fallback only if its version is 3.12/3.13. |
-| `requirements.txt` or `scripts` is not found | Repeat step 2. The open folder must contain `app.py`, `README.md`, and `requirements.txt`. |
+| `requirements.txt` or `ev_project` is not found | Repeat step 2. The open folder must contain `app.py`, `README.md`, and `requirements.txt`. |
 | The named environment's Python path does not exist | Create the environment with step 4. Mac uses `bin/python`; Windows uses `Scripts\python.exe`. |
 | `No module named ...` or a package version error | Install `requirements.txt` using the named environment, or follow Update an existing environment. Restart any notebook kernel afterward. |
 | Installation cannot build/download a package | Check Python 3.12/3.13 and internet access. Keep the full error. If pip is outdated, run the same environment's Python with `-m pip install --upgrade pip`, then retry step 4. |
