@@ -1,0 +1,31 @@
+{
+  "checked_at_utc": "2026-10-27T22:32:30.745608+00:00",
+  "scope": "Read-only score/reload verification of the current saved application artifact; no fitting or model changes.",
+  "input_file": "data/demo/customer_profiles_demo.csv",
+  "input_sha256": "dd20cb8b59549b2c76d27c36598fd8726456bcfff2932eb74f18c6f0d4f1090b",
+  "profile_count": 500,
+  "unique_input_ids": 500,
+  "ranked_count": 500,
+  "unique_ranked_ids": 500,
+  "contact_capacity_k": 25,
+  "shortlist_count": 25,
+  "shortlist_equals_first_k_ranked_rows": true,
+  "all_probabilities_finite": true,
+  "all_probabilities_between_zero_and_one": true,
+  "minimum_yes_probability": 3.994739224210266e-06,
+  "maximum_yes_probability": 0.9308061534958222,
+  "identical_ranked_ids_after_reload": true,
+  "identical_scores_after_reload": true,
+  "maximum_absolute_score_difference_after_reload": 0.0,
+  "identical_shortlist_after_reload": true,
+  "ranked_output_sha256": "f40a0cc2b8f8b3718daaadd194b2bbcf6e2007480516da7d26c788f6f3d225fc",
+  "warnings": [],
+  "saved_classifier_iterations": [
+    47
+  ],
+  "application_artifact_sha256": {
+    "model_bundle.joblib": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+    "model_metadata.json": "8698a94faae0fd099b31ede900bde69ed96b64e9e6a21ceb6544243e7bfab957"
+  },
+  "application_artifacts_byte_identical": true
+}

@@ -1,0 +1,122 @@
+{
+  "generated_at_utc": "2026-10-27T22:32:48.655817+00:00",
+  "purpose": "Fresh train-only convergence diagnostic; historical application model is not refitted or replaced.",
+  "fit_records": [
+    {
+      "model": "Logistic Regression",
+      "fit_role": "saved_application_model",
+      "classifier": "LogisticRegression",
+      "solver": "lbfgs",
+      "fit_scope": "historical_train_plus_validation_85_percent",
+      "fit_rows": 568365,
+      "elapsed_seconds": null,
+      "actual_iterations": 47,
+      "n_iter_values": [
+        47
+      ],
+      "max_iter": 1000,
+      "tol": 0.0001,
+      "iteration_limit_reached": false,
+      "convergence_warning_observed": null,
+      "fit_status": "saved_artifact_snapshot",
+      "measurement_note": "Original elapsed time and warning observation were not recorded.",
+      "optimizer_termination_note": "Original optimizer termination reason and warning observation were not recorded."
+    },
+    {
+      "model": "Logistic Regression",
+      "fit_role": "fresh_train_only_diagnostic",
+      "classifier": "LogisticRegression",
+      "solver": "lbfgs",
+      "fit_scope": "fresh_diagnostic_train_only_70_percent",
+      "fit_rows": 468065,
+      "elapsed_seconds": 2.7002479580005456,
+      "actual_iterations": 48,
+      "n_iter_values": [
+        48
+      ],
+      "max_iter": 1000,
+      "tol": 0.0001,
+      "iteration_limit_reached": false,
+      "convergence_warning_observed": false,
+      "fit_status": "success",
+      "measurement_note": "Measured for this fit; elapsed time includes preprocessing and any callbacks.",
+      "optimizer_termination_note": "Fit completed without ConvergenceWarning; exact optimizer termination reason is not exposed by the public estimator API."
+    }
+  ],
+  "loss_history": {
+    "file": "lbfgs_loss_history.csv",
+    "rows": 48,
+    "collection_method": "Native public sklearn.callback.FitCallback via LogisticRegression.set_callbacks",
+    "iteration_source": "Completed lbfgs-iter context.task_id + 1; empty task with no fitted_estimator excluded; count checked against n_iter_.",
+    "loss_definition": "Mean unpenalized binary log loss, computed from the native fitted_estimator after each completed L-BFGS iteration.",
+    "training_rows": 468065,
+    "validation_rows": 100300,
+    "holdout_used_for_fit_or_curve": false,
+    "validation_used_for_stopping": false,
+    "callbacks_detached_after_fit": true,
+    "elapsed_includes_callback_scoring": true,
+    "first_training_log_loss": 0.4605620676553563,
+    "final_training_log_loss": 0.23255362709531086,
+    "first_validation_log_loss": 0.4602795960492738,
+    "final_validation_log_loss": 0.23274150708693347
+  },
+  "iteration_interpretation": "max_iter=1000 is an upper cap, not 1000 required iterations. lbfgs uses full-data objective/gradient evaluations; no minibatch size applies.",
+  "termination_interpretation": "The diagnostic fit completed without ConvergenceWarning. The public estimator API does not expose whether the exact optimizer termination criterion was gradient or function-value tolerance; n_iter_ below the cap alone does not establish the reason.",
+  "historical_measurement_limit": "Original elapsed fit time: not recorded. Original warning observation: not recorded. Missing measurements cannot be reconstructed. The original per-iteration loss history is not available; this report's curve comes from a separate train-only diagnostic refit.",
+  "saved_application_measurement_availability": {
+    "elapsed_seconds_recorded": false,
+    "convergence_warning_observation_recorded": false,
+    "historical_loss_history_recorded": false
+  },
+  "settings_unchanged": {
+    "C": 1.0,
+    "class_weight": null,
+    "dual": false,
+    "fit_intercept": true,
+    "intercept_scaling": 1,
+    "l1_ratio": 0.0,
+    "max_iter": 1000,
+    "n_jobs": null,
+    "penalty": "deprecated",
+    "random_state": 42,
+    "solver": "lbfgs",
+    "tol": 0.0001,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "provenance": {
+    "seed": 42,
+    "saved_model_trained_at_utc": "2026-10-11T00:25:46.604045+00:00",
+    "source_sha256": {
+      "train_clean.csv": "43d7a8a74a8c857abec14fb7852a7c0cce19b502ec4ac0df194d3cf73a44d150",
+      "train.csv": "eae9eaa4e6378df405e755f853771d7e26d212bd93258349fc797b771021946a"
+    },
+    "split_membership_sha256": "e7099e9481121643653966a16aa2aaa26928def252e5ad9040d82db2bb1a9150",
+    "ordered_normalized_input_sha256": {
+      "train": "62b55e40cc8735cd651de48508e051f55ebefa030129cfc86844546bf2627276",
+      "validation": "94719ab3cf069aad752f06a9fe85643eb440c4281c88448b9af4e95d5d7002d5"
+    },
+    "application_artifact_sha256": {
+      "model_bundle.joblib": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+      "model_metadata.json": "8698a94faae0fd099b31ede900bde69ed96b64e9e6a21ceb6544243e7bfab957"
+    },
+    "source_code_sha256": {
+      "modeling.py": "2dd9fc80a43483dd7a2df37d7689d755108f49dab7f0f6ecb69956e725f5b4e4",
+      "training_diagnostics.py": "a67e30cbab0cf86245b0e58b42a54c46949091842fd1736a2d6c2585dbe47e79"
+    },
+    "versions": {
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "joblib": "1.6.0"
+    },
+    "python_version": "3.13.9",
+    "application_artifacts_byte_identical": true,
+    "output_sha256": {
+      "lbfgs_loss_history.csv": "141bc8f611d966bc148799b67e49fb43d2d614836ffbce5069d17772fc19ab6c",
+      "training_diagnostics.csv": "d094003a6d34d37c1b5928f6b7865166f72283bff30a9269f052434639e39845",
+      "figures/lbfgs_loss_history.png": "b623c18de4c119184453a9000724239e7041998b5251e2d19b67d36f90722444"
+    }
+  }
+}
