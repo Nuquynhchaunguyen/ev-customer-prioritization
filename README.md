@@ -5,7 +5,7 @@
 Which customer profiles should a dealership prioritize for EV outreach when it
 can contact only **K** people? This project uses the professor-approved Kaggle
 competition dataset for data understanding, model comparison, customer ranking,
-and a local Streamlit application.
+and a local Streamlit application with editable customer conversation guides.
 
 The data contain 668,665 synthetic labeled profiles; about 17.46% have a Yes
 label. The app ranks uploaded profiles using the saved preprocessing-and-model
@@ -22,7 +22,7 @@ ev-customer-prioritization/
 ├── README.md           Project overview and step-by-step Mac/Windows run guide
 ├── requirements.txt    Pinned packages for analysis, modeling, and the app
 ├── .gitignore          Excludes raw data, API keys, and local settings/environments
-├── app.py              Streamlit: upload customer profiles, choose K, export a shortlist
+├── app.py              Streamlit: rank profiles, prepare customer conversations, export results
 ├── data/               Included demo/template; generated cleaned data and split membership
 ├── ev_project/         Download command, notebook runners, preprocessing, training, and scoring
 ├── models/             Fitted pipeline bundle and training/evaluation metadata
@@ -38,12 +38,13 @@ ev-customer-prioritization/
 | Download the full dataset | `ev_project/download_data.py` | Kaggle API saves `train.csv`, `test.csv`, and `sample_submission.csv` in the project folder. |
 | Understand and clean data | `ev_project/run_eda.py` runs notebook 01 | Creates cleaned data in `data/processed/` and the EDA report in `docs/reports/`. |
 | Compare models and evaluate ranking | `ev_project/run_modeling.py` runs notebook 02 | Saves the selected preprocessing-and-model pipeline in `models/model_bundle.joblib`, evaluation results in `docs/reports/modeling/`, and split membership in `data/splits/`. |
-| Use the shortlist tool | `app.py` | Loads that saved pipeline, scores customer profiles, and exports the top K with customer details. |
+| Use the shortlist tool | `app.py` | Loads the saved pipeline, ranks the top K, and exports customer details and editable conversation guides. |
 
 `ev_project/` is the reusable source-code package, serving the `src/` role in the
 [course architecture example](https://github.com/shylasolis/machine-learning-pathway/blob/main/syllabus.pdf).
 Within `docs/`, use `reports/` for analysis evidence, `presentations/` for slides,
-and `P1/` for the proposal and extension plan.
+and `P1/` for the proposal and extension plan. Revised technical paper and
+stakeholder slides are in `docs/P1_edit/`.
 The raw CSVs, `.venv-msba265-ev-purchases/`, and generated data are created locally.
 VS Code and Streamlit settings are optional local preferences; the shared project
 runs using the commands below without those folders. The app validates uploads
@@ -62,7 +63,7 @@ understanding, model evaluation, and a staff-facing prototype.
 | Data understanding and cleaning | Completed | Defines the 13 predictors, checks missing values, duplicates, categories, and numeric ranges, and interprets the initial charts. All source rows and predictor values are preserved. |
 | Model comparison | Completed | Compares Dummy, Logistic Regression, and Decision Tree using fixed training, validation, and holdout splits. Validation selects Logistic Regression. |
 | Saved scoring pipeline | Completed | Saves the fitted preprocessing and model together and reloads that exact pipeline for customer scoring. |
-| Streamlit prototype | Implemented locally | Accepts a CSV, ranks profiles for a chosen K, displays customer context, suggests consultation questions, and exports the shortlist. |
+| Streamlit prototype | Implemented locally | Accepts a CSV, ranks profiles for a chosen K, shows customer details, prepares editable conversation guides, and exports the shortlist and guides. |
 | API, container, and monitoring | Planned | Expose scoring through FastAPI, package the service with Docker, and compare new inputs with a versioned reference to identify changes that need investigation. |
 
 In the internal holdout, the top **10,030 of 100,300 profiles** contain **78.78% Yes
@@ -79,6 +80,7 @@ predictor choices, and developing the [planned service and monitoring extensions
 - [Project proposal](docs/P1/EV_Customer_Prioritization_P1.pdf): the dealership question, intended use, dataset, topic infographic, initial evidence, and next steps.
 - [Data understanding notebook](notebooks/01_data_understanding_and_cleaning.ipynb): what the fields mean, how quality was checked, and what the initial exploration shows.
 - [Modeling notebook](notebooks/02_modeling_and_prioritization.ipynb): how data were split, how the three candidates compare, and how the selected model creates a top-K list.
+- [Revised technical paper](docs/P1_edit/EV_Customer_Prioritization_Technical_Report.pdf) and [stakeholder presentation](docs/P1_edit/EV_Customer_Prioritization_Stakeholder_Presentation.pptx): the technical explanation and business-facing demonstration, including the customer conversation workflow.
 - [EDA HTML report](docs/reports/01_data_understanding_and_cleaning.html) and [modeling HTML report](docs/reports/02_modeling_and_prioritization.html): reading copies with saved charts and tables.
 - [Data dictionary](docs/reports/tables/data_dictionary.csv) and [model metadata](models/model_metadata.json): field definitions, interpretation limits, and evaluation records.
 
@@ -317,9 +319,19 @@ In the browser:
 3. Click **Create shortlist**. You should see the top 50 profiles if K is 50.
 4. Review the ranking and the recorded gender, age, and annual income. Use
    **Customer information to show** to add charging or driving fields.
-5. Under **Prepare a customer conversation**, choose a priority rank to inspect
-   the customer's recorded profile and suggested consultation questions.
-6. Download the contact shortlist and open the CSV. It should contain exactly
+5. Under **Prepare a customer conversation**, choose a priority rank. Read the
+   recorded profile and the five-part **Conversation guide (editable)**: opening,
+   needs questions, discussion points, concerns to explore, and next step.
+6. Edit the script if needed. Click outside the text box to apply your edits.
+   Switch between customers to prepare their calls; each customer's edits stay
+   separate. **Reset this guide** restores that customer's original draft.
+7. Click **Download this guide (TXT)** to keep the selected customer's script.
+   To export guides for everyone in the current shortlist, go to **Export
+   conversation guides**, click **Prepare guides for the shortlist**, then
+   **Download conversation guides (CSV)**. For K = 50, this contains exactly 50
+   rows, including all profile fields, the script, and its editing status. If you
+   change a script or K, prepare the guide CSV again before downloading it.
+8. Download the contact shortlist and open the CSV. It should contain exactly
    K customer rows, plus the header. The export includes all 13 profile fields.
 
 To use another file, select **Upload a CSV**. You can upload
@@ -330,10 +342,25 @@ supported categories as the [data dictionary](docs/reports/tables/data_dictionar
 as a customer-profile input. The app accepts up to 50 MB and 300,000 profiles.
 
 Scores estimate the synthetic dataset's Yes label. They are not confirmed sales.
-These profiles have no names or phone numbers. Consultation questions help you
-confirm needs; they do not infer preferences from gender or age or affordability
-from income. Target labels and unrelated extra columns are excluded from exports.
-Uploaded CSVs are held in memory for the session and are not written to project files.
+These profiles have no names or phone numbers. Conversation drafts use repeatable
+templates based on recorded driving and charging context; no external AI service
+or API key is needed. They help staff confirm needs and offer a consultation or
+test drive if the customer is interested. Staff should verify vehicle details,
+prices, offers, charging suitability, and incentive eligibility separately.
+The templates do not infer preferences from gender or age or affordability from
+income, explain the model score, or establish that a script will increase sales.
+Precision@K and Lift@K evaluate the ranking, not the conversation's sales effect.
+
+Guide CSVs support up to **1,000 customers per batch**. For a larger shortlist,
+reduce K to export guides; the ranking and individual guide remain available.
+Spreadsheet formula prefixes are escaped in the guide CSV; the underlying
+profile IDs and staff edits remain unchanged in the app. A leading apostrophe
+in a spreadsheet export is a text marker, not part of the original ID or script.
+Target labels and unrelated extra input columns are excluded from exports.
+Uploaded profiles and script edits stay in memory for this session and are not
+written to project files. Download edits before closing the session or loading
+a different CSV. Editing a script never changes scores or ranks. The app does
+not call, message, or book appointments automatically.
 
 To stop the app, click inside its terminal and press **Ctrl+C**. To open it again
 later, repeat this step from the project folder. Do not use VS Code's normal
@@ -477,8 +504,9 @@ For `.py` files, choose **Python: Select Interpreter** from the Command Palette
 & ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m unittest discover -s tests -v
 ```
 
-**Check:** the final lines report **Ran 30 tests** and **OK**. These checks cover
-model separation, input validation, ranking, and profile attachment. Then start
+**Check:** the final lines report **Ran 53 tests** and **OK**. These checks cover
+model separation, input validation, ranking, profile attachment, and conversation
+editing and export. Then start
 the app in step 5 and confirm its shortlist contains exactly K rows.
 
 For a replication record, note the commit, operating system, Python version,
@@ -671,11 +699,11 @@ is a class-project prototype and does not contact customers automatically.
 ## Reproducibility and verification status
 
 The EDA has been executed on macOS with Python 3.12 and 3.13. The modeling
-notebook was executed on macOS with Python 3.13.9: all 12 code cells completed
+notebook was executed on macOS with Python 3.13.9: all 14 code cells completed
 without errors. The generated model metadata records the package versions,
 input hashes, split counts, and evaluation results.
 
-All **30 automated checks** passed, covering disjoint stratified splits,
+All **53 automated checks** passed, covering disjoint stratified splits,
 training-only preprocessing, validation-only selection, exact saved-pipeline
 probabilities, CSV errors, outcome-label exclusion, repeatable tied scores,
 exact-K output, the Streamlit workflow, and correct ID-based attachment of
@@ -684,6 +712,12 @@ checked with an uploaded demo CSV; its downloaded 20-row shortlist matched the
 saved model's ranks, IDs, and probabilities. The richer profile output was
 verified against all 286,571 Kaggle test profiles: rankings and probabilities
 were preserved, and all top-50 customer facts matched their source IDs.
+The [conversation workflow check](docs/reports/conversation_workflow_checks.json)
+records a real browser CSV download for 50 demo profiles and a matching edited
+TXT guide. Conversation checks verify profile-based drafts, edits kept with the correct
+customer when switching ranks, unchanged model scores, and exported guides that
+match the current shortlist. These checks validate the software workflow; the
+usefulness of the scripts and any sales effect require staff review and a pilot.
 
 Run the automated checks using step 8 above.
 

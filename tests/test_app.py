@@ -145,6 +145,107 @@ class AppWorkflowTests(unittest.TestCase):
         self.assertNotIn("Will_Buy_EV", ranked.columns)
         self.assertNotIn("campaign_note", ranked.columns)
 
+    def test_customer_edits_follow_ids_across_selection_and_capacity_without_rescoring(self) -> None:
+        with patch("ev_project.scoring.score_profiles", wraps=scoring.score_profiles) as predict:
+            app = self.app()
+            self.create_shortlist(app)
+            original_ranking = app.session_state["ranked_profiles"]["full_ranked"].copy(deep=True)
+            first_id = original_ranking.iloc[0]["id"]
+            first_template = app.text_area[0].value
+            draft = "My customer-specific questions.\nConfirm home charging before offering a test drive."
+            app.text_area[0].set_value(draft).run()
+            app.number_input[1].set_value(2).run()
+            self.assertNotEqual(app.text_area[0].value, draft)
+            app.text_area[0].set_value("Different questions for the second customer.").run()
+            app.number_input[1].set_value(1).run()
+            self.assertEqual(app.text_area[0].value, draft)
+            app.number_input[0].set_value(1)
+            self.create_shortlist(app)
+            self.assertFalse(app.exception)
+            self.assertEqual(app.text_area[0].value, draft)
+            self.assertEqual(app.session_state["conversation_workspace"]["edits"][first_id], draft)
+            self.assertNotEqual(first_template, draft)
+            pd.testing.assert_frame_equal(app.session_state["ranked_profiles"]["full_ranked"], original_ranking)
+            self.assertEqual(predict.call_count, 1)
+
+    def test_guide_downloads_match_shortlist_and_refresh_after_edits(self) -> None:
+        with patch("streamlit.download_button", wraps=st.download_button) as download:
+            app = self.app()
+            app.number_input[0].set_value(2)
+            self.create_shortlist(app)
+            ranked = app.session_state["ranked_profiles"]["full_ranked"]
+            first_id = ranked.iloc[0]["id"]
+            draft = "Xin chào.\nPlease confirm your charging plans."
+            app.text_area[0].set_value(draft).run()
+            next(button for button in app.button if button.label == "Prepare guides for the shortlist").click().run()
+            self.assertFalse(app.exception)
+            exports = {call.args[0]: call.args[1] for call in download.call_args_list}
+            guides = pd.read_csv(io.BytesIO(exports["Download conversation guides (CSV)"]), dtype={"id": str, "Environmental_Concern_Level": str})
+            self.assertEqual(guides["id"].tolist(), ranked.head(2)["id"].tolist())
+            self.assertEqual(guides["rank"].tolist(), [1, 2])
+            self.assertEqual(guides.iloc[0]["conversation_guide"], draft)
+            self.assertEqual(guides.iloc[0]["guide_status"], "Edited by staff")
+            self.assertEqual(guides.iloc[1]["guide_status"], "Template draft")
+            self.assertIn(f"Customer ID: {first_id}", exports["Download this guide (TXT)"].decode())
+            self.assertIn(draft, exports["Download this guide (TXT)"].decode())
+            # CSV stores values, not pandas extension dtype metadata.
+            pd.testing.assert_frame_equal(guides.loc[:, ranked.columns], ranked.head(2).reset_index(drop=True), check_dtype=False)
+            app.text_area[0].set_value("A revised script.").run()
+            self.assertNotIn("export", app.session_state["conversation_workspace"])
+            self.assertFalse(any(button.label == "Download conversation guides (CSV)" for button in app.download_button))
+            next(button for button in app.button if button.label == "Prepare guides for the shortlist").click().run()
+            latest = {call.args[0]: call.args[1] for call in download.call_args_list}
+            revised = pd.read_csv(io.BytesIO(latest["Download conversation guides (CSV)"]), dtype={"id": str})
+            self.assertEqual(revised.iloc[0]["conversation_guide"], "A revised script.")
+            app.number_input[0].set_value(1)
+            self.create_shortlist(app)
+            self.assertFalse(any(button.label == "Download conversation guides (CSV)" for button in app.download_button))
+
+    def test_reset_restores_only_selected_customers_template_and_invalidates_export(self) -> None:
+        app = self.app()
+        self.create_shortlist(app)
+        original = app.text_area[0].value
+        app.text_area[0].set_value("First customer's edited script").run()
+        app.number_input[1].set_value(2).run()
+        second_id = app.session_state["ranked_profiles"]["full_ranked"].iloc[1]["id"]
+        app.text_area[0].set_value("Keep this second draft").run()
+        app.number_input[1].set_value(1).run()
+        next(button for button in app.button if button.label == "Prepare guides for the shortlist").click().run()
+        next(button for button in app.button if button.label == "Reset this guide").click().run()
+        self.assertFalse(app.exception)
+        self.assertEqual(app.text_area[0].value, original)
+        self.assertEqual(app.session_state["conversation_workspace"]["edits"], {second_id: "Keep this second draft"})
+        self.assertNotIn("export", app.session_state["conversation_workspace"])
+
+    def test_different_upload_does_not_inherit_edits_for_the_same_customer_id(self) -> None:
+        app = self.app()
+        self.create_shortlist(app)
+        app.text_area[0].set_value("Private draft for the original file").run()
+        previous_key = app.session_state["conversation_workspace"]["key"]
+        app.radio[0].set_value("Upload a CSV").run()
+        upload = self.profiles.assign(source_note="a different file")
+        app.file_uploader[0].set_value(("new.csv", upload.to_csv(index=False).encode(), "text/csv")).run()
+        self.assertNotIn("conversation_workspace", app.session_state, "A new file clears previous drafts before a new shortlist is scored.")
+        self.create_shortlist(app)
+        self.assertFalse(app.exception)
+        self.assertNotEqual(app.session_state["conversation_workspace"]["key"], previous_key)
+        self.assertEqual(app.session_state["conversation_workspace"]["edits"], {})
+        self.assertNotIn("Private draft", app.text_area[0].value)
+
+    def test_large_shortlist_keeps_individual_guide_but_bounds_bulk_export(self) -> None:
+        large = pd.concat([self.profiles] * 251, ignore_index=True).head(1001)
+        large["id"] = [f"customer-{i:04d}" for i in range(len(large))]
+        large.to_csv(self.root / "data" / "demo" / "customer_profiles_demo.csv", index=False)
+        app = self.app()
+        app.number_input[0].set_value(1001)
+        self.create_shortlist(app)
+        app.number_input[1].set_value(1001).run()
+        self.assertFalse(app.exception)
+        self.assertTrue(app.text_area[0].value)
+        self.assertTrue(any(button.label == "Download this guide (TXT)" for button in app.download_button))
+        self.assertFalse(any(button.label == "Prepare guides for the shortlist" for button in app.button))
+        self.assertTrue(any("1,000 or fewer" in notice.value for notice in app.info))
+
     def test_invalid_uploaded_profiles_do_not_produce_a_shortlist(self) -> None:
         upload = self.profiles.drop(columns="Age")
         app = self.app()

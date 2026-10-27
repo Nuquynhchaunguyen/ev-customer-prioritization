@@ -10,7 +10,15 @@ import pandas as pd
 import streamlit as st
 
 from ev_project.schema import FEATURE_COLUMNS, ProfileValidationError, read_profile_csv
-from ev_project.customer_details import PROFILE_LABELS, conversation_prompts, enrich_ranking
+from ev_project.customer_details import PROFILE_LABELS, enrich_ranking
+from ev_project.conversation_guide import (
+    GUIDE_VERSION,
+    MAX_GUIDE_EXPORT,
+    build_conversation_guide,
+    format_conversation_guide,
+    export_conversation_guides,
+    conversation_guides_csv_bytes,
+)
 from ev_project.scoring import load_bundle, score_profiles
 
 
@@ -19,7 +27,7 @@ MODEL_PATH = PROJECT_ROOT / "models" / "model_bundle.joblib"
 DEMO_PATH = PROJECT_ROOT / "data" / "demo" / "customer_profiles_demo.csv"
 MAX_FILE_BYTES = 50 * 1024 * 1024
 MAX_PROFILE_ROWS = 300_000
-RESULT_VIEW_VERSION = "customer-details-v1"
+RESULT_VIEW_VERSION = "customer-conversation-guide-v2"
 
 
 @st.cache_resource(show_spinner=False)
@@ -31,6 +39,168 @@ def cached_bundle(path: str, modified_at: int) -> dict:
 def csv_bytes(frame: pd.DataFrame) -> bytes:
     """Use a BOM so exported CSV files also open cleanly in desktop Excel."""
     return frame.to_csv(index=False).encode("utf-8-sig")
+
+
+def save_conversation_edit(workspace_key: tuple, customer_id: str, editor_key: str) -> None:
+    """Keep edits by customer ID when Streamlit removes an off-screen widget."""
+    workspace = st.session_state.get("conversation_workspace")
+    if workspace and workspace["key"] == workspace_key:
+        workspace["edits"][customer_id] = st.session_state[editor_key]
+        workspace.pop("export", None)
+
+
+def reset_conversation_edit(workspace_key: tuple, customer_id: str, editor_key: str, template: str) -> None:
+    workspace = st.session_state.get("conversation_workspace")
+    if workspace and workspace["key"] == workspace_key:
+        workspace["edits"].pop(customer_id, None)
+        workspace.pop("export", None)
+        st.session_state[editor_key] = template
+
+
+def conversation_workspace(shortlist: pd.DataFrame, result_key: tuple) -> None:
+    """Prepare staff-reviewed scripts without changing any scores or model inputs."""
+    workspace_key = (*result_key, GUIDE_VERSION)
+    workspace = st.session_state.get("conversation_workspace")
+    if not workspace or workspace["key"] != workspace_key:
+        workspace = {"key": workspace_key, "edits": {}}
+        st.session_state["conversation_workspace"] = workspace
+    namespace = hashlib.sha256(repr(workspace_key).encode()).hexdigest()[:16]
+    chosen_capacity = len(shortlist)
+
+    st.subheader("4. Prepare a customer conversation")
+    st.write(
+        "Choose a customer to prepare a call. The draft helps you confirm needs, "
+        "discuss practical questions, and offer a next step if the customer is interested."
+    )
+    detail_key = f"selected_profile_rank_{result_key[0][:16]}"
+    if st.session_state.get(detail_key, 1) > chosen_capacity:
+        st.session_state.pop(detail_key, None)
+    chosen_rank = st.number_input(
+        "Priority rank to view",
+        min_value=1,
+        max_value=chosen_capacity,
+        value=1,
+        step=1,
+        key=detail_key,
+        help="Enter a rank from the current shortlist to view the profile and edit its conversation guide.",
+    )
+    customer = shortlist.iloc[int(chosen_rank) - 1]
+    customer_id = str(customer["id"])
+    template = format_conversation_guide(build_conversation_guide(customer))
+    editor_key = f"guide_editor_{namespace}_{hashlib.sha256(customer_id.encode()).hexdigest()[:16]}"
+    if editor_key not in st.session_state:
+        st.session_state[editor_key] = workspace["edits"].get(customer_id, template)
+
+    st.write(
+        f"**Customer ID {customer_id}** · Rank {int(customer['rank']):,} "
+        f"· Estimated Yes probability {customer['yes_probability']:.2%}"
+    )
+    demographic_columns = st.columns(3)
+    demographic_columns[0].metric("Gender", str(customer["Gender"]))
+    demographic_columns[1].metric("Age (years)", str(int(customer["Age"])))
+    demographic_columns[2].metric("Annual income (USD)", f"${int(customer['Annual_Income_USD']):,}")
+
+    context_column, script_column = st.columns([1, 2])
+    with context_column:
+        st.markdown("**Driving and charging context**")
+        context_fields = [
+            "Current_Car_Type", "Daily_Commute_km", "Home_Charging_Possible",
+            "Charging_Stations_Near_Home", "Charging_Stations_Near_Work",
+            "Range_Anxiety_Level", "Subsidy_Available", "City_Type",
+        ]
+        st.dataframe(
+            pd.DataFrame({"Profile field": [PROFILE_LABELS[c] for c in context_fields],
+                          "Recorded value": [str(customer[c]) for c in context_fields]}),
+            hide_index=True, width="stretch",
+        )
+        st.caption(
+            "Confirm these recorded facts with the customer. Ask about their budget "
+            "directly; income alone does not establish what they can afford."
+        )
+    with script_column:
+        st.text_area(
+            "Conversation guide (editable)",
+            height=560,
+            key=editor_key,
+            on_change=save_conversation_edit,
+            args=(workspace_key, customer_id, editor_key),
+        )
+        st.caption(
+            "Click outside the text box to apply your edits before downloading. "
+            "Edits stay in this session. Download them before leaving or uploading a different file."
+        )
+        reset_column, download_column = st.columns(2)
+        with reset_column:
+            st.button(
+                "Reset this guide",
+                key=f"reset_guide_{namespace}",
+                on_click=reset_conversation_edit,
+                args=(workspace_key, customer_id, editor_key, template),
+            )
+        with download_column:
+            script = st.session_state[editor_key]
+            download_text = (
+                "EV CUSTOMER CONVERSATION GUIDE\n"
+                f"Customer ID: {customer_id}\nPriority rank: {int(customer['rank'])}\n"
+                "Staff preparation draft. Confirm profile facts and review before use.\n\n"
+                + script
+            )
+            st.download_button(
+                "Download this guide (TXT)",
+                download_text.encode("utf-8"),
+                f"ev_customer_rank_{int(customer['rank'])}_conversation.txt",
+                "text/plain; charset=utf-8",
+                key="download_customer_guide",
+                on_click="ignore",
+            )
+    st.caption(
+        "Drafts follow recorded driving and charging information. They do not explain "
+        "the model score or prove that a call will lead to a sale. Vehicle prices, "
+        "offers, charging suitability, and incentive eligibility need separate verification."
+    )
+    with st.expander("All recorded profile fields"):
+        st.dataframe(
+            pd.DataFrame({"Profile field": [PROFILE_LABELS[c] for c in FEATURE_COLUMNS],
+                          "Recorded value": [str(customer[c]) for c in FEATURE_COLUMNS]}),
+            hide_index=True, width="stretch",
+        )
+        st.caption("Environmental concern is an undocumented code (1–5); the app does not infer what each code means.")
+    st.caption("This dataset contains synthetic profile IDs, without customer names or phone numbers.")
+
+    st.subheader("5. Export conversation guides")
+    st.write(
+        f"Prepare a guide for each of the **{chosen_capacity:,} customers** in your current shortlist. "
+        "The CSV includes customer details, each script, and whether staff edited it."
+    )
+    if chosen_capacity > MAX_GUIDE_EXPORT:
+        st.info(
+            f"For a guide CSV, choose a contact capacity of {MAX_GUIDE_EXPORT:,} or fewer. "
+            "You can still view individual guides and download your complete ranked list."
+        )
+        return
+    if st.button("Prepare guides for the shortlist", key="prepare_conversation_export"):
+        with st.spinner("Preparing conversation guides…"):
+            guides = export_conversation_guides(shortlist, workspace["edits"])
+            workspace["export"] = {
+                "capacity": chosen_capacity,
+                "csv": conversation_guides_csv_bytes(guides),
+                "edited_count": sum(customer_id in workspace["edits"] for customer_id in shortlist["id"]),
+            }
+    export = workspace.get("export")
+    if export and export["capacity"] == chosen_capacity:
+        st.download_button(
+            "Download conversation guides (CSV)",
+            export["csv"],
+            f"ev_conversation_guides_top_{chosen_capacity}.csv",
+            "text/csv",
+            key="download_conversation_guides",
+            type="primary",
+            on_click="ignore",
+        )
+        st.caption(
+            f"Ready: {chosen_capacity:,} guides, including {export['edited_count']:,} edited by staff. "
+            "Changing a script requires preparing the CSV again."
+        )
 
 
 def model_details(metadata: dict) -> None:
@@ -94,7 +264,7 @@ def model_details(metadata: dict) -> None:
 def main() -> None:
     st.set_page_config(page_title="EV Customer Prioritization", page_icon="⚡", layout="wide")
     st.title("EV Customer Prioritization")
-    st.write("Build a contact shortlist from customer profile information.")
+    st.write("Prioritize customer profiles and prepare a conversation for each customer.")
     st.caption(
         "MSBA265 class prototype • Synthetic Kaggle competition data • "
         "Scores estimate Will_Buy_EV = Yes, not confirmed sales."
@@ -165,6 +335,9 @@ def main() -> None:
 
     input_digest = hashlib.sha256(content).hexdigest()
     cache_key = (input_digest, model_version, RESULT_VIEW_VERSION)
+    guide_workspace = st.session_state.get("conversation_workspace")
+    if guide_workspace and guide_workspace["key"] != (*cache_key, GUIDE_VERSION):
+        st.session_state.pop("conversation_workspace", None)
     cached_result = st.session_state.get("ranked_profiles")
     if cached_result and cached_result["key"] != cache_key:
         st.session_state.pop("ranked_profiles", None)
@@ -287,54 +460,7 @@ def main() -> None:
             )
         st.caption("Both downloads include rank, customer ID, Yes probability (0 to 1), and all 13 recorded profile fields.")
 
-        st.subheader("4. Prepare a customer conversation")
-        detail_key = f"selected_profile_rank_{input_digest[:16]}"
-        if st.session_state.get(detail_key, 1) > chosen_capacity:
-            st.session_state.pop(detail_key, None)
-        chosen_rank = st.number_input(
-            "Priority rank to view",
-            min_value=1,
-            max_value=chosen_capacity,
-            value=1,
-            step=1,
-            key=detail_key,
-            help="Enter a rank from the current shortlist to see that customer's recorded profile.",
-        )
-        customer = shortlist.iloc[int(chosen_rank) - 1]
-        st.write(
-            f"**Customer ID {customer['id']}** · Rank {int(customer['rank']):,} "
-            f"· Estimated Yes probability {customer['yes_probability']:.2%}"
-        )
-        demographic_columns = st.columns(3)
-        demographic_columns[0].metric("Gender", str(customer["Gender"]))
-        demographic_columns[1].metric("Age (years)", str(int(customer["Age"])))
-        demographic_columns[2].metric("Annual income (USD)", f"${int(customer['Annual_Income_USD']):,}")
-        context_column, questions_column = st.columns(2)
-        with context_column:
-            st.markdown("**Driving and charging context**")
-            context_fields = [
-                "Current_Car_Type", "Daily_Commute_km", "Home_Charging_Possible",
-                "Charging_Stations_Near_Home", "Charging_Stations_Near_Work",
-                "Range_Anxiety_Level", "Subsidy_Available", "City_Type",
-            ]
-            st.dataframe(
-                pd.DataFrame({"Profile field": [PROFILE_LABELS[c] for c in context_fields],
-                              "Recorded value": [str(customer[c]) for c in context_fields]}),
-                hide_index=True, width="stretch",
-            )
-        with questions_column:
-            st.markdown("**Suggested questions for the conversation**")
-            for question in conversation_prompts(customer):
-                st.markdown(f"- {question}")
-            st.caption("These questions use recorded profile information; they are not explanations of the model score.")
-        with st.expander("All recorded profile fields"):
-            st.dataframe(
-                pd.DataFrame({"Profile field": [PROFILE_LABELS[c] for c in FEATURE_COLUMNS],
-                              "Recorded value": [str(customer[c]) for c in FEATURE_COLUMNS]}),
-                hide_index=True, width="stretch",
-            )
-            st.caption("Environmental concern is an undocumented code (1–5); the app does not infer what each code means.")
-        st.caption("This dataset contains synthetic profile IDs, without customer names or phone numbers.")
+        conversation_workspace(shortlist, cache_key)
 
     model_details(metadata)
 

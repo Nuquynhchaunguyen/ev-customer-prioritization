@@ -1,0 +1,28 @@
+{
+  "checked_at_utc": "2026-10-27T23:11:04.337225+00:00",
+  "guide_version": "conversation-guide-v1",
+  "scope": "Local browser demo using the unchanged saved model; no customer contact or model training.",
+  "automated_tests": {
+    "tests_run": 53,
+    "all_passed": true,
+    "new_guide_tests": 9,
+    "new_app_workflow_tests": 5
+  },
+  "browser_check": {
+    "input_profiles": 500,
+    "contact_capacity": 50,
+    "csv_guide_rows": 50,
+    "csv_ids_ranks_scores_and_all_profile_fields_match_saved_model": true,
+    "all_default_guides_match_their_own_source_profiles": true,
+    "one_staff_edit_retained_for_selected_id_only": true,
+    "selected_txt_matches_edited_script_and_id": true,
+    "old_batch_download_removed_after_edit": true,
+    "batch_csv_regenerated_before_download": true,
+    "warnings": []
+  },
+  "measurement_limits": "Software correctness and ranking parity do not establish script usefulness, appointments, sales, or causal outreach impact.",
+  "protected_model_sha256": {
+    "models/model_bundle.joblib": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+    "models/model_metadata.json": "8698a94faae0fd099b31ede900bde69ed96b64e9e6a21ceb6544243e7bfab957"
+  }
+}
