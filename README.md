@@ -40,10 +40,10 @@ ev-customer-prioritization/
 
 ## Setup
 
-Install [Python 3.13](https://www.python.org/downloads/),
+Install [Python 3.13.9](https://www.python.org/downloads/release/python-3139/),
 [Git](https://git-scm.com/downloads), and [VS Code](https://code.visualstudio.com/download).
-Python 3.12 is also supported. On Windows, enable **Add Python to PATH** during
-installation. Reopen VS Code after installing Python. Git is optional for ZIP.
+Python 3.12 is also supported. On Windows, enable the **Python launcher** and
+**Add Python to PATH** during installation. Reopen VS Code afterward. Git is optional for ZIP.
 
 ### 1. Download the project
 
@@ -69,10 +69,12 @@ Choose **File > Open Folder**, select the folder containing `README.md`, then
 
 ### 3. Create and activate the virtual environment
 
-First check Python: `python3 --version` on Mac or `python --version` on Windows.
-Continue when it reports **3.12.x or 3.13.x**; otherwise install a supported version.
+If this venv already exists, run only your system's activation line below, then
+verify it. For first setup, follow the Mac or Windows steps.
 
 **Mac**
+
+Check `python3 --version`. If it shows **3.12.x or 3.13.x**, run:
 
 ```bash
 python3 -m venv .venv-msba265-ev-purchases
@@ -81,21 +83,51 @@ source .venv-msba265-ev-purchases/bin/activate
 
 **Windows - PowerShell**
 
+Check `python --version`. If it shows **3.12.x or 3.13.x**, run:
+
 ```powershell
 python -m venv .venv-msba265-ev-purchases
 .\.venv-msba265-ev-purchases\Scripts\Activate.ps1
 ```
 
-The terminal should now show the environment name in parentheses. If this venv
-already exists with Python 3.12/3.13, skip its creation line and activate it.
-Activate it again whenever you open a new terminal.
+**Other Python commands, if needed**
 
-If PowerShell blocks activation, run the following in that terminal, then retry
-`Activate.ps1`. This setting applies only to the current terminal session:
+If the main version check fails or shows another version, choose one working
+alternative below that reports **3.12.x or 3.13.x**. Run its creation command,
+then the activation line from your system's block above.
 
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+| Computer | Check the version | Alternative creation command |
+|---|---|---|
+| Mac | `python3.13 --version` | `python3.13 -m venv .venv-msba265-ev-purchases` |
+| Mac | `python --version` | `python -m venv .venv-msba265-ev-purchases` |
+| Windows | `py -3.13 --version` | `py -3.13 -m venv .venv-msba265-ev-purchases` |
+| Windows | `python3 --version` | `python3 -m venv .venv-msba265-ev-purchases` |
+
+For version-specific Python 3.12 commands, use `python3.12` on Mac or `py -3.12`
+on Windows. If none finds a supported version, install Python 3.13 from the link
+above and reopen VS Code.
+
+**If PowerShell blocks activation:** open **Command Prompt** from the arrow
+beside the Terminal **+** button, stay in the project folder, and run:
+
+```bat
+.venv-msba265-ev-purchases\Scripts\activate.bat
 ```
+
+**Verify - both systems**
+
+```bash
+python -c "import sys; print(sys.version.split()[0]); print(sys.executable)"
+```
+
+The version should be **3.12.x or 3.13.x**, and the executable path should be
+inside this project's `.venv-msba265-ev-purchases` folder. Continue to step 4.
+Activate the venv again in each new terminal.
+
+If an existing venv uses another version, close its app/notebook kernels,
+run `deactivate`, rename the venv folder to a backup, and recreate it with a
+supported Python above. Keep the backup until the replacement works.
+Installing packages does not change the venv's Python version.
 
 ### 4. Install or update the packages
 

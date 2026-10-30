@@ -23,7 +23,7 @@ def main():
     if existing:
         raise SystemExit("Some raw CSVs already exist. Review the folder before downloading.")
 
-    headers, auth = {}, None
+    headers, auth = {"User-Agent": "kaggle-api-client"}, None
     if os.environ.get("KAGGLE_API_TOKEN"):
         headers["Authorization"] = "Bearer " + os.environ["KAGGLE_API_TOKEN"]
     elif os.environ.get("KAGGLE_USERNAME") and os.environ.get("KAGGLE_KEY"):
