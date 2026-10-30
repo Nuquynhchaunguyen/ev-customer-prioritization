@@ -215,7 +215,12 @@ python ev_project/run_eda.py
 python ev_project/run_modeling.py
 ```
 
-Each command finishes with **Saved executed notebook** and an HTML report path.
+**Allow time to finish:** Each command may take a few minutes, depending on your
+computer. After `Executing notebook...` or `Executing modeling notebook...`, the
+terminal may stay quiet while the notebook runs; this alone does not mean an
+error. Keep the terminal open and wait for **Saved executed notebook** and the
+command prompt to return before running the next command.
+
 Modeling uses the cleaned data from EDA and compares a Dummy baseline,
 Logistic Regression, and a Decision Tree. Rerunning replaces generated outputs
 and model files while keeping the raw CSVs unchanged.
