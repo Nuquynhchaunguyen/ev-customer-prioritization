@@ -2,8 +2,9 @@
 
 **Nu Quynh Chau Nguyen | MSBA265 | Fall 2026**
 
-How can an EV dealership prioritize customer profiles when staff can contact only
-**K** people? I use the professor-approved [Kaggle competition dataset](https://www.kaggle.com/competitions/playground-series-s6e9)
+**Which customers should an EV dealership prioritize for contact when its outreach capacity is limited?**
+
+I use the professor-approved [Kaggle competition dataset](https://www.kaggle.com/competitions/playground-series-s6e9)
 to study this question with supervised binary classification.
 
 ## P1 submission
