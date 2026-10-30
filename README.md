@@ -2,763 +2,101 @@
 
 **Nu Quynh Chau Nguyen | MSBA265 | Fall 2026**
 
-Which customer profiles should a dealership prioritize for EV outreach when it
-can contact only **K** people? This project uses the professor-approved Kaggle
-competition dataset for data understanding, model comparison, customer ranking,
-and a local Streamlit application with editable customer conversation guides.
+How can an EV dealership prioritize customer profiles when staff can contact only
+**K** people? I use the professor-approved [Kaggle competition dataset](https://www.kaggle.com/competitions/playground-series-s6e9)
+to study this question with supervised binary classification.
 
-The data contain 668,665 synthetic labeled profiles; about 17.46% have a Yes
-label. The app ranks uploaded profiles using the saved preprocessing-and-model
-pipeline. Its scores estimate the supplied Yes-label probability in this dataset,
-not a guaranteed real purchase, sales uplift, or revenue forecast.
+## P1 submission
+
+**Start with the [combined P1 PDF](docs/P1/EV_Customer_Prioritization_P1.pdf).**
+It is the single P1 submission document and contains:
+
+- The dealership problem, intended user, project question, proposed method, and success measure.
+- Six topic examples and a cited one-page infographic.
+- The dataset profile, initial quality checks, an interpreted chart, a simple baseline, and next steps.
+
+P1 is the upcoming submission. P2 is the later review, two weeks after P1.
+The Assignment Validation form is completed with an independent peer and submitted
+separately to the professor. It stays local and is excluded from GitHub.
+Peer verification and signatures are still pending.
+
+## Submission stages
+
+| Stage | Main materials | Location and status |
+|---|---|---|
+| P1 | One combined proposal PDF with topic background and initial data exploration | `docs/P1/` — current submission |
+| P2 | Draft technical paper, stakeholder slides, runnable analysis, results, and a saved model | `docs/P2/` and the shared code below — work in progress; update after P1 feedback |
+| Final | Polished P2 work after instructor feedback, including the final report, analysis output, presentation, and reproducible handoff | Later; no duplicate final package has been created |
 
 ## Project map
 
-This map matches the files and folders shown on the GitHub home page.
-Start with `README.md`; each folder below has one clear purpose.
-
 ```text
 ev-customer-prioritization/
-├── README.md           Project overview and step-by-step Mac/Windows run guide
-├── requirements.txt    Pinned packages for analysis, modeling, and the app
-├── .gitignore          Excludes raw data, API keys, and local settings/environments
-├── app.py              Streamlit: rank profiles, prepare customer conversations, export results
-├── data/               Included demo/template; generated cleaned data and split membership
-├── ev_project/         Download command, notebook runners, preprocessing, training, and scoring
-├── models/             Fitted pipeline bundle and training/evaluation metadata
-├── notebooks/          01: data understanding and cleaning; 02: modeling and prioritization
-├── docs/               Reports and evidence, proposal slides, and P1 submission materials
-└── tests/              Automated input, model, ranking, and application checks
+├── README.md           Project overview and where to start
+├── docs/
+│   ├── P1/             One combined P1 submission PDF
+│   ├── P2/             Draft paper, slides, run guide, and extension plan
+│   └── reports/        Supporting notebook outputs, charts, and tables
+├── notebooks/          Data understanding and modeling analysis
+├── ev_project/         Dataset download, preparation, training, and scoring
+├── data/               Included demo; full and generated data stay local
+├── models/             Saved preprocessing and classification model
+├── app.py              Streamlit customer ranking and conversation guides
+├── requirements.txt    Python packages needed to run the project
+├── tests/              Checks for data, model, ranking, and app behavior
+└── .gitignore          Excludes credentials, full data, and local environments
 ```
 
-**How these pieces work together:**
+The source code and saved model are shared working materials for P2. They are
+kept in one place so later submissions can reuse them. The combined P1 PDF is
+self-contained; its review does not require a Streamlit demonstration.
 
-| Step | Entry point | Result |
-|---|---|---|
-| Download the full dataset | `ev_project/download_data.py` | Kaggle API saves `train.csv`, `test.csv`, and `sample_submission.csv` in the project folder. |
-| Understand and clean data | `ev_project/run_eda.py` runs notebook 01 | Creates cleaned data in `data/processed/` and the EDA report in `docs/reports/`. |
-| Compare models and evaluate ranking | `ev_project/run_modeling.py` runs notebook 02 | Saves the selected preprocessing-and-model pipeline in `models/model_bundle.joblib`, evaluation results in `docs/reports/modeling/`, and split membership in `data/splits/`. |
-| Use the shortlist tool | `app.py` | Loads the saved pipeline, ranks the top K, and exports customer details and editable conversation guides. |
+## Proposed classification method
 
-`ev_project/` is the reusable source-code package, serving the `src/` role in the
-[course architecture example](https://github.com/shylasolis/machine-learning-pathway/blob/main/syllabus.pdf).
-Within `docs/`, use `reports/` for analysis evidence, `presentations/` for slides,
-and `P1/` for the proposal and extension plan. Revised technical paper and
-stakeholder slides are in `docs/P1_edit/`.
-The raw CSVs, `.venv-msba265-ev-purchases/`, and generated data are created locally.
-VS Code and Streamlit settings are optional local preferences; the shared project
-runs using the commands below without those folders. The app validates uploads
-against its 50 MB limit.
-FastAPI, Docker, and monitoring remain planned extensions in the
-[extension plan](docs/P1/extension_plan.json).
+The main method is **Logistic Regression**, as taught in the professor's
+[classification materials](https://github.com/shylasolis/machine-learning-pathway/blob/main/Project_02_Classification/assignment_instructions.md).
+It calculates a weighted score and then uses the sigmoid function:
 
-## Project progress
-
-I am building a workflow that turns customer profile information into a ranked
-list for a dealership's limited outreach capacity. The work connects data
-understanding, model evaluation, and a staff-facing prototype.
-
-| Work | Current status | What it does |
-|---|---|---|
-| Data understanding and cleaning | Completed | Defines the 13 predictors, checks missing values, duplicates, categories, and numeric ranges, and interprets the initial charts. All source rows and predictor values are preserved. |
-| Model comparison | Completed | Compares Dummy, Logistic Regression, and Decision Tree using fixed training, validation, and holdout splits. Validation selects Logistic Regression. |
-| Saved scoring pipeline | Completed | Saves the fitted preprocessing and model together and reloads that exact pipeline for customer scoring. |
-| Streamlit prototype | Implemented locally | Accepts a CSV, ranks profiles for a chosen K, shows customer details, prepares editable conversation guides, and exports the shortlist and guides. |
-| API, container, and monitoring | Planned | Expose scoring through FastAPI, package the service with Docker, and compare new inputs with a versioned reference to identify changes that need investigation. |
-
-In the internal holdout, the top **10,030 of 100,300 profiles** contain **78.78% Yes
-labels**, with **Lift@K of 4.51**. This measures concentration of the supplied
-synthetic label; it does not forecast confirmed sales or the effect of making a call.
-The [modeling notebook](notebooks/02_modeling_and_prioritization.ipynb) explains
-the comparison, selection rule, and limits.
-
-Next work includes incorporating feedback, examining subgroup performance and
-predictor choices, and developing the [planned service and monitoring extensions](docs/P1/extension_plan.json).
-
-## Reading guide
-
-- [Project proposal](docs/P1/EV_Customer_Prioritization_P1.pdf): the dealership question, intended use, dataset, topic infographic, initial evidence, and next steps.
-- [Data understanding notebook](notebooks/01_data_understanding_and_cleaning.ipynb): what the fields mean, how quality was checked, and what the initial exploration shows.
-- [Modeling notebook](notebooks/02_modeling_and_prioritization.ipynb): how data were split, how the three candidates compare, and how the selected model creates a top-K list.
-- [Revised technical paper](docs/P1_edit/EV_Customer_Prioritization_Technical_Report.pdf) and [stakeholder presentation](docs/P1_edit/EV_Customer_Prioritization_Stakeholder_Presentation.pptx): the technical explanation and business-facing demonstration, including the customer conversation workflow.
-- [EDA HTML report](docs/reports/01_data_understanding_and_cleaning.html) and [modeling HTML report](docs/reports/02_modeling_and_prioritization.html): reading copies with saved charts and tables.
-- [Data dictionary](docs/reports/tables/data_dictionary.csv) and [model metadata](models/model_metadata.json): field definitions, interpretation limits, and evaluation records.
-
-Earlier slide notes refer to `reports/`; those source tables are now in `docs/reports/`.
-
-The notebooks' saved outputs can be read on GitHub without running Python. To
-read an HTML report, download the project and open the report in a browser on
-your computer. To run the demo or reproduce the analysis, follow the guide below.
-
-## Start here: a guide for first-time users
-
-Choose whether to read the existing results, try the demo, or run the analysis yourself.
-
-| What you want to do | Follow these steps |
-|---|---|
-| Understand the project and dataset | Follow the [reading guide](#reading-guide). Python is not needed to read the saved outputs. |
-| Try the customer-ranking prototype | Steps 1-5. The saved model and 500-profile demo are already included. |
-| Reproduce the analysis and app | Steps 1-4, then 6-8, then try the app in step 5. |
-
-**Project code and dataset are two separate downloads:**
-
-| What you are downloading | Where it comes from | How to obtain it |
-|---|---|---|
-| Code, notebooks, reports, saved model, and small demo | GitHub | Git clone or Download ZIP in step 1 |
-| Full `train.csv`, `test.csv`, and `sample_submission.csv` | The approved Kaggle competition | Run `ev_project/download_data.py` with your own Kaggle API credentials in step 6 |
-
-The GitHub ZIP does not supply the full competition dataset. Full analysis uses
-the Kaggle API download in step 6, then the notebooks in step 7.
-
-**For running code, you need:** a Mac or Windows computer, Python **3.13** (recommended) or
-**3.12**, and internet access to install packages. This guide uses VS Code to
-open the project and type commands. You need a Kaggle account only for step 6.
-
-**Two words used in this guide:** GitHub is the website holding the project files.
-Git is a separate program for downloading and keeping track of changes. The ZIP
-option below lets you try the project without installing Git.
-
-### 1. Download the project code from GitHub
-
-There are **two ways** to download the project code. **Choose one**:
-
-- **Option A — Git clone:** install Git and use the commands below to download a working copy with version history.
-- **Option B — Download ZIP:** download and extract the files using your browser. Git is not needed.
-
-Both options provide the project files. After completing either option,
-**continue to step 2**. The full dataset is downloaded separately through
-Kaggle API in step 6.
-
-#### Option A — Git clone
-
-Git helps you record the exact project version you use. **Clone** means download
-a working copy with its change history. **Pull** means update an existing Git working copy.
-
-1. Install Git from [the official Git download page](https://git-scm.com/downloads)
-   for your computer. Close and reopen your terminal after installation.
-2. **Mac:** press **Command + Space**, type **Terminal**, then press Enter.
-   **Windows:** open **PowerShell** from the Start menu.
-3. Run the commands below one line at a time. They download the project into
-   your Documents folder and then open that folder in the terminal.
-
-**Mac**
-
-```bash
-git --version
-cd "$HOME/Documents"
-git clone https://github.com/Nuquynhchaunguyen/ev-customer-prioritization.git
-cd ev-customer-prioritization
-git rev-parse HEAD
+```text
+z = beta_0 + beta_1*x_1 + ... + beta_p*x_p
+P(Will_Buy_EV = Yes) = 1 / (1 + exp(-z))
 ```
 
-**Windows - PowerShell**
-
-```powershell
-git --version
-cd ([Environment]::GetFolderPath('MyDocuments'))
-git clone https://github.com/Nuquynhchaunguyen/ev-customer-prioritization.git
-cd ev-customer-prioritization
-git rev-parse HEAD
-```
-
-**Check:** a new folder named `ev-customer-prioritization` appears. The final
-command prints the version identifier, called a **commit**. Save that identifier
-with the review record. If the folder name already exists, use
-a different empty location for a fresh review instead of cloning over it.
-
-#### Option B — Download ZIP
-
-This downloads the GitHub project files. The full dataset comes from Kaggle API
-in step 6 after you have installed the project packages.
-
-1. Open [this project's GitHub home page](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization).
-2. Click the green **Code** button above the file list, then **Download ZIP**.
-   You can also use [this direct ZIP download](https://github.com/Nuquynhchaunguyen/ev-customer-prioritization/archive/refs/heads/main.zip).
-3. Open your **Downloads** folder.
-4. **Mac:** double-click the ZIP to extract it. **Windows:** right-click the ZIP,
-   choose **Extract All**, then **Extract**.
-5. Find the extracted folder, usually **ev-customer-prioritization-main**.
-   Move it to a place you will keep, such as **Documents**, before creating the
-   Python environment. On Windows, work in the extracted folder, not inside the ZIP.
-
-**Check:** inside that folder you can see `README.md`, `app.py`,
-`requirements.txt`, `models`, and `notebooks`. You do not need to download
-each file separately. The full raw CSVs and your Python environment are not in
-the GitHub download; the supplied model and demo are included.
-
-### 2. Open the whole folder in VS Code
-
-1. Install [Visual Studio Code](https://code.visualstudio.com/download) if needed,
-   then open it.
-2. Choose **File > Open Folder**. On Mac, **File > Open** may be the menu shown.
-3. Select the extracted or cloned project folder that contains `app.py` and
-   `README.md`. Do not select just `notebooks`, `ev_project`, or `models`.
-4. Choose **Terminal > New Terminal** from VS Code's top menu. A panel opens
-   near the bottom where you will type the commands.
-5. **Windows:** choose **PowerShell** from the arrow next to the terminal's **+**
-   button if another terminal type is selected. **Mac:** use **zsh** or **bash**.
-6. Copy the one command for your computer, paste it in the terminal, and press Enter.
-
-**Mac**
-
-```bash
-ls
-```
-
-**Windows - PowerShell**
-
-```powershell
-dir
-```
-
-**Check:** the list contains `app.py`, `README.md`, `requirements.txt`,
-and `ev_project`. If it does not, reopen the correct folder before continuing.
-
-For the rest of this guide, type commands in this terminal. Copy only the text
-inside a command box, run one line at a time, and wait until the prompt returns
-before the next line. A **prompt** is the line where the terminal is ready for
-you to type again. Do not type these commands inside a notebook cell or at a
-Python `>>>` prompt. The app command in step 5 keeps running until you stop it.
-
-### 3. Install or check Python
-
-If Python 3.13 or 3.12 is already installed, check its version below. Otherwise,
-install a **Python 3.13** release from the link for your computer:
-
-- **Mac:** [Python downloads for macOS](https://www.python.org/downloads/macos/).
-  Download the macOS installer for a 3.13 release and complete installation.
-- **Windows:** [Python downloads for Windows](https://www.python.org/downloads/windows/).
-  Download a 3.13 installer for your computer. Select **Add Python to PATH** and
-  the **Python launcher** if those options appear, then complete installation.
-
-After installing Python, close and reopen VS Code, open the project folder,
-and choose **Terminal > New Terminal** again. Run the command for your computer.
-
-**Mac**
-
-```bash
-python3.13 --version
-```
-
-**Windows - PowerShell**
-
-```powershell
-py -3.13 --version
-```
-
-**Check:** you see `Python 3.13.x`. If you are using an existing Python 3.12,
-replace `python3.13` with `python3.12` on Mac, or `py -3.13` with `py -3.12` on
-Windows in the version check and environment-creation line. Other Python minor
-versions have not been verified for this project.
-
-If Windows cannot find `py`, run `python --version`. If it reports 3.13 or 3.12,
-use `python` instead of `py -3.13` for the first line in step 4. If neither command
-works, finish the Python installation and reopen VS Code before continuing.
-
-### 4. Create this project's environment and install its packages
-
-A **venv** is a separate Python environment for this project. Its folder name is
-**.venv-msba265-ev-purchases** so you can distinguish it from other class projects.
-Every computer creates its own environment. You do not copy another person's venv.
-
-If this named environment already works with Python 3.12 or 3.13, use
-[Update an existing environment](#update-an-existing-environment) instead of
-creating it again. New users should run the commands below.
-
-**Mac**
-
-```bash
-python3.13 -m venv --prompt msba265-ev-purchases .venv-msba265-ev-purchases
-./.venv-msba265-ev-purchases/bin/python -m pip install -r requirements.txt
-./.venv-msba265-ev-purchases/bin/python -m pip check
-```
-
-**Windows - PowerShell**
-
-```powershell
-py -3.13 -m venv --prompt msba265-ev-purchases .venv-msba265-ev-purchases
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install -r requirements.txt
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip check
-```
-
-The first line creates the environment; little or no text may appear. The second
-installs the packages listed in `requirements.txt` and can take several
-minutes. The third checks whether installed packages have conflicting requirements.
-
-**Check:** installation finishes without an error, and the final line reports
-**No broken requirements found**. The commands call the named environment
-directly, so you do not need to activate it. A missing `(msba265-ev-purchases)`
-label in the terminal is fine when using these exact commands.
-
-### 5. Run and try the Streamlit app
-
-The saved model and demo profiles are already in the download. After step 4,
-you can run this step immediately, without a Kaggle account or model training.
-
-**Mac**
-
-```bash
-./.venv-msba265-ev-purchases/bin/python -m streamlit run app.py
-```
-
-**Windows - PowerShell**
-
-```powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m streamlit run app.py
-```
-
-**Check:** the terminal prints a **Local URL**, usually `http://localhost:8501`.
-Open that address in Safari, Chrome, Edge, or another browser if it does not open
-automatically. Keep the terminal running while using the app.
-
-In the browser:
-
-1. Select **Try the demo**. You should see **500 customer profiles loaded**.
-2. Leave contact capacity at **50**, or enter another number from 1 to 500.
-   This number is **K**, the number of profiles in your contact shortlist.
-3. Click **Create shortlist**. You should see the top 50 profiles if K is 50.
-4. Review the ranking and the recorded gender, age, and annual income. Use
-   **Customer information to show** to add charging or driving fields.
-5. Under **Prepare a customer conversation**, choose a priority rank. Read the
-   recorded profile and the five-part **Conversation guide (editable)**: opening,
-   needs questions, discussion points, concerns to explore, and next step.
-6. Edit the script if needed. Click outside the text box to apply your edits.
-   Switch between customers to prepare their calls; each customer's edits stay
-   separate. **Reset this guide** restores that customer's original draft.
-7. Click **Download this guide (TXT)** to keep the selected customer's script.
-   To export guides for everyone in the current shortlist, go to **Export
-   conversation guides**, click **Prepare guides for the shortlist**, then
-   **Download conversation guides (CSV)**. For K = 50, this contains exactly 50
-   rows, including all profile fields, the script, and its editing status. If you
-   change a script or K, prepare the guide CSV again before downloading it.
-8. Download the contact shortlist and open the CSV. It should contain exactly
-   K customer rows, plus the header. The export includes all 13 profile fields.
-
-To use another file, select **Upload a CSV**. You can upload
-`data/demo/customer_profiles_demo.csv` or the full `test.csv` after step 6.
-Use one profile per row, a unique `id`, and the same 13 predictor columns and
-supported categories as the [data dictionary](docs/reports/tables/data_dictionary.csv).
-`sample_submission.csv` contains prediction-format columns and cannot be used
-as a customer-profile input. The app accepts up to 50 MB and 300,000 profiles.
-
-Scores estimate the synthetic dataset's Yes label. They are not confirmed sales.
-These profiles have no names or phone numbers. Conversation drafts use repeatable
-templates based on recorded driving and charging context; no external AI service
-or API key is needed. They help staff confirm needs and offer a consultation or
-test drive if the customer is interested. Staff should verify vehicle details,
-prices, offers, charging suitability, and incentive eligibility separately.
-The templates do not infer preferences from gender or age or affordability from
-income, explain the model score, or establish that a script will increase sales.
-Precision@K and Lift@K evaluate the ranking, not the conversation's sales effect.
-
-Guide CSVs support up to **1,000 customers per batch**. For a larger shortlist,
-reduce K to export guides; the ranking and individual guide remain available.
-Spreadsheet formula prefixes are escaped in the guide CSV; the underlying
-profile IDs and staff edits remain unchanged in the app. A leading apostrophe
-in a spreadsheet export is a text marker, not part of the original ID or script.
-Target labels and unrelated extra input columns are excluded from exports.
-Uploaded profiles and script edits stay in memory for this session and are not
-written to project files. Download edits before closing the session or loading
-a different CSV. Editing a script never changes scores or ranks. The app does
-not call, message, or book appointments automatically.
-
-To stop the app, click inside its terminal and press **Ctrl+C**. To open it again
-later, repeat this step from the project folder. Do not use VS Code's normal
-**Run Python File** button to start the Streamlit interface.
-
-## Reproduce the complete analysis
-
-Complete steps 1-4 first. For independent reproduction of the runnable project,
-use the Git option in step 1, record the reviewed commit, then complete steps 6-8
-and the app checks in step 5. Trying the demo alone does not reproduce the full analysis.
-
-### 6. Download the full dataset through Kaggle API
-
-The GitHub project does not include `train.csv`, `test.csv`, or
-`sample_submission.csv`. If all three already appear beside `app.py` on your
-computer, skip the download and continue to step 7.
-
-1. Sign in to your own [Kaggle account](https://www.kaggle.com/).
-2. Open the [approved competition](https://www.kaggle.com/competitions/playground-series-s6e9).
-   Complete any access or competition-rule steps Kaggle requires for your account.
-3. Open [Kaggle API settings](https://www.kaggle.com/settings/api).
-   Under **Legacy API Credentials**, choose **Create Legacy API Key**.
-4. Keep the downloaded file named **kaggle.json** in your computer's **Downloads**
-   folder. Do not place it inside this project or upload it to GitHub.
-5. In the VS Code terminal, run the command for your computer below.
-
-**Mac**
-
-```bash
-./.venv-msba265-ev-purchases/bin/python ev_project/download_data.py
-```
-
-**Windows - PowerShell**
-
-```powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" ev_project/download_data.py
-```
-
-**Check:** the terminal says **Downloaded train.csv, test.csv, and
-sample_submission.csv.** These three files should now appear in the main project
-folder beside `app.py`, not inside `notebooks` or `data`.
-
-The downloader uses Kaggle API; the notebooks read the downloaded CSVs from
-your computer. If all three files already exist, it prints **All three raw CSVs
-already exist; nothing was overwritten.** If only some exist, it stops so you
-can check the folder instead of mixing downloads.
-
-<details>
-<summary>If your credential file is stored elsewhere or you use API environment variables</summary>
-
-The downloader also checks your user's `.kaggle/kaggle.json` file. For another
-location, add `--credentials` followed by the quoted full file path to the
-download command. It also supports `KAGGLE_API_TOKEN`, or the pair
-`KAGGLE_USERNAME` and `KAGGLE_KEY`, when already configured in the environment.
-Each reviewer uses their own credentials. Do not put keys in code, notebooks, or GitHub.
-
-</details>
-
-### 7. Run the two notebooks in order
-
-These commands run every cell and save the notebook outputs and HTML reports.
-Run the EDA command first and wait for it to finish before running modeling.
-Modeling reads the cleaned training file created by EDA.
-
-**Mac**
-
-```bash
-./.venv-msba265-ev-purchases/bin/python ev_project/run_eda.py
-./.venv-msba265-ev-purchases/bin/python ev_project/run_modeling.py
-```
-
-**Windows - PowerShell**
-
-```powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" ev_project/run_eda.py
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" ev_project/run_modeling.py
-```
-
-**Check after EDA:** wait for **Saved executed notebook and
-docs/reports/01_data_understanding_and_cleaning.html.** Look for:
-
-- `data/processed/train_clean.csv` and `test_clean.csv`;
-- eight charts in `docs/reports/figures`;
-- dataset tables in `docs/reports/tables`;
-- 668,665 labeled training rows and 286,571 unlabeled test rows;
-- zero rows removed and target mapping No=0, Yes=1 for training only.
-
-**Check after modeling:** wait for **Saved executed notebook and
-docs/reports/02_modeling_and_prioritization.html.** Look for:
-
-- updated saved models and `models/model_metadata.json`;
-- validation and holdout tables in `docs/reports/modeling`;
-- 468,065 training, 100,300 validation, and 100,300 holdout profiles;
-- Logistic Regression selected by the validation rule;
-- holdout Precision@K about 78.78% and Lift@K about 4.51 at K=10,030.
-
-Open each HTML report from Finder or File Explorer using your browser. If it
-opens as HTML code in an editor, right-click it and choose **Open With** your
-browser. The reports should display tables and charts.
-
-Runs can take several minutes. A traceback or interrupted execution means the
-run is incomplete. Rerunning replaces generated notebooks, reports, cleaned
-data, and model artifacts; the raw CSVs stay unchanged. The runners use the
-Python environment you called, so a separate Jupyter server is not required.
-Small floating-point differences between computers are possible.
-
-<details>
-<summary>Optional: run notebook cells interactively in VS Code</summary>
-
-1. Install the Microsoft **Python** and **Jupyter** extensions in VS Code's
-   Extensions panel.
-2. Open `notebooks/01_data_understanding_and_cleaning.ipynb`.
-3. Click **Select Kernel** at the top right, choose **Python Environments**, and
-   select **.venv-msba265-ev-purchases**. If needed, use the interpreter paths below.
-4. Click **Run All** and wait for every cell to finish. Check for errors.
-5. Repeat for `notebooks/02_modeling_and_prioritization.ipynb` using the same kernel.
-
-| Computer | Environment's interpreter path |
-|---|---|
-| Mac | `.venv-msba265-ev-purchases/bin/python` |
-| Windows | `.venv-msba265-ev-purchases\Scripts\python.exe` |
-
-The notebook kernel is the Python that runs the cells. Choose your own local
-environment even if the saved display name says **MSBA265 | EV Purchases**.
-For `.py` files, choose **Python: Select Interpreter** from the Command Palette
-(Command+Shift+P on Mac; Ctrl+Shift+P on Windows) and select the same environment.
-
-</details>
-
-### 8. Check your results
-
-**Mac**
-
-```bash
-./.venv-msba265-ev-purchases/bin/python -m unittest discover -s tests -v
-```
-
-**Windows - PowerShell**
-
-```powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m unittest discover -s tests -v
-```
-
-**Check:** the final lines report **Ran 53 tests** and **OK**. These checks cover
-model separation, input validation, ranking, profile attachment, and conversation
-editing and export. Then start
-the app in step 5 and confirm its shortlist contains exactly K rows.
-
-For a replication record, note the commit, operating system, Python version,
-commands run, and actual outcome.
-
-## Update an existing environment
-
-Use this if the named venv already works but packages need to match an updated
-`requirements.txt`. Open the project folder and terminal as in step 2.
-Stop a running app with **Ctrl+C**, then run the commands for your computer.
-
-**Mac**
-
-```bash
-./.venv-msba265-ev-purchases/bin/python --version
-./.venv-msba265-ev-purchases/bin/python -m pip install --upgrade -r requirements.txt
-./.venv-msba265-ev-purchases/bin/python -m pip check
-```
-
-**Windows - PowerShell**
-
-```powershell
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" --version
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip install --upgrade -r requirements.txt
-& ".\.venv-msba265-ev-purchases\Scripts\python.exe" -m pip check
-```
-
-**Check:** Python is 3.12 or 3.13 and the last command says **No broken
-requirements found**. You can now start the supplied app with step 5. Updating
-packages does not retrain the model or upgrade Python. For full replication,
-also complete steps 6-8. Restart any open notebook kernel after changing packages.
-
-<details>
-<summary>How to get updated project files</summary>
-
-- **If you used ZIP:** download the latest ZIP again and extract it into a new
-  folder. Open that new folder in VS Code and create its own environment with
-  step 4. Keep your old folder until the new copy works. A ZIP download does
-  not use `git pull`. Download the raw CSVs again in step 6, or copy your three
-  unchanged raw CSVs into the new project folder.
-- **If you used Git:** stop the app and run `git status` in the project terminal.
-  If it says **nothing to commit, working tree clean**, run `git pull --ff-only`
-  to receive the published updates. Then run the package update commands above.
-  If Git reports local modifications or a conflict, keep your changes and resolve
-  them before pulling; do not discard them to force an update. A fresh clone in
-  another empty folder is also an option.
-
-</details>
-
-<details>
-<summary>If the venv is missing, moved, broken, or uses a different Python version</summary>
-
-1. Close the app and notebook kernels using the old environment.
-2. If `.venv-msba265-ev-purchases` exists, rename only that folder in Finder or
-   File Explorer to a backup name that is not already used. Keep your project
-   files and data. If the environment is missing, skip this step.
-3. Check Python with step 3, then repeat step 4 to create a new environment.
-4. Select the new interpreter and notebook kernel if using VS Code. Keep the
-   backup until the new environment works.
-
-Environments should be recreated after moving the project to a different folder
-or changing its Python minor version. Installing packages cannot repair a missing
-base Python. Do not copy a Mac venv to Windows.
-
-</details>
-
-<details>
-<summary>Optional: activate the environment for shorter commands</summary>
-
-The main guide works without activation. If you prefer the shorter `python`
-command, activate the environment from the project terminal:
-
-**Mac**
-
-```bash
-source .venv-msba265-ev-purchases/bin/activate
-```
-
-**Windows - PowerShell**
-
-```powershell
-.\.venv-msba265-ev-purchases\Scripts\Activate.ps1
-```
-
-If PowerShell blocks activation, keep using the full environment commands in
-this guide. An activated terminal normally shows `(msba265-ev-purchases)`;
-Anaconda may also show `(base)`. To check where `python` points, run
-`python -c "import sys; print(sys.executable)"`. It should point inside this venv.
-Use `deactivate` to leave it. A newly opened terminal may need activation again.
-
-</details>
-
-<details>
-<summary>Detailed analysis and verification</summary>
-
-## Data, cleaning, and interpretation
-
-Source: [Predicting Electric Vehicle Purchases — Kaggle competition](https://www.kaggle.com/competitions/playground-series-s6e9).
-This approved source is in Kaggle Competitions. Playground data are synthetic;
-Will_Buy_EV is a supplied dataset label, not documented as a verified transaction
-with a known purchase horizon.
-
-The data contain seven numeric and six categorical candidate predictors covering
-demographics, income, commuting, vehicle ownership, charging access, subsidies,
-environmental concern, and range anxiety. ID is retained for traceability.
-sample_submission.csv defines the submission format; its probabilities are not
-test labels.
-
-No missing values, duplicate IDs, or checked category/domain defects were found.
-Cleaning preserves all rows and predictor values, converts income and
-environmental-concern codes losslessly to integer storage, and explicitly maps
-the training target to 0/1. No target is added to test. Rare groups and statistical
-outliers are retained and discussed. In the modeling pipeline, environmental
-concern codes are encoded as categories, so modeling uses six numeric and seven
-categorical fields; the storage types described in the EDA remain unchanged.
-
-Approximately 17.46% of training labels are Yes. Income and commute distances
-have concentrations at USD 30,000 and 5 km; their origins are not established.
-Subgroup label shares and correlations are descriptive associations, not causal
-effects or established model feature importance. Definitions such as charging
-radius and the outcome horizon are not supplied, and are documented as unknown.
-
-## Modeling decisions and interpretation
-
-The fixed seed-42 stratified split assigns approximately 70% of labeled rows to
-training, 15% to validation, and 15% to holdout. Full-data EDA was already viewed
-before this split; the holdout is reserved from fitting and selection, but it is
-not an entirely unseen external dataset. Kaggle test.csv is unlabeled and is not
-used as the internal evaluation holdout.
-
-The candidates are DummyClassifier(strategy="prior"), Logistic Regression
-(C=1, lbfgs, max_iter=1000), and Decision Tree (max_depth=6,
-min_samples_leaf=200, random_state=42). Categorical fields use one-hot encoding;
-Logistic Regression scales numeric fields. Pipeline preprocessing learns only
-from training rows during candidate comparison. Initial probability baselines
-use no SMOTE or class weighting.
-
-Selection uses highest validation **Lift@10%**, then ROC-AUC to resolve a tie.
-If both tie, the fixed simplicity order is Dummy, Logistic Regression, Decision Tree.
-We also compare 1%, 5%, and 20% contact capacities. Tied profile scores have a
-fixed seed-and-ID hash order that does not use outcome labels. Dummy scores are
-constant, so its realized ranking can differ slightly from the expected random
-baseline, whose expected precision is the evaluation group's Yes-label share and
-whose expected lift is 1.
-
-After selection, the chosen pipeline is freshly fitted on training plus
-validation (85%) and evaluated on the holdout (15%). The saved app pipeline is
-that exact final fit. **Precision@K** is the Yes-label share among the top K;
-**Recall@K** is the share of all Yes labels captured there; **Lift@K** compares
-precision with the evaluation group's prevalence. Additional reports include
-ROC-AUC, average precision, Brier score, and threshold-0.50 classification
-metrics. The score threshold is a diagnostic and does not define the app's top K.
-
-### Current executed results
-
-The split contains **468,065 training**, **100,300 validation**, and **100,300
-holdout** profiles. Logistic Regression was selected using validation results:
-
-| Validation candidate | Precision@10% | Lift@10% | ROC-AUC |
-|---|---:|---:|---:|
-| Dummy baseline | 17.69% | 1.013 | 0.500 |
-| Logistic Regression | 79.10% | 4.529 | 0.938 |
-| Decision Tree | 78.76% | 4.510 | 0.937 |
-
-The two fitted classifiers are close on this comparison; selection follows the
-predefined rule and does not establish a universally superior algorithm.
-
-After refitting Logistic Regression on 568,365 train-plus-validation profiles,
-the final holdout results are:
-
-| Contact capacity | K | Precision@K | Lift@K |
-|---|---:|---:|---:|
-| 1% | 1,003 | 90.13% | 5.161 |
-| 5% | 5,015 | 84.67% | 4.848 |
-| 10% (primary) | 10,030 | 78.78% | 4.511 |
-| 20% | 20,060 | 66.19% | 3.790 |
-
-Holdout ROC-AUC is **0.939**; average precision is **0.741**. At the primary K,
-the shortlist captures **45.11%** of the holdout's Yes labels. These are internal
-synthetic-data results, not verified dealership conversion rates. The app lets
-users choose any integer K within their uploaded batch; unlabeled uploads cannot
-provide an observed Precision@K or Lift@K.
-
-Subgroup associations and model scores do not establish causal effects, extra
-sales, or ROI. Real deployment needs external labeled validation, review of
-whether demographic fields belong in the outreach process, and subgroup checks.
-Calibration and drift for real customers remain unestablished. The local app
-is a class-project prototype and does not contact customers automatically.
-
-## Reproducibility and verification status
-
-The EDA has been executed on macOS with Python 3.12 and 3.13. The modeling
-notebook was executed on macOS with Python 3.13.9: all 14 code cells completed
-without errors. The generated model metadata records the package versions,
-input hashes, split counts, and evaluation results.
-
-All **53 automated checks** passed, covering disjoint stratified splits,
-training-only preprocessing, validation-only selection, exact saved-pipeline
-probabilities, CSV errors, outcome-label exclusion, repeatable tied scores,
-exact-K output, the Streamlit workflow, and correct ID-based attachment of
-customer profile information to ranked scores. The running browser app was also
-checked with an uploaded demo CSV; its downloaded 20-row shortlist matched the
-saved model's ranks, IDs, and probabilities. The richer profile output was
-verified against all 286,571 Kaggle test profiles: rankings and probabilities
-were preserved, and all top-50 customer facts matched their source IDs.
-The [conversation workflow check](docs/reports/conversation_workflow_checks.json)
-records a real browser CSV download for 50 demo profiles and a matching edited
-TXT guide. Conversation checks verify profile-based drafts, edits kept with the correct
-customer when switching ranks, unchanged model scores, and exported guides that
-match the current shortlist. These checks validate the software workflow; the
-usefulness of the scripts and any sales effect require staff review and a pilot.
-
-Run the automated checks using step 8 above.
-
-Windows PowerShell instructions use the same code with platform-specific paths,
-but have not been executed on a Windows host; independent peer verification is
-still needed. Each computer creates its own venv from requirements.txt.
-
-AI assistance was used to draft code and analysis. The student should review,
-explain, and refine the target interpretation, split roles, selection rule,
-ranking metrics, and deployment limits before submission.
-
-
-</details>
-
-## Troubleshooting
-
-| What you see | What to do |
-|---|---|
-| I cannot find the green Code button | Open the repository home page from step 1, rather than an individual README or PDF file. |
-| Files are still inside a ZIP on Windows | Right-click the ZIP and choose Extract All. Open the extracted project folder in VS Code. |
-| `git` is not found | ZIP users do not need Git. For a peer clone, install Git and reopen the terminal, then repeat the Git option in step 1. |
-| `python3.13` or `py` is not found | Complete step 3 and reopen VS Code. On Windows, use the documented `python` fallback only if its version is 3.12/3.13. |
-| `requirements.txt` or `ev_project` is not found | Repeat step 2. The open folder must contain `app.py`, `README.md`, and `requirements.txt`. |
-| The named environment's Python path does not exist | Create the environment with step 4. Mac uses `bin/python`; Windows uses `Scripts\python.exe`. |
-| `No module named ...` or a package version error | Install `requirements.txt` using the named environment, or follow Update an existing environment. Restart any notebook kernel afterward. |
-| Installation cannot build/download a package | Check Python 3.12/3.13 and internet access. Keep the full error. If pip is outdated, run the same environment's Python with `-m pip install --upgrade pip`, then retry step 4. |
-| A command gives SyntaxError at `>>>` | Type `exit()` to leave Python, then run the command in VS Code's terminal, not a notebook cell. |
-| Streamlit does not open a browser | Copy its Local URL from the terminal into a browser. Keep the app terminal running. |
-| The browser cannot connect after the terminal closes | Start the app again with step 5. Closing the terminal stops the local app. |
-| The app reports a missing model or demo | Obtain the complete project ZIP/clone, including `models` and `data/demo`. Full reproduction in steps 6-7 recreates the artifacts. |
-| An uploaded CSV fails validation | First try the supplied demo. Use `test.csv` or a compatible profile CSV, not `sample_submission.csv`; check the data dictionary and the error shown. |
-| Kaggle reports missing credentials or HTTP 401/403 | Complete step 6 with your own API key and competition access. Keep `kaggle.json` in Downloads, outside the project. |
-| The downloader says only some raw CSVs exist | Check the three expected filenames beside `app.py`. Keep a backup of existing files before recovering a complete, matching set from Kaggle. |
-| Modeling cannot find `train_clean.csv` | Run the EDA command in step 7 and confirm it finishes before running modeling. |
-| An HTML report opens as code | In Finder/File Explorer, right-click the HTML file and choose Open With your browser. |
-| The notebook cannot import a package | Select the named environment as the notebook kernel; selecting the editor interpreter alone may not select the notebook kernel. |
-| The environment is not listed in VS Code | Use Python Environments: Refresh All Environment Managers from the Command Palette, or enter the interpreter path listed in step 7. |
-| PowerShell blocks Activate.ps1 | Use the full environment commands in this guide; activation is optional. |
-| A notebook run times out | Add `--timeout 600` to the EDA command or `--timeout 1800` to modeling. The limit applies to each cell. |
-
-Setup references: [GitHub ZIP downloads](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives),
-[Python virtual environments](https://docs.python.org/3.13/library/venv.html),
-[VS Code Python environments](https://code.visualstudio.com/docs/python/environments),
-and [running Streamlit](https://docs.streamlit.io/develop/concepts/architecture/run-your-app).
+Here the inputs are the processed numeric and encoded categorical features.
+Rank the resulting probabilities to choose the top K profiles. A threshold for
+assigning Yes/No is a separate decision from choosing exactly K people.
+The baseline is a Dummy classifier with no feature-based ranking. P1 explains
+the planned use of Precision@K and Lift@K to compare ranking with that baseline.
+
+The existing prototype already uses this weighted-score-and-sigmoid model.
+Its coefficients are fitted with scikit-learn's L-BFGS optimizer and L2
+regularization; it does not use the separate class exercise's NumPy training loop.
+
+## P2 working materials
+
+- [Draft technical paper](docs/P2/EV_Customer_Prioritization_Technical_Report.pdf).
+- [Draft stakeholder PowerPoint](docs/P2/EV_Customer_Prioritization_Stakeholder_Presentation.pptx).
+- [Mac and Windows run guide](docs/P2/RUN_GUIDE.md), including Git clone or ZIP,
+  environment setup, Kaggle API download, notebook execution, app use, and tests.
+
+The notebooks are the primary analysis source. The `ev_project` modules support
+their execution and the app. Saved outputs are in `docs/reports/`; the fitted
+pipeline and its metadata are in `models/`. The small demo is included; full
+competition files are downloaded with the reviewer's own Kaggle API credentials.
+
+The P2 drafts need the professor's individual P1 feedback when it becomes
+available, a documented response to that feedback, and independent peer
+reproduction before submission. The [optional extension plan](docs/P2/extension_plan.json)
+covers FastAPI, Docker, and MLOps; those extensions are planned, not completed.
+
+## Data interpretation
+
+The data contain **668,665 synthetic labeled profiles**, with **17.46% Yes**
+labels. Each row is a profile, with 13 predictors and a supplied EV purchase label.
+The dataset does not supply customer names, phone numbers, purchase dates, or
+verified responses to outreach. Scores estimate that dataset label; they do not
+establish real sales, campaign impact, or revenue.
+
+For field definitions and exploration, read the
+[data understanding notebook](notebooks/01_data_understanding_and_cleaning.ipynb)
+and [data dictionary](docs/reports/tables/data_dictionary.csv).
