@@ -254,6 +254,12 @@ python -m unittest discover -s tests -v
 ```
 
 Expected: **Logistic Regression**, then **Ran 53 tests** and **OK**.
+
+**Pandas compatibility warning:** With Python 3.14 and pandas 2.2.3, you may see
+`FutureWarning: ChainedAssignmentError`. If the tests finish with `OK`, they have
+passed. To avoid this known compatibility warning, use Python 3.12 or 3.13 as
+described in Setup.
+
 The app demo in step 8 checks scoring with the saved model on new profiles.
 Mac execution has been verified; independent Windows reproduction is still pending.
 
