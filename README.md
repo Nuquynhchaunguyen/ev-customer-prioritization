@@ -148,20 +148,53 @@ wait for it to finish before starting the next one.
 
 ### 5. Download the dataset through Kaggle API
 
-1. Sign in to [Kaggle](https://www.kaggle.com/) and complete any access/rule steps
-   for the [competition](https://www.kaggle.com/competitions/playground-series-s6e9).
-2. Create a legacy API key in [Kaggle API settings](https://www.kaggle.com/settings/api).
-   Leave the downloaded `kaggle.json` in **Downloads**, outside this project.
-3. Run:
+`kaggle.json` is a small file containing your Kaggle API login key. It lets the
+script download data using your own Kaggle account. The dataset CSVs are
+obtained by running the command below.
+
+First, sign in to your own [Kaggle account](https://www.kaggle.com/) and open the
+[approved competition](https://www.kaggle.com/competitions/playground-series-s6e9).
+If Kaggle asks you to join or accept its rules, review and complete those steps.
+
+**Already have a working `kaggle.json` in Downloads?** Keep using it and go to
+**Run the download** below. Opening a new VS Code window or cloning the project
+again does not require a new key.
+
+**First time setting up Kaggle access**
+
+1. Open [Kaggle API settings](https://www.kaggle.com/settings/api) and select
+   **API Tokens**. Scroll down to **Legacy API Credentials**.
+2. Click **Create Legacy API Key**. If a confirmation appears, review it and
+   choose **Continue**. Kaggle then downloads a file named `kaggle.json`.
+   Creating a new legacy key invalidates the previous legacy key.
+3. Open **Finder > Downloads** on Mac or **File Explorer > Downloads** on Windows.
+   Confirm that `kaggle.json` is there. If your browser saved it elsewhere, move it
+   into Downloads. If the browser added a number to the new filename, rename
+   that new file to `kaggle.json`, replacing the outdated key file.
+   Keep this file outside the project; it is private and should stay off GitHub.
+
+**Run the download - both Mac and Windows**
+
+Return to the project's VS Code terminal with the venv active, then run:
 
 ```bash
 python ev_project/download_data.py
 ```
 
-Expected: `train.csv`, `test.csv`, and `sample_submission.csv` appear beside
-`app.py`. If all three already exist, the script skips downloading without
-overwriting them. Each reviewer uses their own credentials; follow Kaggle's
-license and rules. Full CSVs and credentials are excluded from GitHub.
+Expected message: **Downloaded train.csv, test.csv, and sample_submission.csv.**
+The three files appear in the main project folder beside `app.py`.
+If they already exist, the script reports **All three raw CSVs already exist;
+nothing was overwritten.** Continue to step 6 in either case.
+
+If you previously configured other Kaggle credentials, the script uses those;
+otherwise it looks for `kaggle.json` in Downloads. Each person uses their own credentials and follows
+the competition's license and rules; full CSVs and keys are excluded from GitHub.
+
+| If downloading fails | What to check |
+|---|---|
+| Credentials are required | Confirm `kaggle.json` is in Downloads, with that exact name rather than `kaggle.json.txt` |
+| HTTP 401/403 | Check your key and the same account's access to the competition |
+| HTTP 404 | Check that your project copy includes the latest downloader fix |
 
 | File | Purpose |
 |---|---|
@@ -186,6 +219,18 @@ Each command finishes with **Saved executed notebook** and an HTML report path.
 Modeling uses the cleaned data from EDA and compares a Dummy baseline,
 Logistic Regression, and a Decision Tree. Rerunning replaces generated outputs
 and model files while keeping the raw CSVs unchanged.
+
+**Jupyter kernel messages during local runs**
+
+| Message | Meaning |
+|---|---|
+| `Kernel is running over TCP without encryption` | Jupyter reports that kernel traffic is unencrypted. This is a connection warning, separate from an error in an analysis cell. |
+| `Parent appears to have exited, shutting down` | The kernel is closing. When this follows the saved-output message, it can be normal cleanup after the run. |
+
+Confirm completion by checking for **Saved executed notebook**, no Python
+traceback, and an HTML report that opens with tables and charts. If the command
+stops before saving, shows a traceback, or the report is missing, check the error
+before continuing. These warnings alone do not confirm success or failure.
 
 | Output | Location |
 |---|---|
