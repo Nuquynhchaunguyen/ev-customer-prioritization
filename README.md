@@ -13,8 +13,9 @@ model scores do not establish real purchases or sales impact.
 ## Submission materials
 
 - **P1:** [Combined proposal PDF](docs/P1/EV_Customer_Prioritization_P1.pdf).
-  Page 1: proposal; page 2: six topic examples; page 3: one-page infographic;
-  page 4: dataset, initial exploration, and baseline; page 5: next steps and references.
+  Pages 1-2: topic examples and one-page infographic; page 3: project proposal;
+  page 4: dataset and initial exploration; page 5: baseline, feasibility, and next steps;
+  page 6: references.
 - **P2 drafts:** [Technical paper](docs/P2/EV_Customer_Prioritization_Technical_Report.pdf)
   and [stakeholder slides](docs/P2/EV_Customer_Prioritization_Stakeholder_Presentation.pptx).
   These will be updated after P1 feedback. Final delivery will be prepared later.
