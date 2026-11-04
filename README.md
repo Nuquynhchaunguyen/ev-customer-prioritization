@@ -4,11 +4,23 @@
 
 **Which customers should an EV dealership prioritize for contact when its outreach capacity is limited?**
 
-This project uses Logistic Regression to rank profiles from the approved
-[Kaggle competition](https://www.kaggle.com/competitions/playground-series-s6e9).
-The Streamlit app lets staff choose a contact capacity, review the top K profiles,
-and download a shortlist and editable conversation guides. The data are synthetic;
-model scores do not establish real purchases or sales impact.
+An illustrative EV dealership has **1,000 customer profiles** but staff can contact
+only **50 per campaign**. Its sales manager needs a tested rule for choosing which
+profiles to review first. An analyst would develop and evaluate that rule.
+
+**Illustrative contact labor budget:** At **10 minutes per contact** and **$30 per
+staff hour**, each contact represents **$5** in staff time, or **$250 for 50 contacts**
+(8 hours 20 minutes). These planning assumptions exclude analyst work and other costs.
+
+This project uses Logistic Regression and the approved
+[Kaggle competition dataset](https://www.kaggle.com/competitions/playground-series-s6e9)
+to evaluate whether a ranked shortlist identifies more profiles labeled
+`Will_Buy_EV = Yes` than random selection within the same contact capacity and labor
+budget. The Streamlit app lets staff choose K, review customer facts, and download
+a shortlist with editable conversation guides.
+
+The data are synthetic. Model scores and the illustrative costs do not establish
+actual sales, cost savings, or return on investment.
 
 ## Submission materials
 
