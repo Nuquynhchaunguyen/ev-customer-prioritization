@@ -28,17 +28,16 @@ actual sales, cost savings, or return on investment.
   Pages 1-2: topic examples and one-page infographic; page 3: project proposal;
   page 4: dataset and initial exploration; page 5: baseline, feasibility, and next steps;
   page 6: references.
+- **P2:**
 
-### P2
-
-1. [Technical paper](docs/P2/EV_Customer_Prioritization_Technical_Report.pdf) follows the Part 5 outline.
-2. [Python source](ev_project/), [Streamlit app](app.py), and [Kaggle data access instructions](#5-download-the-dataset-through-kaggle-api).
-3. [EDA report](docs/reports/01_data_understanding_and_cleaning.html) and [modeling report](docs/reports/02_modeling_and_prioritization.html). The technical paper interprets the results and visuals on pages 3 and 5–7. Open the HTML reports locally in a browser.
-4. **Data-to-action pipeline** on page 4 of the technical paper. Solid arrows show completed steps. Dashed arrows show planned outreach, outcome tracking, and feedback.
-5. [Saved fitted pipeline](models/model_bundle.joblib) and [load-and-test command](#7-check-the-saved-model-and-tests). See page 8 of the technical paper for the result.
-6. [Stakeholder PowerPoint](docs/P2/EV_Customer_Prioritization_Stakeholder_Presentation.pptx).
-7. [Setup](#setup), [run instructions](#run-the-project), and [Python dependencies](requirements.txt).
-8. **P1 feedback update** in Appendix B on page 10 of the technical paper. It records improvements since P1 and the status of instructor feedback.
+  1. [Technical paper](docs/P2/EV_Customer_Prioritization_Technical_Report.pdf) follows the Part 5 outline.
+  2. [Python source](ev_project/), [Streamlit app](app.py), and [Kaggle data access instructions](#5-download-the-dataset-through-kaggle-api).
+  3. [EDA report](docs/reports/01_data_understanding_and_cleaning.html) and [modeling report](docs/reports/02_modeling_and_prioritization.html). The technical paper interprets the results and visuals on pages 3 and 5–7. Open the HTML reports locally in a browser.
+  4. **Data-to-action pipeline** on page 4 of the technical paper. Solid arrows show completed steps. Dashed arrows show planned outreach, outcome tracking, and feedback.
+  5. [Saved fitted pipeline](models/model_bundle.joblib) and [load-and-test command](#7-check-the-saved-model-and-tests). See page 8 of the technical paper for the result.
+  6. [Stakeholder PowerPoint](docs/P2/EV_Customer_Prioritization_Stakeholder_Presentation.pptx).
+  7. [Setup](#setup), [run instructions](#run-the-project), and [Python dependencies](requirements.txt).
+  8. **P1 feedback update** in Appendix B on page 10 of the technical paper. It records improvements since P1 and the status of instructor feedback.
 
 ## Project map
 
@@ -47,7 +46,7 @@ ev-customer-prioritization/
 ├── README.md           Setup and run instructions
 ├── requirements.txt    Python dependencies
 ├── .gitignore          Excludes full data, credentials, and local environments
-├── docs/               P1 proposal, P2 materials, and generated reports
+├── docs/               P1 proposal, P2 report and PowerPoint slides, and analysis reports
 ├── notebooks/          01: data understanding; 02: modeling and evaluation
 ├── ev_project/         Download, preparation, training, and scoring code
 ├── data/               Included demo and locally generated data
