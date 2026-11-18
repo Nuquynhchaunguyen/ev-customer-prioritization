@@ -82,96 +82,125 @@ code; the full dataset is downloaded through Kaggle API in step 5.
 
 ### 2. Open the folder in VS Code
 
-Choose **File > Open Folder**, select the folder containing `README.md`, then
-**Terminal > New Terminal**. Run every command below from this main project folder.
+In VS Code, choose **File > Open Folder** and open the project folder you
+cloned or extracted. Then choose **Terminal > New Terminal**.
 
 ### 3. Create and activate the virtual environment
 
-If this venv already exists, run only your system's activation line below, then
-verify it. For first setup, follow the Mac or Windows steps.
+Use **Python 3.13** for a new setup. Python **3.12** also works with the pinned
+packages. If a version check shows **3.14** or any other version, follow
+[Troubleshooting](#troubleshooting-python-setup) before creating the venv.
 
-**Mac**
+If this project already has a venv, start with the **Activate** command for
+your system, then check its version below.
 
-Check `python3 --version`. If it shows **3.12.x or 3.13.x**, run:
+#### Mac
+
+1. **Check Python.** Use the version-specific command so you can select 3.13
+   even if your Mac defaults to a newer Python.
+
+   ```bash
+   python3.13 --version
+   ```
+
+   Continue when it prints **Python 3.13.x**. If the command is unavailable, see
+   [Troubleshooting](#troubleshooting-python-setup).
+
+2. **Create the venv.**
+
+   ```bash
+   python3.13 -m venv .venv-msba265-ev-purchases
+   ```
+
+3. **Activate the venv.**
+
+   ```bash
+   source .venv-msba265-ev-purchases/bin/activate
+   ```
+
+#### Windows (PowerShell)
+
+1. **Check Python.** The first command should show **3.13.x** or **3.12.x**.
+   The second should show **win-amd64**. If either check fails, see
+   [Troubleshooting](#troubleshooting-python-setup).
+
+   ```powershell
+   python --version
+   python -c "import sysconfig; print(sysconfig.get_platform())"
+   ```
+
+2. **Create the venv.**
+
+   ```powershell
+   python -m venv .venv-msba265-ev-purchases
+   ```
+
+3. **Activate the venv.**
+
+   ```powershell
+   .\.venv-msba265-ev-purchases\Scripts\Activate.ps1
+   ```
+
+#### Check the active venv on Mac or Windows
 
 ```bash
-python3 -m venv .venv-msba265-ev-purchases
-source .venv-msba265-ev-purchases/bin/activate
+python --version
+python -c "import sys; print(sys.executable)"
 ```
 
-**Windows - PowerShell**
+The version should be **3.13.x** or **3.12.x**, and the path should include
+this project's `.venv-msba265-ev-purchases` folder.
 
-First check that `python` points to Python 3.12 or 3.13 and prints `win-amd64`.
+**Windows only.** In the same terminal, check the active environment.
 
 ```powershell
-python -c "import sys, sysconfig; print(sys.version.split()[0]); print(sysconfig.get_platform())"
+python -c "import sysconfig; print(sysconfig.get_platform())"
 ```
 
-If both values match, create and activate the environment:
+The expected Windows result is `win-amd64`. If a check fails, see the
+troubleshooting steps below. When your checks pass, continue to step 4.
+Activate the venv again when you open a new terminal.
 
-```powershell
-python -m venv .venv-msba265-ev-purchases
-.\.venv-msba265-ev-purchases\Scripts\Activate.ps1
-```
+#### Troubleshooting Python setup
 
-**Other Python commands, if needed**
-
-If the main version check fails or shows another version, choose one working
-alternative below that reports **3.12.x or 3.13.x**. Run its creation command,
-then the activation line from your system's block above.
-
-| Computer | Check the version | Alternative creation command |
-|---|---|---|
-| Mac | `python3.13 --version` | `python3.13 -m venv .venv-msba265-ev-purchases` |
-| Mac | `python --version` | `python -m venv .venv-msba265-ev-purchases` |
-| Windows | `py -3.13 --version` | `py -3.13 -m venv .venv-msba265-ev-purchases` |
-| Windows | `python3 --version` | `python3 -m venv .venv-msba265-ev-purchases` |
-
-For an installed Python 3.12, you can also use `python3.12` on Mac or
-`py -3.12` on Windows. On Windows, check the chosen interpreter reports
-`win-amd64` by substituting it for `python` in the platform check above.
-If none finds a supported version, install Python 3.13 from the link
-above and reopen VS Code.
-
-**If PowerShell blocks activation:** open **Command Prompt** from the arrow
-beside the Terminal **+** button, stay in the project folder, and run:
-
-```bat
-.venv-msba265-ev-purchases\Scripts\activate.bat
-```
-
-**Verify - both systems**
-
-```bash
-python -c "import sys, sysconfig; print(sys.version.split()[0]); print(sys.executable); print(sysconfig.get_platform())"
-```
-
-The version should be **3.12.x or 3.13.x**, and the executable path should be
-inside this project's `.venv-msba265-ev-purchases` folder. On Windows the last
-line should read `win-amd64`. Continue to step 4.
-Activate the venv again in each new terminal.
-
-If an existing venv uses another version, close its app/notebook kernels,
-run `deactivate`, rename the venv folder to a backup, and recreate it with a
-supported Python above. Keep the backup until the replacement works.
-Installing packages does not change the venv's Python version.
+- **Mac cannot find `python3.13`.** Try `python3 --version`. If that prints
+  **3.13.x** or **3.12.x**, use `python3 -m venv .venv-msba265-ev-purchases` in
+  Mac step 2. If you already have `python3.12`, you can use it the same way.
+  Otherwise, install Python 3.13 from the [setup link](#setup), reopen VS Code,
+  and try `python3.13 --version` again.
+- **Windows `python` is missing or fails the version or platform check.** Try `py -3.13`
+  or `python3` in place of `python` in Windows steps 1 and 2. For an existing
+  3.12 installation with the Python launcher, `py -3.12` also works. Use the
+  first option that reports a supported version and `win-amd64`. If needed,
+  install the [Windows 64-bit Python listed under Setup](#setup).
+- **PowerShell blocks activation.** Open **Command Prompt** using the arrow
+  next to the VS Code Terminal **+** button. From the project folder, run
+  `.venv-msba265-ev-purchases\Scripts\activate.bat`, then use that terminal for
+  the remaining steps.
+- **The active venv shows an unsupported Python version or Windows platform.** Close
+  any app or notebook using it and run `deactivate`. In Finder or File Explorer,
+  rename `.venv-msba265-ev-purchases` to `.venv-msba265-ev-purchases-backup`
+  (choose an unused name). Then create a fresh venv using the verified Python
+  command for your system. Activate it and repeat the checks before step 4.
+  Running the create command again with the same Python keeps that version.
 
 ### 4. Install or update the packages
 
-With the venv active, use pip to read the dependency list and install prebuilt packages:
+With the verified venv active, run the first command and wait for installation
+to succeed. Then run the second command.
 
 ```bash
 python -m pip install --only-binary=:all: -r requirements.txt
 python -m pip check
 ```
 
-Expected: **No broken requirements found**. To update an existing venv after
-receiving new project files, activate it and repeat this step.
+Expect **No broken requirements found**. To update an existing compatible venv,
+activate it and repeat this step.
 
-If the install cannot find a compatible pandas build on Windows, repeat the
-version and platform check in step 3. If needed, rename the existing venv and
-recreate it with x64 Python 3.13. If the error persists, record the output of
-step 3, `python -m pip --version`, and the full install error for the P2 review.
+If pip reports `No matching distribution found for pandas==2.2.3`, check the
+active Python version again. This release has no prebuilt package for Python
+3.14. Follow [Troubleshooting](#troubleshooting-python-setup) to replace a
+3.14 venv with a supported version before retrying. On Windows, also confirm `win-amd64`.
 
 ## Run the project
 
@@ -247,10 +276,16 @@ customer names, phone numbers, or observed outreach outcomes.
 
 ### 6. Run the analysis
 
-Run EDA first, then modeling:
+**First, run the data exploration (EDA).**
 
 ```bash
 python ev_project/run_eda.py
+```
+
+**Then, run the modeling notebook.** Wait for EDA to save its output and for
+the terminal prompt to return before starting this command.
+
+```bash
 python ev_project/run_modeling.py
 ```
 
@@ -270,6 +305,9 @@ and model files while keeping the raw CSVs unchanged.
 |---|---|
 | `Kernel is running over TCP without encryption` | Jupyter reports that kernel traffic is unencrypted. This is a connection warning, separate from an error in an analysis cell. |
 | `Parent appears to have exited, shutting down` | The kernel is closing. When this follows the saved-output message, it can be normal cleanup after the run. |
+
+If the kernel shutdown message prints over a prompt that has already returned
+after saving, press **Enter** on an empty line to see a fresh prompt.
 
 Confirm completion by checking for **Saved executed notebook**, no Python
 traceback, and an HTML report that opens with tables and charts. If the command
@@ -296,18 +334,30 @@ notebook 01 followed by notebook 02.
 
 ### 7. Check the saved model and tests
 
-The first command loads the bundled model and scores the included demo in a
-fresh Python process. It also works directly after step 4:
+**Check the saved model.** This works directly after step 4 using the included
+model and demo profiles.
 
 ```bash
 python -m ev_project.check_saved_model
+```
+
+Example output from the included model:
+
+```text
+Model: Logistic Regression
+Ranked 500 demo profiles and shortlisted 50.
+First profile: 668721 (Yes score 0.930806).
+Ranking matches after reload. Maximum score difference: 0.
+```
+
+**Run the automated tests.**
+
+```bash
 python -m unittest discover -s tests -v
 ```
 
-Expect **Logistic Regression**, **500 ranked profiles**, **50 shortlisted**, and
-first profile **668721** (Yes score about **0.930806**). The command compares two
-loads of the same artifact and should report a maximum score difference of **0**.
-The tests should report **Ran 53 tests** and **OK**.
+Streamlit may print `missing ScriptRunContext` during these terminal tests.
+Check the final summary for `Ran 53 tests` and `OK`.
 
 The included [demo CSV](data/demo/customer_profiles_demo.csv) shows the input
 format. Use one unique `id` and the 13 predictor columns per row, with headers
