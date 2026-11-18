@@ -357,7 +357,16 @@ python -m unittest discover -s tests -v
 ```
 
 Streamlit may print `missing ScriptRunContext` during these terminal tests.
-Check the final summary for `Ran 53 tests` and `OK`.
+
+A successful run ends with a summary like this.
+
+```text
+Ran 53 tests in 3.006s
+
+OK
+```
+
+The runtime may vary by computer. The final `OK` confirms that all 53 tests passed.
 
 The included [demo CSV](data/demo/customer_profiles_demo.csv) shows the input
 format. Use one unique `id` and the 13 predictor columns per row, with headers
