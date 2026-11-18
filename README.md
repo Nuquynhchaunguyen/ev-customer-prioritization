@@ -358,7 +358,7 @@ python -m unittest discover -s tests -v
 
 Streamlit may print `missing ScriptRunContext` during these terminal tests.
 
-A successful run ends with a summary like this.
+**Expected message:** The terminal displays this summary when the tests pass.
 
 ```text
 Ran 53 tests in 3.006s
