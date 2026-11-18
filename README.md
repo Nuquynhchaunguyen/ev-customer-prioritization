@@ -341,14 +341,12 @@ model and demo profiles.
 python -m ev_project.check_saved_model
 ```
 
-Example output from the included model:
+Expected output from the included model
 
-```text
-Model: Logistic Regression
-Ranked 500 demo profiles and shortlisted 50.
-First profile: 668721 (Yes score 0.930806).
-Ranking matches after reload. Maximum score difference: 0.
-```
+**Model: Logistic Regression**<br>
+**Ranked 500 demo profiles and shortlisted 50.**<br>
+**First profile: 668721 (Yes score 0.930806).**<br>
+**Ranking matches after reload. Maximum score difference: 0.**
 
 **Run the automated tests.**
 
@@ -358,13 +356,11 @@ python -m unittest discover -s tests -v
 
 Streamlit may print `missing ScriptRunContext` during these terminal tests.
 
-**Expected message:** The terminal displays this summary when the tests pass.
+The terminal displays this summary when the tests pass.
 
-```text
-Ran 53 tests in 3.006s
+**Ran 53 tests in 3.006s**
 
-OK
-```
+**OK**
 
 The runtime may vary by computer. The final `OK` confirms that all 53 tests passed.
 
