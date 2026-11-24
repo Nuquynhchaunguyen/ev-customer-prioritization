@@ -1,0 +1,39 @@
+{
+  "reviewed_at_utc": "2026-11-24T23:24:12.099936+00:00",
+  "report_pages": 17,
+  "presentation_slides": 10,
+  "pdf_visual_review": "All 17 pages visually reviewed. Updated pages 4 and 17 were rendered and inspected; the other 15 pages are pixel-identical to the prior reviewed edition. No clipping or overlap observed.",
+  "presentation_visual_review": "All 10 slides reviewed. Revised slides 2, 3 and 6 inspected at full size; all other slides pixel-identical. Native chart data/workbook, table and all speaker notes retained. Structural and editable chart checks passed; native PowerPoint application execution was not performed.",
+  "html_review": "Six embedded figures loaded, ten report sections present, no horizontal overflow or script errors; changed passages visually inspected in Chrome.",
+  "files": {
+    "docs/Final/EV_Customer_Prioritization_Final_Report.pdf": "b55182c9dd5bc91ee14b9135680f0234abd4d24fb782b284601c067c32214907",
+    "docs/Final/EV_Customer_Prioritization_Final_Report.html": "21f43be100259b45362254f1722963a045153393e8b64afdb88f46ec6deff60a",
+    "docs/Final/report_content.md": "ea227717d2f1725734c20d1c3ba0174fcfdfd5ec8493c3e8ec0c7fe02103d357",
+    "docs/Final/EV_Customer_Prioritization_Final_Presentation.pptx": "27503172e20463d1d5baa7147bd2b98ddc191fd0f44b584c578cca4da9a7ec19"
+  },
+  "model_unchanged": true,
+  "kaggle_instructions_unchanged": true,
+  "local_tests": {
+    "passed": 74,
+    "failed": 0,
+    "reported_seconds": 3.212,
+    "platform": "macOS ARM64",
+    "evidence": "docs/Final/evidence/final_audit_2026-11-24.json"
+  },
+  "docker_extension_tests_per_architecture": 21,
+  "container_execution": [
+    {
+      "platform": "Linux ARM64",
+      "last_run_date": "2026-11-24"
+    },
+    {
+      "platform": "Linux AMD64 emulated on Apple Silicon",
+      "last_run_date": "2026-11-23"
+    }
+  ],
+  "native_windows_execution": false,
+  "windows_x64_python_313_package_resolution_passed": true,
+  "handoff": "Owner review, authorized publication, independent peer replication, a newly signed Final form and the actual presentation remain external submission steps.",
+  "feedback_review_date": "2026-11-24",
+  "latest_revision_scope": "Full rubric and runtime re-audit; two report clarification lines, four stakeholder text changes and chart-axis label spacing. Added readiness review and fresh run evidence. No model, source code, numeric result, Kaggle setup or root README changes."
+}

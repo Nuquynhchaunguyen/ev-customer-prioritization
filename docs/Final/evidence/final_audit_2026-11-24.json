@@ -1,0 +1,539 @@
+{
+  "schema_version": "final-project-readiness-audit.v1",
+  "reviewed_at_utc": "2026-11-24T23:24:12.099936+00:00",
+  "assignment": {
+    "source": "Owner-supplied FInal-Project.docx",
+    "sha256": "3a9d5f3bf3d4899b50e5f2be9ecbfa2d7f38ed8cd5c7cb6e82b13b986f76907c",
+    "base_final_criteria_reviewed": 6,
+    "required_report_sections_reviewed": 10,
+    "optional_extensions_reviewed": [
+      "FastAPI",
+      "Docker",
+      "MLOps"
+    ]
+  },
+  "analysis_reproduction": {
+    "verified_at_utc": "2026-11-24T23:14:59.809777+00:00",
+    "scope": "Agent-run reproduction in an isolated working copy of the current tracked and nonignored project files.",
+    "environment": {
+      "python": "3.13.9",
+      "operating_system": "Darwin",
+      "architecture": "arm64",
+      "versions": {
+        "pandas": "2.2.3",
+        "numpy": "2.3.5",
+        "scikit-learn": "1.9.1",
+        "joblib": "1.6.0",
+        "streamlit": "1.65.0",
+        "fastapi": "0.165.0",
+        "pydantic": "2.12.5"
+      },
+      "reused_pinned_project_environment": true,
+      "fresh_install_performed": false
+    },
+    "inputs": {
+      "authorized_existing_raw_csvs_preloaded": [
+        "train.csv",
+        "test.csv",
+        "sample_submission.csv"
+      ],
+      "online_kaggle_download_reverified": false
+    },
+    "runs": [
+      {
+        "command": [
+          "python",
+          "ev_project/run_eda.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 23.996
+      },
+      {
+        "command": [
+          "python",
+          "ev_project/run_modeling.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 31.084
+      },
+      {
+        "command": [
+          "python",
+          "-m",
+          "ev_project.check_saved_model"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 1.194
+      },
+      {
+        "command": [
+          "python",
+          "-m",
+          "ev_project.monitoring",
+          "--build-reference"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 4.381
+      },
+      {
+        "command": [
+          "python",
+          "-m",
+          "ev_project.monitoring",
+          "--demo"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.567
+      },
+      {
+        "command": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-v"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 4.68
+      }
+    ],
+    "unit_tests": {
+      "count": 74,
+      "reported_seconds": 3.212,
+      "final_status": "OK"
+    },
+    "exact_matches": {
+      "evaluation_tables": [
+        "docs/reports/modeling/split_summary.csv",
+        "docs/reports/modeling/validation_metrics.csv",
+        "docs/reports/modeling/validation_ranking.csv",
+        "docs/reports/modeling/holdout_metrics.csv",
+        "docs/reports/modeling/holdout_ranking.csv",
+        "docs/reports/modeling/holdout_confusion_matrix.csv"
+      ],
+      "maximum_evaluation_table_difference": 0.0,
+      "byte_identical_data_files": {
+        "data/splits/split_membership.csv": 668665,
+        "data/processed/train_clean.csv": 668665,
+        "data/processed/test_clean.csv": 286571
+      },
+      "saved_model_demo": {
+        "selected_model": "Logistic Regression",
+        "ranked_demo": 500,
+        "shortlisted_demo": 50,
+        "ranking_matches_original": true,
+        "maximum_score_difference": 0.0,
+        "first_id": "668721",
+        "first_score": 0.9308061534958222
+      },
+      "executed_notebooks": {
+        "01_data_understanding_and_cleaning.ipynb": {
+          "error_outputs": 0,
+          "executed_code_cells": 17
+        },
+        "02_modeling_and_prioritization.ipynb": {
+          "error_outputs": 0,
+          "executed_code_cells": 14
+        }
+      }
+    },
+    "reference_rebuild_and_monitoring": {
+      "reference_rows": 468065,
+      "reference_matches_retrained_model": true,
+      "baseline_status": "stable",
+      "shifted_status": "investigate",
+      "baseline_max_psi": 0.01827957,
+      "shifted_max_psi": 25.6575286
+    },
+    "original_model_and_analysis_outputs_unchanged": true,
+    "limitations": {
+      "native_windows_execution": false,
+      "independent_classmate_replication": false,
+      "note": "This agent-run check supports technical verification and does not replace the classmate run or signed Final validation form."
+    }
+  },
+  "kaggle_download_reverification": {
+    "verified_at_utc": "2026-11-24T23:20:39.792581+00:00",
+    "scope": "Isolated authorized Kaggle download into an empty folder, using the unmodified project downloader and the existing private user credential configuration. Downloaded files then compared with project source data.",
+    "script_sha256": "2ec5db0f15683daa8967d04a979d10265abe5ad4569b218c8d5185f1f81e69f1",
+    "script_matches_project": true,
+    "files": {
+      "train.csv": {
+        "bytes": 44707646,
+        "sha256": "eae9eaa4e6378df405e755f853771d7e26d212bd93258349fc797b771021946a",
+        "matches_project_source": true
+      },
+      "test.csv": {
+        "bytes": 18298347,
+        "sha256": "539263f6caabc40afd5e2f0bc0ab16b10a2d1177c565fc71b866f0181d836b34",
+        "matches_project_source": true
+      },
+      "sample_submission.csv": {
+        "bytes": 7737432,
+        "sha256": "a9747a8b947e4e35505e3da4535a5a494978b012a7adb50973f13e598849dda5",
+        "matches_project_source": true
+      }
+    },
+    "credentials_recorded": false,
+    "original_data_unchanged": true
+  },
+  "bonus_reverification": {
+    "audit_version": "1.0",
+    "audited_at_utc": "2026-11-24T23:13:12.195265+00:00",
+    "platform": {
+      "host_os": "macOS",
+      "host_architecture": "arm64",
+      "python": "3.13.9",
+      "docker_os": "linux",
+      "docker_architecture": "arm64"
+    },
+    "local_http": {
+      "checked_at_utc": "2026-11-24T23:13:15.375992+00:00",
+      "python": "3.13.9",
+      "model": "Logistic Regression",
+      "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+      "ranked_profiles": 500,
+      "shortlisted_profiles": 50,
+      "maximum_probability_difference": 0.0,
+      "ranking_matches_saved_pipeline": true,
+      "invalid_request_statuses": {
+        "missing_column": 422,
+        "duplicate_ids": 422,
+        "capacity_exceeds_batch": 422,
+        "invalid_category": 422
+      },
+      "monitoring_status": "stable",
+      "passed": true
+    },
+    "docker_http": {
+      "checked_at_utc": "2026-11-24T23:13:38.192956+00:00",
+      "python": "3.13.9",
+      "model": "Logistic Regression",
+      "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+      "ranked_profiles": 500,
+      "shortlisted_profiles": 50,
+      "maximum_probability_difference": 0.0,
+      "ranking_matches_saved_pipeline": true,
+      "invalid_request_statuses": {
+        "missing_column": 422,
+        "duplicate_ids": 422,
+        "capacity_exceeds_batch": 422,
+        "invalid_category": 422
+      },
+      "monitoring_status": "stable",
+      "passed": true
+    },
+    "tests": {
+      "local_api": {
+        "tests": 11,
+        "reported_seconds": 0.859,
+        "exit_code": 0,
+        "result": "OK"
+      },
+      "local_monitoring": {
+        "tests": 10,
+        "reported_seconds": 0.676,
+        "exit_code": 0,
+        "result": "OK"
+      },
+      "docker_extensions": {
+        "tests": 21,
+        "reported_seconds": 0.686,
+        "exit_code": 0,
+        "result": "OK"
+      }
+    },
+    "docker": {
+      "image_tag": "ev-prioritization:audit-nov24",
+      "image_id": "sha256:c5063d15629b38fb9de9504044b61922f7d034761334b615e6342515f5c2469c",
+      "os": "linux",
+      "architecture": "arm64",
+      "user": "10001:10001",
+      "health": "healthy",
+      "tests": 21,
+      "tests_exit_code": 0,
+      "pip_check": "No broken requirements found.",
+      "build_performed": true,
+      "build_cache_used": true,
+      "build_context": "Dockerfile and .dockerignore allowlisted current project source",
+      "fresh_execution_scope": "Linux ARM64 container on Docker Desktop for Mac",
+      "command": "docker build -t ev-prioritization:audit-nov24 ."
+    },
+    "monitoring_reference": {
+      "reference_rows": 468065,
+      "reference_scope": {
+        "selection_scope": "saved_training_split_only",
+        "included_split": "train",
+        "excluded_splits": [
+          "validation",
+          "holdout"
+        ],
+        "cleaned_source": "data/processed/train_clean.csv",
+        "cleaned_source_sha256": "43d7a8a74a8c857abec14fb7852a7c0cce19b502ec4ac0df194d3cf73a44d150",
+        "membership": "data/splits/split_membership.csv",
+        "membership_sha256": "e7099e9481121643653966a16aa2aaa26928def252e5ad9040d82db2bb1a9150",
+        "selection_seed": 42,
+        "contains_raw_profiles": false,
+        "contains_labels": false
+      },
+      "model_sha256_matches": true,
+      "target_in_features": false,
+      "policy": {
+        "minimum_batch_size": 200,
+        "review_psi": 0.1,
+        "investigate_psi": 0.2,
+        "smoothing_probability": 1e-06,
+        "numeric_quantile_bins": 10,
+        "calibration": "Prototype investigation settings; not calibrated error guarantees or significance tests."
+      },
+      "source_hash_matches_metadata": true,
+      "source_hash_matches_local_data": true,
+      "membership_hash_matches_local_data": true
+    },
+    "monitoring_demonstration": {
+      "reference_id": "3525079ddba6a6a5d3c39efb51c89f00c7b80aabd80aba99a26ea10b5f68dc59",
+      "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+      "reference_rows": 468065,
+      "batch_rows": 500,
+      "baseline_status": "stable",
+      "shifted_status": "investigate",
+      "baseline_max_psi": 0.01827957,
+      "shifted_max_psi": 25.6575286,
+      "shifted_investigate_features": [
+        "Age",
+        "Annual_Income_USD",
+        "Daily_Commute_km",
+        "Home_Charging_Possible"
+      ],
+      "quality_evaluation": "Not performed; demonstration checks drift detection, not prediction accuracy.",
+      "privacy": "Output reports contain aggregate histograms and no profile rows, identifiers or labels.",
+      "model_unchanged": true
+    },
+    "windows": {
+      "existing_evidence": "docs/Final/evidence/windows_full_requirements.json",
+      "evidence_created_utc": "2026-11-23T22:30:34.225985+00:00",
+      "requirements_hashes_still_match": true,
+      "resolved_prebuilt_packages": 98,
+      "python_version": "3.13",
+      "target_platform": "win_amd64",
+      "resolution_rerun_in_this_audit": false,
+      "native_execution_performed": false
+    },
+    "historical_amd64_container_evidence": {
+      "file": "docs/Final/evidence/docker_amd64.json",
+      "date": "2026-11-23",
+      "execution": "Linux AMD64 emulation on Apple Silicon",
+      "rerun_in_this_audit": false
+    },
+    "original_source_model_tests_unchanged": true,
+    "temporary_services_stopped": true,
+    "passed": true,
+    "scope": "Actual local extension re-verification. This does not establish independent peer replication, signatures, native Windows execution, real purchase quality, or a grading outcome."
+  },
+  "product_demonstration_smoke_check": {
+    "verified_at_utc": "2026-11-24T23:22:01.583Z",
+    "scope": "Agent-operated real-browser smoke check of the Streamlit product in an isolated local reproduction copy using the included synthetic demo.",
+    "browser": "Google Chrome headless",
+    "checks": {
+      "demo_profiles": 500,
+      "contact_capacity": 50,
+      "displayed_shortlist_size": 50,
+      "first_customer_id": "668721",
+      "customer_selection_changed": true,
+      "edited_guide_retained_on_return_to_customer": true,
+      "bulk_guide_preparation_completed": true,
+      "no_browser_script_errors": true
+    },
+    "downloads": {
+      "contact_shortlist_csv": {
+        "rows": 50,
+        "columns": 16,
+        "first_id": "668721",
+        "ids_unique": true,
+        "all_ids_and_scores_match_saved_pipeline": true
+      },
+      "selected_guide_txt": {
+        "customer_id": "668721",
+        "staff_edit_present": true
+      },
+      "conversation_guides_csv": {
+        "rows": 50,
+        "columns": 18,
+        "ids_match_shortlist": true,
+        "first_id": "668721",
+        "edited_guide_attached_to_correct_id": true,
+        "edited_guide_count": 1
+      }
+    },
+    "browser_script_errors": [],
+    "passed": true,
+    "cleanup": {
+      "temporary_streamlit_server_stopped": true,
+      "browser_closed": true
+    },
+    "limits": {
+      "independent_classmate_replication": false,
+      "live_classroom_presentation": false,
+      "real_customer_contact": false,
+      "note": "This technical product verification does not replace the owner presentation, independent classmate run, or signed Final validation form."
+    },
+    "privacy": "Screenshots and downloaded synthetic example files remain in the private audit workspace; this summary contains no customer profile records."
+  },
+  "document_review": {
+    "report_pages": 17,
+    "changed_pdf_pages": [
+      4,
+      17
+    ],
+    "other_pdf_pages_pixel_identical": true,
+    "report_source_changes": 2,
+    "all_pages_visually_reviewed": true,
+    "html_sections": 10,
+    "embedded_figures_loaded": true,
+    "horizontal_overflow": false,
+    "html_script_errors": [],
+    "presentation": {
+      "slide_count": 10,
+      "changed_slides": [
+        2,
+        3,
+        6
+      ],
+      "unchanged_slides_pixel_identical": true,
+      "changed_package_parts": [
+        "ppt/slides/slide2.xml",
+        "ppt/slides/slide3.xml",
+        "ppt/slides/slide6.xml",
+        "ppt/slides/charts/chart1.xml"
+      ],
+      "all_speaker_notes_unchanged": true,
+      "chart_embedded_workbook_unchanged": true,
+      "chart_values_unchanged": true,
+      "native_table_unchanged": true,
+      "package_and_native_chart_validation_passed": true,
+      "visual_review": "All slides inspected independently; changed slides 2, 3 and 6 rendered from the final PPTX and inspected at full size. Text fits, adjacent chart categories are separated, and no unwanted clipping or overlaps observed.",
+      "native_powerpoint_application_execution": false,
+      "comparisons": [
+        {
+          "slide": 1,
+          "pixel_identical": true,
+          "changed_bbox": null
+        },
+        {
+          "slide": 2,
+          "pixel_identical": false,
+          "changed_bbox": [
+            256,
+            556,
+            573,
+            584
+          ]
+        },
+        {
+          "slide": 3,
+          "pixel_identical": false,
+          "changed_bbox": [
+            64,
+            167,
+            868,
+            410
+          ]
+        },
+        {
+          "slide": 4,
+          "pixel_identical": true,
+          "changed_bbox": null
+        },
+        {
+          "slide": 5,
+          "pixel_identical": true,
+          "changed_bbox": null
+        },
+        {
+          "slide": 6,
+          "pixel_identical": false,
+          "changed_bbox": [
+            64,
+            349,
+            992,
+            654
+          ]
+        },
+        {
+          "slide": 7,
+          "pixel_identical": true,
+          "changed_bbox": null
+        },
+        {
+          "slide": 8,
+          "pixel_identical": true,
+          "changed_bbox": null
+        },
+        {
+          "slide": 9,
+          "pixel_identical": true,
+          "changed_bbox": null
+        },
+        {
+          "slide": 10,
+          "pixel_identical": true,
+          "changed_bbox": null
+        }
+      ]
+    },
+    "final_files_sha256": {
+      "docs/Final/EV_Customer_Prioritization_Final_Report.pdf": "b55182c9dd5bc91ee14b9135680f0234abd4d24fb782b284601c067c32214907",
+      "docs/Final/EV_Customer_Prioritization_Final_Report.html": "21f43be100259b45362254f1722963a045153393e8b64afdb88f46ec6deff60a",
+      "docs/Final/report_content.md": "ea227717d2f1725734c20d1c3ba0174fcfdfd5ec8493c3e8ec0c7fe02103d357",
+      "docs/Final/EV_Customer_Prioritization_Final_Presentation.pptx": "27503172e20463d1d5baa7147bd2b98ddc191fd0f44b584c578cca4da9a7ec19"
+    }
+  },
+  "tested_runtime_files_sha256": {
+    ".dockerignore": "2036b4b5e1685e3a385e4dee5577461acd1b128991e3bd7f39019b9383e4064a",
+    "Dockerfile": "67b87b393b0815e1e39b58ff7114d8a2f4f83664def2f992feec3e780a0e179c",
+    "ev_project/api.py": "eaa3cb2994029a2c5c665167c531573d80fdc7df2addac8f87a9f6d43fa0895f",
+    "ev_project/check_api.py": "94540682b2147db4ac2cbd9ca9b1d9a1bd05cf172b19ec83ad3081e634980604",
+    "ev_project/monitoring.py": "a44a39a1140be384c51fab65d833f53560b7c219ff99e073353f592f632547f5",
+    "models/monitoring_reference.json": "5d4356daf1775a1b32cd2165bd9355e06cf3296e7c57f27e5acb45ddce92c635",
+    "requirements-service.txt": "85ea96fb781bfd381672df3c1952b3e39d3338f9cd64c575a9d5f7623b03a653",
+    "tests/test_api.py": "b5e1d760e1995d6688ade8d10156a3f9f4db234e61950c72eb0f3b37f761b3f5",
+    "tests/test_monitoring.py": "04e68141f9603c012ed2fd9c161f8c1d081cbd40bfcf75987fab1ff9167b34c5",
+    "app.py": "bdfd5b7036698225fa0ee4aa86de0bf5d471a90ad88add68eaa063b61a40095d",
+    "data/demo/customer_profiles_demo.csv": "dd20cb8b59549b2c76d27c36598fd8726456bcfff2932eb74f18c6f0d4f1090b",
+    "data/demo/customer_profiles_template.csv": "2b31c897ab12e722dfdbc8104fe11b2f48f2d8f26adf3b77683fcd7c762a07bf",
+    "ev_project/__init__.py": "2bf295c0ef2d3496b1b45644883991c15a87ec29a3a697bf233142f7d092c2d7",
+    "ev_project/check_saved_model.py": "bd4629992d3e604f46e3824076a2b9e515083ebabcbc59a2264dc9dadeecd0fc",
+    "ev_project/conversation_guide.py": "55ff31569d799dc1e5ca5b87c35518a6340a6fdbf387c7a4168457f339d79781",
+    "ev_project/customer_details.py": "3006c1b4f7555cb459c68c09314fdb13377a88cc06a258aa175178ece19aa7ca",
+    "ev_project/download_data.py": "2ec5db0f15683daa8967d04a979d10265abe5ad4569b218c8d5185f1f81e69f1",
+    "ev_project/modeling.py": "2dd9fc80a43483dd7a2df37d7689d755108f49dab7f0f6ecb69956e725f5b4e4",
+    "ev_project/run_eda.py": "0ee7fc93d678118337747f86fdd3463aa792b4e202e5e9859289aa6498fc479c",
+    "ev_project/run_modeling.py": "4b5a5a21c1dcb03e6e4c571cd16b51e6313e7c141d8d1570bee83a6d26effeaa",
+    "ev_project/schema.py": "0d253b5be9a52217298b05bc91eae8aa80ce397256e59302dfb6d93e73be2b58",
+    "ev_project/scoring.py": "f5fb119c4368435f1764b24676bbf61f19b45ef6004ac1443cc72a55d3fc1494",
+    "ev_project/train_models.py": "146e29bf1431e27a0b5d0d0052e2dfca76d09ceb2685108f1ce5ec870f63af70",
+    "ev_project/training_diagnostics.py": "a67e30cbab0cf86245b0e58b42a54c46949091842fd1736a2d6c2585dbe47e79",
+    "models/model_bundle.joblib": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+    "models/model_metadata.json": "8698a94faae0fd099b31ede900bde69ed96b64e9e6a21ceb6544243e7bfab957",
+    "requirements.txt": "bae8607fa05568f2b1950b8a2592c953586ec438aa134172c0e77d480e263328",
+    "tests/test_app.py": "4d212a047fac319206f9c11926d152cb7fd343a477d3ec4d599e3a05f6c88d16",
+    "tests/test_conversation_guide.py": "c298f8d8dfeea717dba4d564e7d0e1def56027f0647dfe6a6e3a66e19b2a9248",
+    "tests/test_customer_details.py": "d44224af40c7192e41a8b43d4474e2342dca5c95debe1627826a77aa94984f2f",
+    "tests/test_modeling.py": "3cb9354eb2065292059e57d80a9c9912265324e059470501395345037b5dc5e4",
+    "tests/test_scoring.py": "7ba5c53e17bb0100de7a4d2e6fd47c0f7a160c351dddff16fd9b169aaec1db88",
+    "tests/test_training_diagnostics.py": "366ef87ba7d520f6d0250f89973bf095b93ca39363c63f3425e05eef3d82cd13"
+  },
+  "boundaries": {
+    "original_model_and_analysis_results_unchanged": true,
+    "root_readme_and_kaggle_instructions_unchanged_in_this_audit": true,
+    "native_windows_execution": false,
+    "independent_peer_reproduction": false,
+    "new_final_signed_form_completed": false,
+    "actual_owner_presentation_completed": false,
+    "git_commit_performed": false,
+    "git_push_performed": false,
+    "note": "Local automated and browser verification does not replace independent classmate replication, the newly signed Final form, the actual presentation, or authorized publication of the reviewed version. No grade is predicted."
+  }
+}

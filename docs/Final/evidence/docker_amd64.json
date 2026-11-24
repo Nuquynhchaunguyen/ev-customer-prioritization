@@ -1,0 +1,61 @@
+{
+  "checked_at_utc": "2026-11-23T22:27:59.032232+00:00",
+  "base_url": "http://127.0.0.1:8767",
+  "python": "3.13.9",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "model": "Logistic Regression",
+  "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+  "ranked_profiles": 500,
+  "shortlisted_profiles": 50,
+  "maximum_probability_difference": 2.220446049250313e-16,
+  "ranking_matches_saved_pipeline": true,
+  "invalid_request_statuses": {
+    "missing_column": 422,
+    "duplicate_ids": 422,
+    "capacity_exceeds_batch": 422,
+    "invalid_category": 422
+  },
+  "monitoring_status": "stable",
+  "passed": true,
+  "image_tag": "ev-prioritization:final-amd64",
+  "image_id": "sha256:8696df53611728aba4f793a12ab3a8d9eb19cf5350f4d8be8a57eba0946e2305",
+  "image_os": "linux",
+  "image_architecture": "amd64",
+  "container_user": "10001:10001",
+  "health_status": "healthy",
+  "published_ports": {
+    "8000/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "8767"
+      }
+    ]
+  },
+  "extension_tests_passed": 21,
+  "pip_check": "No broken requirements found.",
+  "package_versions": {
+    "fastapi": "0.165.0",
+    "pydantic": "2.12.5",
+    "starlette": "1.10.0",
+    "uvicorn": "0.54.0",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "scipy": "1.18.1"
+  },
+  "source_sha256": {
+    "ev_project/api.py": "eaa3cb2994029a2c5c665167c531573d80fdc7df2addac8f87a9f6d43fa0895f",
+    "ev_project/check_api.py": "94540682b2147db4ac2cbd9ca9b1d9a1bd05cf172b19ec83ad3081e634980604",
+    "ev_project/monitoring.py": "a44a39a1140be384c51fab65d833f53560b7c219ff99e073353f592f632547f5",
+    "tests/test_api.py": "b5e1d760e1995d6688ade8d10156a3f9f4db234e61950c72eb0f3b37f761b3f5",
+    "tests/test_monitoring.py": "04e68141f9603c012ed2fd9c161f8c1d081cbd40bfcf75987fab1ff9167b34c5",
+    "requirements-service.txt": "85ea96fb781bfd381672df3c1952b3e39d3338f9cd64c575a9d5f7623b03a653",
+    "Dockerfile": "67b87b393b0815e1e39b58ff7114d8a2f4f83664def2f992feec3e780a0e179c",
+    ".dockerignore": "2036b4b5e1685e3a385e4dee5577461acd1b128991e3bd7f39019b9383e4064a"
+  },
+  "tested_at_utc": "2026-11-23T22:28:04.324133+00:00",
+  "windows_native_execution": false,
+  "host_architecture": "arm64",
+  "execution_mode": "Linux amd64 emulation on Docker Desktop for Apple Silicon"
+}

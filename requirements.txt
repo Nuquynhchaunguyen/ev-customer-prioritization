@@ -1,4 +1,4 @@
-# Complete project dependencies: EDA, modeling, and Streamlit.
+# Complete project dependencies: analysis, Streamlit, API, and monitoring.
 # Use a separate local environment with Python 3.12 or 3.13.
 pandas==2.2.3
 numpy==2.3.5
@@ -12,3 +12,4 @@ requests==2.34.2
 scikit-learn==1.9.1
 streamlit==1.65.0
 joblib==1.6.0
+-r requirements-service.txt

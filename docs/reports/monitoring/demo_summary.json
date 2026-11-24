@@ -1,0 +1,26 @@
+{
+  "demo": "Unmodified included 500 synthetic profiles versus deliberately changed copies of the same profiles.",
+  "reference_id": "3525079ddba6a6a5d3c39efb51c89f00c7b80aabd80aba99a26ea10b5f68dc59",
+  "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+  "reference_rows": 468065,
+  "batch_rows": 500,
+  "baseline_status": "stable",
+  "shifted_status": "investigate",
+  "baseline_max_psi": 0.01827957,
+  "shifted_max_psi": 25.6575286,
+  "shifted_investigate_features": [
+    "Age",
+    "Annual_Income_USD",
+    "Daily_Commute_km",
+    "Home_Charging_Possible"
+  ],
+  "changes": {
+    "Age": 75,
+    "Annual_Income_USD": 250000,
+    "Daily_Commute_km": 150.0,
+    "Home_Charging_Possible": "No"
+  },
+  "quality_evaluation": "Not performed; demonstration checks drift detection, not prediction accuracy.",
+  "privacy": "Output reports contain aggregate histograms and no profile rows, identifiers or labels.",
+  "model_unchanged": true
+}

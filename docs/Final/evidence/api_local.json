@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-11-23T22:27:12.405583+00:00",
+  "base_url": "http://127.0.0.1:8765",
+  "python": "3.13.9",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "model": "Logistic Regression",
+  "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+  "ranked_profiles": 500,
+  "shortlisted_profiles": 50,
+  "maximum_probability_difference": 0.0,
+  "ranking_matches_saved_pipeline": true,
+  "invalid_request_statuses": {
+    "missing_column": 422,
+    "duplicate_ids": 422,
+    "capacity_exceeds_batch": 422,
+    "invalid_category": 422
+  },
+  "monitoring_status": "stable",
+  "passed": true
+}

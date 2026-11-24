@@ -1,0 +1,31 @@
+# Service and verification dependencies. Python 3.12 or 3.13.
+# Core model versions match the saved artifact and main requirements.txt.
+pandas==2.2.3
+numpy==2.3.5
+scikit-learn==1.9.1
+joblib==1.6.0
+scipy==1.18.1
+narwhals==2.27.1
+threadpoolctl==3.7.0
+cloudpickle==3.1.2
+fastapi==0.165.0
+starlette==1.10.0
+pydantic==2.12.5
+uvicorn==0.54.0
+httpx==0.28.1
+# Transitive versions captured in the verified service image.
+annotated-doc==0.0.7
+annotated-types==0.8.0
+anyio==4.16.0
+certifi==2026.11.20
+click==8.5.1
+h11==0.16.0
+httpcore==1.0.9
+idna==3.20
+opentelemetry-api==1.45.2
+pydantic-core==2.41.5
+python-dateutil==4.0.0
+pytz==2026.6
+typing-extensions==4.16.0
+typing-inspection==0.4.5
+tzdata==2026.6

@@ -24,6 +24,17 @@ actual sales, cost savings, or return on investment.
 
 ## Submission materials
 
+- **Final:** [Business report PDF](docs/Final/EV_Customer_Prioritization_Final_Report.pdf),
+  [readable HTML](docs/Final/EV_Customer_Prioritization_Final_Report.html),
+  [stakeholder PowerPoint](docs/Final/EV_Customer_Prioritization_Final_Presentation.pptx),
+  [product demonstration](docs/Final/demo_walkthrough.md), and
+  [revision log](docs/Final/revision_log.md).
+  The report follows the ten required sections and includes the complete
+  data-to-action pipeline. [API and Docker](docs/Final/api_docker.md) and
+  [input monitoring](docs/Final/monitoring.md) include reproducible checks.
+  [Final handoff checklist](docs/Final/submission_checklist.md) distinguishes
+  prepared local materials from publication, independent peer replication,
+  and the separately submitted signed validation form.
 - **P1:** [Combined proposal PDF](docs/P1/EV_Customer_Prioritization_P1.pdf).
   Pages 1-2: topic examples and one-page infographic; page 3: project proposal;
   page 4: dataset and initial exploration; page 5: baseline, feasibility, and next steps;
@@ -37,7 +48,7 @@ actual sales, cost savings, or return on investment.
   5. [Saved fitted pipeline](models/model_bundle.joblib) and [load-and-test command](#7-check-the-saved-model-and-tests). See page 8 of the technical paper for the result.
   6. [Stakeholder PowerPoint](docs/P2/EV_Customer_Prioritization_Stakeholder_Presentation.pptx).
   7. [Setup](#setup), [run instructions](#run-the-project), and [Python dependencies](requirements.txt).
-  8. **P1 feedback update** in Appendix B on page 10 of the technical paper. It records improvements since P1 and the status of instructor feedback.
+  8. **Revision summary** in Appendix B on page 10 of the technical paper. It records improvements since P1.
 
 ## Project map
 
@@ -45,10 +56,12 @@ actual sales, cost savings, or return on investment.
 ev-customer-prioritization/
 ├── README.md           Setup and run instructions
 ├── requirements.txt    Python dependencies
+├── requirements-service.txt  Pinned API and container dependencies
+├── Dockerfile          Local ranking service image
 ├── .gitignore          Excludes full data, credentials, and local environments
-├── docs/               P1 proposal, P2 report and PowerPoint slides, and analysis reports
+├── docs/               P1, P2, Final report and PowerPoint, and analysis reports
 ├── notebooks/          01: data understanding; 02: modeling and evaluation
-├── ev_project/         Download, preparation, training, and scoring code
+├── ev_project/         Download, training, scoring, API, and input monitoring
 ├── data/               Included demo and locally generated data
 ├── models/             Saved model pipeline and metadata
 ├── app.py              Streamlit interface
@@ -328,6 +341,18 @@ top 5,015 profiles** (84.67%, 4.85 times the expected share for random selection
 At the primary 10% capacity, expect **7,902 Yes labels in 10,030 profiles**
 (78.78%, 4.51 times the random share). These are results on synthetic labels.
 
+**After retraining, rebuild the monitoring reference before using the API or
+monitoring commands.** Stop a running API first. The reference is tied to the
+saved model and training split, so a replacement model requires a matching reference.
+
+```bash
+python -m ev_project.monitoring --build-reference
+```
+
+Restart the API after reviewing the rebuilt model and reference. Rebuild the
+Docker image to include updated artifacts. Trying the included model and demo
+directly does not require a reference rebuild.
+
 To run interactively instead, install VS Code's **Python** and **Jupyter**
 extensions, select this project's venv with **Select Kernel**, and **Run All** in
 notebook 01 followed by notebook 02.
@@ -355,14 +380,17 @@ python -m unittest discover -s tests -v
 ```
 
 Streamlit may print `missing ScriptRunContext` during these terminal tests.
+Some service package versions also print `StarletteDeprecationWarning` about
+the HTTP test client. Confirm the final **OK** summary below.
 
 The terminal displays this summary when the tests pass.
 
-**Ran 53 tests in 3.006s**
+**Ran 74 tests in 15.281s**
 
 **OK**
 
-The runtime may vary by computer. The final `OK` confirms that all 53 tests passed.
+The runtime varies by computer. The final
+**OK** confirms that all 74 tests passed, including the API and monitoring checks.
 
 The included [demo CSV](data/demo/customer_profiles_demo.csv) shows the input
 format. Use one unique `id` and the 13 predictor columns per row, with headers
@@ -393,3 +421,209 @@ Download edits before closing the session. The app does not contact customers.
 
 If a module is missing, reactivate the venv and repeat step 4. If a file cannot
 be found, check that your terminal is in the folder containing `README.md`.
+
+### 9. Try the ranking API
+
+**Classmate verification path:** Complete [setup steps 1–4](#setup), including
+the full `requirements.txt`, then follow steps **9, 10, and 11** below. Run from
+the project folder containing `README.md`. These three checks use the included
+model, monitoring reference, and 500-profile demo, so they need no Kaggle download
+or retraining. Full analysis reproduction is covered separately in steps 5–7.
+
+**Terminal A — start the API.** Keep the project environment active and run:
+
+```bash
+python -m uvicorn ev_project.api:app --host 127.0.0.1 --port 8000 --no-access-log
+```
+
+Keep this terminal running. Open **http://127.0.0.1:8000/health** in a browser
+and wait for **"status": "ok"**. Open **http://127.0.0.1:8000/docs** to inspect
+the interactive request/response schema.
+
+**Terminal B — run the check.** Open a second terminal in the same VS Code
+project folder. Activate the same environment again before running Python.
+
+**Mac**
+
+```bash
+source .venv-msba265-ev-purchases/bin/activate
+```
+
+**Windows PowerShell**
+
+```powershell
+.\.venv-msba265-ev-purchases\Scripts\Activate.ps1
+```
+
+For Windows Command Prompt, use
+`.venv-msba265-ev-purchases\Scripts\activate.bat` instead. If PowerShell blocks
+activation, follow [Python setup troubleshooting](#troubleshooting-python-setup).
+
+In Terminal B, check the running API.
+
+```bash
+python -m ev_project.check_api
+```
+
+Expected messages
+
+**API verified: ranked 500 profiles and shortlisted 50.**<br>
+**Ranking matches saved pipeline. Maximum score difference: 0.**<br>
+**Invalid inputs return HTTP 422. OK**
+
+Very small score differences up to **1e-12** are accepted across platforms;
+the complete ranking and shortlist must still match. **HTTP 422** is the expected
+response to the deliberately invalid test requests. The final **OK** means those
+requests were rejected correctly and the valid request passed.
+
+If the checker reports **Cannot reach the API**, keep Terminal A running and
+confirm its health page before retrying. After the check succeeds, press
+**Ctrl+C in Terminal A** to stop the local server. Keep Terminal B's environment
+active for the Docker and monitoring checks below.
+
+The API accepts up to 5,000 profiles per batch and returns a complete ranking,
+the first K, validation warnings, and an aggregate input-monitoring report.
+Scores use the same saved pipeline as Streamlit. It keeps no customer records
+and sends no messages. See [API details and troubleshooting](docs/Final/api_docker.md).
+
+### 10. Run the service with Docker
+
+Install and open [Docker Desktop](https://docs.docker.com/desktop/), then wait
+for its engine to run. Windows uses **Linux containers** with the **WSL 2**
+backend. In Terminal B, confirm the engine is available.
+
+```bash
+docker version
+```
+
+Expect both **Client** and **Server** information. If the server cannot be
+reached, open Docker Desktop and wait for startup before continuing.
+
+**Build the image.** The first build downloads a base image and dependencies
+and may take several minutes. Wait for it to finish successfully and for the
+terminal prompt to return. These commands work on Mac and Windows.
+
+```bash
+docker build -t ev-prioritization:final .
+```
+
+**Start the container.**
+
+```bash
+docker run --rm -d --name ev-prioritization-final -p 127.0.0.1:8001:8000 ev-prioritization:final
+```
+
+**Wait for readiness before testing.** Starting the container returns before
+the API is necessarily ready. Check its health.
+
+```bash
+docker inspect --format "{{.State.Health.Status}}" ev-prioritization-final
+```
+
+Expected result is **healthy**. If it says **starting**, wait a few seconds and
+repeat the same health command. If it says **unhealthy**, inspect
+`docker logs ev-prioritization-final` and resolve the startup error first.
+
+Open **http://127.0.0.1:8001/docs**. With the full Python project environment
+still active in Terminal B, run the HTTP check against the container's port.
+
+```bash
+python -m ev_project.check_api --url http://127.0.0.1:8001
+```
+
+Expected messages
+
+**API verified: ranked 500 profiles and shortlisted 50.**<br>
+**Ranking matches saved pipeline. Maximum score difference: 0.**<br>
+**Invalid inputs return HTTP 422. OK**
+
+The same **1e-12** score tolerance applies. A small floating-point difference
+can appear on another architecture; the ranking and shortlist must match.
+
+**Run the tests inside the container.**
+
+```bash
+docker exec ev-prioritization-final python -m unittest discover -s tests -v
+```
+
+Expect **Ran 21 tests** followed by **OK**; elapsed time varies. This service
+image contains the **11 API** and **10 monitoring** checks. The complete Python
+project has 74 tests, including the browser-app and modeling checks.
+
+Stop the container after both checks pass.
+
+```bash
+docker stop ev-prioritization-final
+```
+
+The image includes the service, fitted model, training reference, and synthetic
+demo. A Kaggle key and full CSV download are unnecessary for this service.
+If port 8001 is occupied, use `-p 127.0.0.1:8002:8000` in the run command and
+`--url http://127.0.0.1:8002` in the HTTP check. If the container name is already
+in use, stop that previous project container before starting it again.
+[Container verification](docs/Final/api_docker.md#build-and-run-docker-locally)
+provides further troubleshooting and the recorded run evidence.
+
+### 11. Reproduce the input-monitoring example
+
+In Terminal B, use the **full Python environment from step 4**. The plotted
+demonstration requires the complete `requirements.txt`; the smaller Docker
+service environment does not include the plotting packages. No running server
+is required. Run the same command on Mac or Windows.
+
+```bash
+python -m ev_project.monitoring --demo
+```
+
+Expected messages
+
+**Baseline: stable; shifted batch: investigate.**<br>
+**Investigate: Age, Annual_Income_USD, Daily_Commute_km, Home_Charging_Possible.**
+
+**The shifted result "investigate" is the intended successful test outcome.**
+The demonstration deliberately changes four features to check that monitoring
+flags them. It does not mean the command failed.
+
+Open `docs/reports/monitoring/` in VS Code and inspect these outputs.
+
+| Output | Expected evidence |
+|---|---|
+| `demo_baseline.json` | **"status": "stable"** for the included 500-profile batch |
+| `demo_shifted.json` | **"status": "investigate"** and the four named features |
+| `demo_summary.json` | Both statuses, **500** batch rows, **468,065** reference rows, and **"model_unchanged": true** |
+| `drift_demo.png` | A chart comparing the original batch with the deliberately shifted batch |
+
+The reference uses **468,065 training profiles**
+and excludes validation/holdout features and all target labels. The deliberate
+shift tests the alert mechanism. It does not measure real purchase accuracy.
+See [monitoring rules, investigation steps, and limitations](docs/Final/monitoring.md).
+
+### Classmate verification summary
+
+| Component | Evidence the classmate should observe |
+|---|---|
+| FastAPI | Local health is **ok**; HTTP check ranks **500**, selects **50**, matches the saved model, and ends with **HTTP 422. OK** |
+| Docker | Image builds; container becomes **healthy**; the same HTTP check passes on port 8001; **21 container tests** end with **OK** |
+| MLOps | The original batch is **stable**, the deliberately shifted batch is **investigate**, and the JSON/chart outputs are created |
+
+For the complete project's automated checks, keep the full environment active
+and run from the project folder.
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Expect **Ran 74 tests** followed by **OK**; runtime varies. A classmate should
+record their own operating system, Python version, results, and any errors.
+These extension checks support the handoff. Reproducing the full analysis also
+requires following steps **5–7**; complete the validation form after the required
+independent replication has actually been performed.
+
+## Verification scope
+
+The [local verification records](docs/Final/evidence/) record the tested platform,
+dependency versions, artifact identity, API parity, container results, and invalid
+request checks. Windows x64 Python 3.13 package availability is checked separately
+from native Windows execution. Commands use Python modules and single-line Docker
+instructions to work across the documented terminals. A native Windows peer run
+and the signed validation form remain part of the final handoff.

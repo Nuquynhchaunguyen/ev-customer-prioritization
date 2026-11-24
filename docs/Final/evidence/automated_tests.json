@@ -1,0 +1,28 @@
+{
+  "verified_at_utc": "2026-11-23T22:27:05.737366+00:00",
+  "test_command": "python -m unittest discover -s tests -v",
+  "test_count": 74,
+  "reported_seconds": 15.281,
+  "elapsed_seconds": 19.854,
+  "exit_code": 0,
+  "final_summary": "Ran 74 tests in 15.281s\n\nOK",
+  "pip_check_exit_code": 0,
+  "pip_check_output": "No broken requirements found.",
+  "python": "3.13.9",
+  "platform": "Darwin",
+  "machine": "arm64",
+  "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+  "versions": {
+    "pandas": "2.2.3",
+    "numpy": "2.3.5",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "streamlit": "1.65.0",
+    "fastapi": "0.165.0",
+    "pydantic": "2.12.5",
+    "starlette": "1.10.0",
+    "uvicorn": "0.54.0",
+    "httpx": "0.28.1"
+  },
+  "scope": "Local macOS ARM64 execution. Native Windows execution and independent peer reproduction are not established by this run."
+}

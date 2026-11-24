@@ -1,0 +1,21 @@
+{
+  "recorded_at_utc": "2026-11-23T22:40:41.565773+00:00",
+  "scope": "Checked in the original local project and its own virtual environment after installing the final requirements.",
+  "python": "3.13.9",
+  "platform": "macOS ARM64",
+  "pip_check": "No broken requirements found.",
+  "command": "python -m unittest discover -s tests -q",
+  "tests": 74,
+  "reported_seconds": 13.641,
+  "result": "OK",
+  "saved_model_check": {
+    "ranked": 500,
+    "shortlisted": 50,
+    "first_id": "668721",
+    "yes_probability_printed": 0.930806,
+    "maximum_reload_score_difference": 0
+  },
+  "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+  "git_commit_created": false,
+  "git_push_performed": false
+}

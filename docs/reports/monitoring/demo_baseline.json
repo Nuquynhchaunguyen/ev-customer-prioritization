@@ -1,0 +1,222 @@
+{
+  "report_version": "1.0",
+  "observed_at_utc": "2026-11-23T22:28:47.843534+00:00",
+  "reference_id": "3525079ddba6a6a5d3c39efb51c89f00c7b80aabd80aba99a26ea10b5f68dc59",
+  "model_sha256": "a1204e058a97e997fdf6b267f9686446b0fd5592a4cd1f591c20451482aacf99",
+  "schema_version": "1.0",
+  "n": 500,
+  "reference_rows": 468065,
+  "minimum_batch_size": 200,
+  "drift_evaluated": true,
+  "status": "stable",
+  "investigate_features": [],
+  "review_features": [],
+  "input_quality": {
+    "valid": true,
+    "normalization_warning_count": 0
+  },
+  "feature_metrics": [
+    {
+      "feature": "Age",
+      "type": "numeric",
+      "psi": 0.01068203,
+      "status": "stable",
+      "current_bin_counts": [
+        0,
+        38,
+        48,
+        42,
+        62,
+        50,
+        48,
+        63,
+        37,
+        53,
+        59,
+        0
+      ],
+      "outside_training_range_count": 0
+    },
+    {
+      "feature": "Annual_Income_USD",
+      "type": "numeric",
+      "psi": 0.01352768,
+      "status": "stable",
+      "current_bin_counts": [
+        0,
+        37,
+        51,
+        52,
+        55,
+        48,
+        51,
+        51,
+        46,
+        49,
+        60,
+        0
+      ],
+      "outside_training_range_count": 0
+    },
+    {
+      "feature": "Daily_Commute_km",
+      "type": "numeric",
+      "psi": 0.01522503,
+      "status": "stable",
+      "current_bin_counts": [
+        0,
+        150,
+        40,
+        44,
+        46,
+        45,
+        55,
+        59,
+        61,
+        0
+      ],
+      "outside_training_range_count": 0
+    },
+    {
+      "feature": "Number_of_Cars_Owned",
+      "type": "numeric",
+      "psi": 0.00095234,
+      "status": "stable",
+      "current_bin_counts": [
+        0,
+        212,
+        230,
+        58,
+        0
+      ],
+      "outside_training_range_count": 0
+    },
+    {
+      "feature": "Charging_Stations_Near_Home",
+      "type": "numeric",
+      "psi": 0.01827957,
+      "status": "stable",
+      "current_bin_counts": [
+        0,
+        42,
+        61,
+        73,
+        42,
+        30,
+        88,
+        40,
+        52,
+        72,
+        0
+      ],
+      "outside_training_range_count": 0
+    },
+    {
+      "feature": "Charging_Stations_Near_Work",
+      "type": "numeric",
+      "psi": 0.00874967,
+      "status": "stable",
+      "current_bin_counts": [
+        0,
+        18,
+        75,
+        97,
+        30,
+        82,
+        36,
+        65,
+        50,
+        47,
+        0
+      ],
+      "outside_training_range_count": 0
+    },
+    {
+      "feature": "Environmental_Concern_Level",
+      "type": "categorical",
+      "psi": 0.00500158,
+      "status": "stable",
+      "current_bin_counts": [
+        114,
+        100,
+        103,
+        85,
+        98
+      ],
+      "outside_training_range_count": null
+    },
+    {
+      "feature": "Gender",
+      "type": "categorical",
+      "psi": 1.883e-05,
+      "status": "stable",
+      "current_bin_counts": [
+        220,
+        276,
+        4
+      ],
+      "outside_training_range_count": null
+    },
+    {
+      "feature": "City_Type",
+      "type": "categorical",
+      "psi": 0.00023598,
+      "status": "stable",
+      "current_bin_counts": [
+        90,
+        191,
+        219
+      ],
+      "outside_training_range_count": null
+    },
+    {
+      "feature": "Current_Car_Type",
+      "type": "categorical",
+      "psi": 0.011722,
+      "status": "stable",
+      "current_bin_counts": [
+        49,
+        179,
+        249,
+        23
+      ],
+      "outside_training_range_count": null
+    },
+    {
+      "feature": "Home_Charging_Possible",
+      "type": "categorical",
+      "psi": 0.00048955,
+      "status": "stable",
+      "current_bin_counts": [
+        159,
+        341
+      ],
+      "outside_training_range_count": null
+    },
+    {
+      "feature": "Subsidy_Available",
+      "type": "categorical",
+      "psi": 0.00113489,
+      "status": "stable",
+      "current_bin_counts": [
+        178,
+        322
+      ],
+      "outside_training_range_count": null
+    },
+    {
+      "feature": "Range_Anxiety_Level",
+      "type": "categorical",
+      "psi": 0.00527696,
+      "status": "stable",
+      "current_bin_counts": [
+        1,
+        442,
+        57
+      ],
+      "outside_training_range_count": null
+    }
+  ],
+  "interpretation": "Input distribution alert only. Prediction quality, concept drift and real sales are not measured.",
+  "next_action": "Continue periodic monitoring; stable marginals do not prove stable accuracy or fairness."
+}

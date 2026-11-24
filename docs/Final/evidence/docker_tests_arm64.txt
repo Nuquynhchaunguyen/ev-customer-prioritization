@@ -1,0 +1,28 @@
+/usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_artifact_change_after_startup_returns_clear_unavailability (test_api.ApiTests.test_artifact_change_after_startup_returns_clear_unavailability) ... ok
+test_capacity_whole_number_and_within_batch (test_api.ApiTests.test_capacity_whole_number_and_within_batch) ... ok
+test_duplicate_and_blank_ids_rejected (test_api.ApiTests.test_duplicate_and_blank_ids_rejected) ... ok
+test_empty_over_limit_and_malformed_requests_rejected (test_api.ApiTests.test_empty_over_limit_and_malformed_requests_rejected) ... ok
+test_health_schema_and_openapi_document_input (test_api.ApiTests.test_health_schema_and_openapi_document_input) ... ok
+test_invalid_numeric_values_rejected (test_api.ApiTests.test_invalid_numeric_values_rejected) ... ok
+test_missing_model_or_reference_prevents_readiness (test_api.ApiTests.test_missing_model_or_reference_prevents_readiness) ... ok
+test_missing_predictor_and_unknown_category_rejected_without_echo (test_api.ApiTests.test_missing_predictor_and_unknown_category_rejected_without_echo) ... ok
+test_outcomes_and_extra_columns_never_change_predictions (test_api.ApiTests.test_outcomes_and_extra_columns_never_change_predictions) ... ok
+test_string_ids_preserved_and_ties_independent_of_input_order (test_api.ApiTests.test_string_ids_preserved_and_ties_independent_of_input_order) ... ok
+test_valid_http_ranking_matches_saved_pipeline_and_monitoring (test_api.ApiTests.test_valid_http_ranking_matches_saved_pipeline_and_monitoring) ... ok
+test_identical_marginals_are_stable_and_saved_aggregates_have_no_rows (test_monitoring.MonitoringTests.test_identical_marginals_are_stable_and_saved_aggregates_have_no_rows) ... ok
+test_invalid_batches_fail_before_a_monitoring_result (test_monitoring.MonitoringTests.test_invalid_batches_fail_before_a_monitoring_result) ... ok
+test_malformed_reference_bins_and_versions_are_rejected (test_monitoring.MonitoringTests.test_malformed_reference_bins_and_versions_are_rejected) ... ok
+test_numeric_tails_and_category_changes_produce_investigation (test_monitoring.MonitoringTests.test_numeric_tails_and_category_changes_produce_investigation) ... ok
+test_psi_zero_frequency_bins_stay_finite_and_histograms_are_checked (test_monitoring.MonitoringTests.test_psi_zero_frequency_bins_stay_finite_and_histograms_are_checked) ... ok
+test_reference_rejects_model_replacement_or_accidental_edit (test_monitoring.MonitoringTests.test_reference_rejects_model_replacement_or_accidental_edit) ... ok
+test_seed_verification_rejects_swapped_memberships_with_unchanged_counts (test_monitoring.MonitoringTests.test_seed_verification_rejects_swapped_memberships_with_unchanged_counts) ... ok
+test_small_batch_does_not_claim_a_drift_decision (test_monitoring.MonitoringTests.test_small_batch_does_not_claim_a_drift_decision) ... ok
+test_training_membership_rejects_overlap_or_missing_records (test_monitoring.MonitoringTests.test_training_membership_rejects_overlap_or_missing_records) ... ok
+test_training_selection_excludes_validation_holdout_values_and_labels (test_monitoring.MonitoringTests.test_training_selection_excludes_validation_holdout_values_and_labels) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 1.023s
+
+OK
