@@ -207,7 +207,7 @@ python -m pip install --only-binary=:all: -r requirements.txt
 python -m pip check
 ```
 
-Expect **No broken requirements found**. To update an existing compatible venv,
+**Expected message:** **No broken requirements found.** To update an existing compatible venv,
 activate it and repeat this step.
 
 If pip reports `No matching distribution found for pandas==2.2.3`, check the
@@ -289,69 +289,56 @@ customer names, phone numbers, or observed outreach outcomes.
 
 ### 6. Run the analysis
 
-**First, run the data exploration (EDA).**
+Run these commands in order. **Executing notebook...** or
+**Executing modeling notebook...** means processing has started and may take a few
+minutes. Wait for the **Saved** message and terminal prompt before continuing.
+Stop any running API first; rerunning replaces generated reports and model files.
+
+**1. Explore and clean the data.**
 
 ```bash
 python ev_project/run_eda.py
 ```
 
-**Then, run the modeling notebook.** Wait for EDA to save its output and for
-the terminal prompt to return before starting this command.
+**Expected message:**
+**Saved executed notebook and docs/reports/01_data_understanding_and_cleaning.html.**
+
+**2. Train and evaluate the models.**
 
 ```bash
 python ev_project/run_modeling.py
 ```
 
-**Allow time to finish:** Each command may take a few minutes, depending on your
-computer. After `Executing notebook...` or `Executing modeling notebook...`, the
-terminal may stay quiet while the notebook runs; this alone does not mean an
-error. Keep the terminal open and wait for **Saved executed notebook** and the
-command prompt to return before running the next command.
+**Expected message:**
+**Saved executed notebook and docs/reports/02_modeling_and_prioritization.html.**
 
-Modeling uses the cleaned data from EDA and compares a Dummy baseline,
-Logistic Regression, and a Decision Tree. Rerunning replaces generated outputs
-and model files while keeping the raw CSVs unchanged.
+If **Parent appears to have exited, shutting down** appears **after this saved
+message**, press **Enter** on an empty line to show the prompt, then continue below.
 
-**Jupyter kernel messages during local runs**
-
-| Message | Meaning |
-|---|---|
-| `Kernel is running over TCP without encryption` | Jupyter reports that kernel traffic is unencrypted. This is a connection warning, separate from an error in an analysis cell. |
-| `Parent appears to have exited, shutting down` | The kernel is closing. When this follows the saved-output message, it can be normal cleanup after the run. |
-
-If the kernel shutdown message prints over a prompt that has already returned
-after saving, press **Enter** on an empty line to see a fresh prompt.
-
-Confirm completion by checking for **Saved executed notebook**, no Python
-traceback, and an HTML report that opens with tables and charts. If the command
-stops before saving, shows a traceback, or the report is missing, check the error
-before continuing. These warnings alone do not confirm success or failure.
-
-| Output | Location |
-|---|---|
-| Cleaned data | `data/processed/` |
-| EDA report, figures, and tables | `docs/reports/01_data_understanding_and_cleaning.html`, `docs/reports/figures/`, `docs/reports/tables/` |
-| Modeling report and evaluation results | `docs/reports/02_modeling_and_prioritization.html`, `docs/reports/modeling/` |
-| Fitted model and metadata | `models/model_bundle.joblib`, `models/model_metadata.json` |
-
-Open the HTML reports locally in a browser to see the tables and charts.
-The expected split sizes are **468,065 training**, **100,300 validation**, and
-**100,300 holdout**. The holdout ranking should find **4,246 Yes labels in the
-top 5,015 profiles** (84.67%, 4.85 times the expected share for random selection).
-At the primary 10% capacity, expect **7,902 Yes labels in 10,030 profiles**
-(78.78%, 4.51 times the random share). These are results on synthetic labels.
-
-**After retraining, rebuild the monitoring reference before using the API or
-monitoring commands.** Stop a running API first. The reference is tied to the
-saved model and training split, so a replacement model requires a matching reference.
+**3. Update the monitoring reference to match the retrained model.**
 
 ```bash
 python -m ev_project.monitoring --build-reference
 ```
 
-Restart the API after reviewing the rebuilt model and reference. Rebuild the
-Docker image to include updated artifacts. Trying the included model and demo
-directly does not require a reference rebuild.
+**Expected message:**
+**Saved training-only reference for 468,065 rows to .../models/monitoring_reference.json.**
+The path varies by computer.
+
+Continue to step 7. If you already use the API or Docker, restart the API and
+rebuild the image before testing the updated model.
+
+**Other messages:** **Kernel is running over TCP without encryption** describes
+an unencrypted kernel connection. A traceback or missing saved report needs investigation.
+
+Open the [EDA report](docs/reports/01_data_understanding_and_cleaning.html) and
+[modeling report](docs/reports/02_modeling_and_prioritization.html) locally in a
+browser. Cleaned CSVs are in `data/processed/`; fitted model files are in `models/`.
+
+**Expected report results:** **468,065 training / 100,300 validation / 100,300
+holdout** profiles. The 5% shortlist contains **4,246 Yes labels in 5,015 profiles
+(84.67%)**; the 10% shortlist contains **7,902 in 10,030 (78.78%)**.
+These are synthetic-label results, not measured sales.
 
 To run interactively instead, install VS Code's **Python** and **Jupyter**
 extensions, select this project's venv with **Select Kernel**, and **Run All** in
@@ -366,7 +353,7 @@ model and demo profiles.
 python -m ev_project.check_saved_model
 ```
 
-Expected output from the included model
+**Expected message (included model):**
 
 **Model: Logistic Regression**<br>
 **Ranked 500 demo profiles and shortlisted 50.**<br>
@@ -379,18 +366,10 @@ Expected output from the included model
 python -m unittest discover -s tests -v
 ```
 
-Streamlit may print `missing ScriptRunContext` during these terminal tests.
-Some service package versions also print `StarletteDeprecationWarning` about
-the HTTP test client. Confirm the final **OK** summary below.
+**Expected message:** **Ran 74 tests** followed by **OK**. The elapsed time varies.
 
-The terminal displays this summary when the tests pass.
-
-**Ran 74 tests in 15.281s**
-
-**OK**
-
-The runtime varies by computer. The final
-**OK** confirms that all 74 tests passed, including the API and monitoring checks.
+Warnings such as **missing ScriptRunContext** or **StarletteDeprecationWarning**
+may appear; check the final summary to confirm success.
 
 The included [demo CSV](data/demo/customer_profiles_demo.csv) shows the input
 format. Use one unique `id` and the 13 predictor columns per row, with headers
@@ -407,8 +386,9 @@ require the full-data download or retraining. After setup, run:
 python -m streamlit run app.py
 ```
 
-Open **http://localhost:8501** in your browser. Keep the terminal running;
-press **Ctrl+C** there to stop the app.
+**Expected message:** **You can now view your Streamlit app in your browser.**
+Open the **Local URL** shown, usually **http://localhost:8501**. Keep the terminal
+running; press **Ctrl+C** there to stop the app.
 
 1. Choose **Try the demo**, set K to **50**, and click **Create shortlist**.
 2. Review the 50 ranked profiles and their customer information.
@@ -424,88 +404,100 @@ be found, check that your terminal is in the folder containing `README.md`.
 
 ### 9. Try the ranking API
 
-**Classmate verification path:** Complete [setup steps 1–4](#setup), including
-the full `requirements.txt`, then follow steps **9, 10, and 11** below. Run from
-the project folder containing `README.md`. These three checks use the included
-model, monitoring reference, and 500-profile demo, so they need no Kaggle download
-or retraining. Full analysis reproduction is covered separately in steps 5–7.
+Complete [setup steps 1–4](#setup), including the full `requirements.txt`.
+Steps 9–11 use the included model, monitoring reference, and demo; no Kaggle
+download or retraining is needed. Full analysis reproduction is in steps 5–7.
 
-**Terminal A — start the API.** Keep the project environment active and run:
+**Terminal A** is your current terminal, where you start the API.
+**Terminal B** is a new terminal you open to run the check.
+
+**Terminal A — start the API in your current terminal**, with the project environment active:
 
 ```bash
-python -m uvicorn ev_project.api:app --host 127.0.0.1 --port 8000 --no-access-log
+python -m uvicorn ev_project.api:app --host 127.0.0.1 --port 8002 --no-access-log
 ```
 
-Keep this terminal running. Open **http://127.0.0.1:8000/health** in a browser
-and wait for **"status": "ok"**. Open **http://127.0.0.1:8000/docs** to inspect
-the interactive request/response schema.
+**Expected message:** **Uvicorn running on http://127.0.0.1:8002**.
+Open **http://127.0.0.1:8002/health** and confirm **"status": "ok"**.
+Interactive documentation is at **http://127.0.0.1:8002/docs**.
 
-**Terminal B — run the check.** Open a second terminal in the same VS Code
-project folder. Activate the same environment again before running Python.
+**Open Terminal B in the same VS Code window:**
+
+1. Keep **Terminal A running the API** open. **Do not press Ctrl+C yet.**
+2. Choose **Terminal → New Terminal**, or click **+** in the Terminal panel.
+3. This new terminal is **Terminal B**. Stay in the same project folder and run the commands for your system:
 
 **Mac**
 
 ```bash
 source .venv-msba265-ev-purchases/bin/activate
+python -m ev_project.check_api --url http://127.0.0.1:8002
 ```
 
 **Windows PowerShell**
 
 ```powershell
 .\.venv-msba265-ev-purchases\Scripts\Activate.ps1
+python -m ev_project.check_api --url http://127.0.0.1:8002
 ```
 
-For Windows Command Prompt, use
-`.venv-msba265-ev-purchases\Scripts\activate.bat` instead. If PowerShell blocks
-activation, follow [Python setup troubleshooting](#troubleshooting-python-setup).
+**Windows Command Prompt** — if PowerShell blocks activation, select
+**Command Prompt** from the terminal dropdown, then run:
 
-In Terminal B, check the running API.
-
-```bash
-python -m ev_project.check_api
+```bat
+.venv-msba265-ev-purchases\Scripts\activate.bat
+python -m ev_project.check_api --url http://127.0.0.1:8002
 ```
 
-Expected messages
+**Expected message:**
 
 **API verified: ranked 500 profiles and shortlisted 50.**<br>
 **Ranking matches saved pipeline. Maximum score difference: 0.**<br>
 **Invalid inputs return HTTP 422. OK**
 
-Very small score differences up to **1e-12** are accepted across platforms;
-the complete ranking and shortlist must still match. **HTTP 422** is the expected
-response to the deliberately invalid test requests. The final **OK** means those
-requests were rejected correctly and the valid request passed.
+Score differences up to **1e-12** are accepted across platforms; ranks must match.
+**HTTP 422** is expected for the intentionally invalid requests; the final **OK**
+confirms the checks passed.
 
-If the checker reports **Cannot reach the API**, keep Terminal A running and
-confirm its health page before retrying. After the check succeeds, press
-**Ctrl+C in Terminal A** to stop the local server. Keep Terminal B's environment
-active for the Docker and monitoring checks below.
+**After OK:** Return to **Terminal A (running the API)** and press **Ctrl+C**
+to stop it. Continue with Docker and monitoring in **Terminal B**, keeping its
+environment active.
 
-The API accepts up to 5,000 profiles per batch and returns a complete ranking,
-the first K, validation warnings, and an aggregate input-monitoring report.
-Scores use the same saved pipeline as Streamlit. It keeps no customer records
-and sends no messages. See [API details and troubleshooting](docs/Final/api_docker.md).
+| If you see | What to do |
+|---|---|
+| **address already in use** | Choose another free port, such as 8003. Replace 8002 in the start command, browser URLs, and checker command. |
+| **Cannot reach the API** | Check that the API terminal is still running and the checker uses the same port. |
+
+The API accepts up to 5,000 profiles per batch and returns the ranking, top K,
+validation warnings, and aggregate input monitoring. It uses the same saved
+pipeline as Streamlit and does not save customer requests or send messages.
+See [API details](docs/Final/api_docker.md).
+
 
 ### 10. Run the service with Docker
 
 Install and open [Docker Desktop](https://docs.docker.com/desktop/), then wait
 for its engine to run. Windows uses **Linux containers** with the **WSL 2**
-backend. In Terminal B, confirm the engine is available.
+backend. In **Terminal B (the new terminal from step 9)**, confirm the engine is available.
 
 ```bash
 docker version
 ```
 
-Expect both **Client** and **Server** information. If the server cannot be
+**Expected result:** Both **Client** and **Server** information. If the server cannot be
 reached, open Docker Desktop and wait for startup before continuing.
 
-**Build the image.** The first build downloads a base image and dependencies
-and may take several minutes. Wait for it to finish successfully and for the
-terminal prompt to return. These commands work on Mac and Windows.
+**Build the image.** The first build may take several minutes. These commands
+work on Mac and Windows.
 
 ```bash
 docker build -t ev-prioritization:final .
 ```
+
+**Expected result:** The build completes without **ERROR** and the prompt returns;
+Docker may show **FINISHED**. **CACHED** means earlier steps were reused, so a
+repeat build can finish quickly.
+The image is named **ev-prioritization:final**.
 
 **Start the container.**
 
@@ -513,25 +505,27 @@ docker build -t ev-prioritization:final .
 docker run --rm -d --name ev-prioritization-final -p 127.0.0.1:8001:8000 ev-prioritization:final
 ```
 
-**Wait for readiness before testing.** Starting the container returns before
-the API is necessarily ready. Check its health.
+**Expected result:** A long container ID is printed; it differs each run. The
+container runs in the background, so the prompt returns. Continue in this same terminal.
+
+**Check that the container is ready before testing.**
 
 ```bash
 docker inspect --format "{{.State.Health.Status}}" ev-prioritization-final
 ```
 
-Expected result is **healthy**. If it says **starting**, wait a few seconds and
+**Expected message:** **healthy**. If it says **starting**, wait a few seconds and
 repeat the same health command. If it says **unhealthy**, inspect
 `docker logs ev-prioritization-final` and resolve the startup error first.
 
-Open **http://127.0.0.1:8001/docs**. With the full Python project environment
-still active in Terminal B, run the HTTP check against the container's port.
+After **healthy**, open **http://127.0.0.1:8001/docs**. With the full Python project
+environment still active, run the HTTP check against the container's port.
 
 ```bash
 python -m ev_project.check_api --url http://127.0.0.1:8001
 ```
 
-Expected messages
+**Expected message:**
 
 **API verified: ranked 500 profiles and shortlisted 50.**<br>
 **Ranking matches saved pipeline. Maximum score difference: 0.**<br>
@@ -546,27 +540,29 @@ can appear on another architecture; the ranking and shortlist must match.
 docker exec ev-prioritization-final python -m unittest discover -s tests -v
 ```
 
-Expect **Ran 21 tests** followed by **OK**; elapsed time varies. This service
-image contains the **11 API** and **10 monitoring** checks. The complete Python
-project has 74 tests, including the browser-app and modeling checks.
+**Expected message:** **Ran 21 tests** followed by **OK**; elapsed time varies.
+The image contains the 11 API and 10 monitoring checks.
 
-Stop the container after both checks pass.
+Stop the container after the HTTP check and all 21 tests pass.
 
 ```bash
 docker stop ev-prioritization-final
 ```
 
+**Expected message:** **ev-prioritization-final**.
+
 The image includes the service, fitted model, training reference, and synthetic
 demo. A Kaggle key and full CSV download are unnecessary for this service.
 If port 8001 is occupied, use `-p 127.0.0.1:8002:8000` in the run command and
-`--url http://127.0.0.1:8002` in the HTTP check. If the container name is already
-in use, stop that previous project container before starting it again.
+`--url http://127.0.0.1:8002` in the HTTP check; open **http://127.0.0.1:8002/docs**
+in the browser. If the container name is already in use, stop that previous
+project container before starting it again.
 [Container verification](docs/Final/api_docker.md#build-and-run-docker-locally)
 provides further troubleshooting and the recorded run evidence.
 
-### 11. Reproduce the input-monitoring example
+### 11. MLOps: Run the input-monitoring example
 
-In Terminal B, use the **full Python environment from step 4**. The plotted
+In **Terminal B**, use the **full Python environment from step 4**. The plotted
 demonstration requires the complete `requirements.txt`; the smaller Docker
 service environment does not include the plotting packages. No running server
 is required. Run the same command on Mac or Windows.
@@ -575,14 +571,14 @@ is required. Run the same command on Mac or Windows.
 python -m ev_project.monitoring --demo
 ```
 
-Expected messages
+**Expected messages:**
 
 **Baseline: stable; shifted batch: investigate.**<br>
-**Investigate: Age, Annual_Income_USD, Daily_Commute_km, Home_Charging_Possible.**
+**Investigate: Age, Annual_Income_USD, Daily_Commute_km, Home_Charging_Possible.**<br>
+**Saved aggregate monitoring evidence to .../docs/reports/monitoring.**
 
-**The shifted result "investigate" is the intended successful test outcome.**
-The demonstration deliberately changes four features to check that monitoring
-flags them. It does not mean the command failed.
+The path varies by computer. **investigate** is expected: the demo deliberately
+changes four features to test the alert.
 
 Open `docs/reports/monitoring/` in VS Code and inspect these outputs.
 
@@ -606,18 +602,9 @@ See [monitoring rules, investigation steps, and limitations](docs/Final/monitori
 | Docker | Image builds; container becomes **healthy**; the same HTTP check passes on port 8001; **21 container tests** end with **OK** |
 | MLOps | The original batch is **stable**, the deliberately shifted batch is **investigate**, and the JSON/chart outputs are created |
 
-For the complete project's automated checks, keep the full environment active
-and run from the project folder.
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-Expect **Ran 74 tests** followed by **OK**; runtime varies. A classmate should
-record their own operating system, Python version, results, and any errors.
-These extension checks support the handoff. Reproducing the full analysis also
-requires following steps **5–7**; complete the validation form after the required
-independent replication has actually been performed.
+Record your operating system, Python version, results, and any errors.
+Use [step 7](#7-check-the-saved-model-and-tests) for the complete test suite.
+Complete the validation form after independent replication has been performed.
 
 ## Verification scope
 
